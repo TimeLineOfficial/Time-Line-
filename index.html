@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Time Line Delivery</title> 
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-section {
+            margin-bottom: 20px;
+        }
+        .form-section label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-section input, .form-section select, .form-section textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #333;
+            background-color: #222;
+            color: #fff;
+        }
+        .form-section button {
+            padding: 10px 20px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .form-section button:hover {
+            background-color: #555;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .popup button {
+            margin-top: 10px;
+        }
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .qr-code img {
+            width: 200px;
+            height: auto;
+        }
+        .upload-section {
+            margin-top: 20px;
+        }
+    </style> 
+ </head> 
+ <body> 
+  <div class="container"> 
+   <h1>Time Line Delivery</h1> 
+   <form id="deliveryForm"> 
+    <div class="form-section"> <label for="customerName">Your Name (Optional)</label> 
+     <input type="text" id="customerName" name="customerName"> 
+    </div> 
+    <div class="form-section"> <label for="customerPhone">Your Phone Number</label> 
+     <input type="text" id="customerPhone" name="customerPhone" required> 
+    </div> 
+    <div class="form-section"> <label for="recipientName">Recipient's Name</label> 
+     <input type="text" id="recipientName" name="recipientName" required> 
+    </div> 
+    <div class="form-section"> <label for="recipientPhone">Recipient's Phone Number (Optional)</label> 
+     <input type="text" id="recipientPhone" name="recipientPhone"> 
+    </div> 
+    <div class="form-section"> <label for="recipientAddress">Recipient's Address</label> 
+     <input type="text" id="recipientAddress" name="recipientAddress" required> 
+    </div> 
+    <div class="form-section"> <label for="deliveryDate">Date of Delivery</label> 
+     <input type="date" id="deliveryDate" name="deliveryDate" required> 
+    </div> 
+    <div class="form-section"> <label for="deliveryTime">Time of Delivery (HH:MM)</label> 
+     <input type="time" id="deliveryTime" name="deliveryTime" required> 
+    </div> 
+    <div class="form-section"> <label for="itemType">Item Type</label> <select id="itemType" name="itemType" required> <option value="message">Message (Speak in front of Recipient)</option> <option value="myLetter">My Letter</option> <option value="letterByTimeLine">Letter written by Time Line</option> <option value="itemsByCustomer">Items (Send by Customer)</option> <option value="itemsByTimeLine">Items (Buy by Time Line)</option> </select> 
+    </div> 
+    <div class="form-section" id="messageSection"> <label for="message">Write your message</label> <textarea id="message" name="message"></textarea> 
+    </div> 
+    <div class="form-section" id="letterSection"> <label for="letter">Write your letter</label> <textarea id="letter" name="letter"></textarea> 
+    </div> 
+    <div class="form-section" id="itemSection"> <label for="itemDescription">Describe Your Product</label> <textarea id="itemDescription" name="itemDescription"></textarea> 
+    </div> 
+    <div class="form-section"> <label for="liveDelivery">Check to see live/recorded delivery</label> 
+     <input type="checkbox" id="liveDelivery" name="liveDelivery"> 
+    </div> 
+    <div class="form-section" id="watchingMethodSection"> <label for="watchingMethod">Watching Method</label> <select id="watchingMethod" name="watchingMethod"> <option value="live">Live Delivery on Video Call</option> <option value="recorded">Recorded Video of Delivery</option> </select> 
+    </div> 
+    <div class="form-section" id="platformSection"> <label for="platform">Choose Platform</label> <select id="platform" name="platform"> <option value="whatsapp">WhatsApp</option> <option value="googleMeet">Google Meet</option> <option value="email">Email</option> <option value="instagram">Instagram</option> </select> 
+    </div> 
+    <div class="form-section" id="whatsappSection"> <label for="whatsappNumber">Fill Your WhatsApp Number</label> 
+     <input type="text" id="whatsappNumber" name="whatsappNumber"> 
+    </div> 
+    <div class="form-section" id="emailSection"> <label for="email">Enter your Email</label> 
+     <input type="email" id="email" name="email"> 
+    </div> 
+    <div class="form-section" id="instagramSection"> <label for="instagramId">Enter your Instagram ID</label> 
+     <input type="text" id="instagramId" name="instagramId"> 
+    </div> 
+    <div class="qr-code"> 
+     <img src="1000027407.png" alt="PhonePe QR Code"> 
+    </div> 
+    <div class="upload-section"> <label for="paymentReceipt">Upload Payment Receipt</label> 
+     <input type="file" id="paymentReceipt" name="paymentReceipt"> 
+    </div> 
+    <div class="form-section"> <button type="submit">Submit</button> 
+    </div> 
+   </form> 
+  </div> 
+  <div id="popup" class="popup"> 
+   <p>This photo is asked for better identification of recipients during the time of delivery.</p> <button onclick="closePopup()">OK</button> 
+  </div> 
+  <script>
+        document.getElementById('itemType').addEventListener('change', function() {
+            var messageSection = document.getElementById('messageSection');
+            var letterSection = document.getElementById('letterSection');
+            var itemSection = document.getElementById('itemSection');
+
+            messageSection.style.display = 'none';
+            letterSection.style.display = 'none';
+            itemSection.style.display = 'none';
+
+            if (this.value === 'message') {
+                messageSection.style.display = 'block';
+            } else if (this.value === 'letterByTimeLine') {
+                letterSection.style.display = 'block';
+            } else if (this.value === 'itemsByTimeLine') {
+                itemSection.style.display = 'block';
+            }
+        });
+
+        document.getElementById('liveDelivery').addEventListener('change', function() {
+            var watchingMethodSection = document.getElementById('watchingMethodSection');
+            var platformSection = document.getElementById('platformSection');
+            var whatsappSection = document.getElementById('whatsappSection');
+            var emailSection = document.getElementById('emailSection');
+            var instagramSection = document.getElementById('instagramSection');
+
+            watchingMethodSection.style.display = 'none';
+            platformSection.style.display = 'none';
+            whatsappSection.style.display = 'none';
+            emailSection.style.display = 'none';
+            instagramSection.style.display = 'none';
+
+            if (this.checked) {
+                watchingMethodSection.style.display = 'block';
+                platformSection.style.display = 'block';
+
+                document.getElementById('watchingMethod').addEventListener('change', function() {
+                    whatsappSection.style.display = 'none';
+                    emailSection.style.display = 'none';
+                    instagramSection.style.display = 'none';
+
+                    if (this.value === 'live') {
+                        whatsappSection.style.display = 'block';
+                        emailSection.style.display = 'block';
+                    } else if (this.value === 'recorded') {
+                        whatsappSection.style.display = 'block';
+                        emailSection.style.display = 'block';
+                        instagramSection.style.display = 'block';
+                    }
+                });
+            }
+        });
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        document.getElementById('deliveryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            fetch('https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    alert('Form submitted successfully!');
+                } else {
+                    alert('Form submission failed!');
+                }
+            });
+        });
+    </script> 
+ 
+<script type="text/javascript" id="dcoder_script">function doPost(e) {
+    var sheet = SpreadsheetApp.openById('1m4bp4i9YtyBUL9PWyNg9i1FG1kFkfLbzpWSD7ZpXpWA').getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    sheet.appendRow([
+        data.customerName,
+        data.customerPhone,
+        data.recipientName,
+        data.recipientPhone,
+        data.recipientAddress,
+        data.deliveryDate,
+        data.deliveryTime,
+        data.itemType,
+        data.message,
+        data.letter,
+        data.itemDescription,
+        data.liveDelivery,
+        data.watchingMethod,
+        data.platform,
+        data.whatsappNumber,
+        data.email,
+        data.instagramId
+    ]);
+    return ContentService.createTextOutput('Success');
+}</script></body></html>
