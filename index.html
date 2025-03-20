@@ -3,228 +3,289 @@
  <head> 
   <meta charset="UTF-8"> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Time Line Delivery</title> 
-  <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .form-section {
-            margin-bottom: 20px;
-        }
-        .form-section label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-section input, .form-section select, .form-section textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #333;
-            background-color: #222;
-            color: #fff;
-        }
-        .form-section button {
-            padding: 10px 20px;
-            background-color: #444;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        .form-section button:hover {
-            background-color: #555;
-        }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #333;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-        .popup button {
-            margin-top: 10px;
-        }
-        .qr-code {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .qr-code img {
-            width: 200px;
-            height: auto;
-        }
-        .upload-section {
-            margin-top: 20px;
-        }
-    </style> 
- </head> 
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+  <title>TIME LINE - Delivering Emotions On Time</title> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="script.js" defer></script> 
+ <style type="text/css" id="dcoder_stylesheet">body {
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #1f1f1f;
+  text-align: center;
+  padding: 20px;
+}
+
+header h1 {
+  margin: 0;
+  color: #ff6347;
+}
+
+header p {
+  margin: 0;
+  color: #ccc;
+}
+
+nav {
+  background-color: #333;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  color: #ff6347;
+}
+
+.section {
+  padding: 20px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+form label {
+  margin-top: 10px;
+  text-align: left;
+}
+
+form input, form textarea, form select, form button {
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background-color: #1f1f1f;
+  color: #fff;
+}
+
+form button {
+  background-color: #ff6347;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #ff4500;
+}
+
+footer {
+  background-color: #1f1f1f;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: 20px;
+}
+
+.info {
+  cursor: pointer;
+  color: #ff6347;
+  font-weight: bold;
+}
+
+.info:hover {
+  text-decoration: underline;
+}
+
+.token {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+.qr-code {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.qr-code img {
+  width: 200px;
+  height: auto;
+}</style></head> 
  <body> 
-  <div class="container"> 
-   <h1>Time Line Delivery</h1> 
-   <form id="deliveryForm"> 
-    <div class="form-section"> <label for="customerName">Your Name (Optional)</label> 
-     <input type="text" id="customerName" name="customerName"> 
-    </div> 
-    <div class="form-section"> <label for="customerPhone">Your Phone Number</label> 
-     <input type="text" id="customerPhone" name="customerPhone" required> 
-    </div> 
-    <div class="form-section"> <label for="recipientName">Recipient's Name</label> 
-     <input type="text" id="recipientName" name="recipientName" required> 
-    </div> 
-    <div class="form-section"> <label for="recipientPhone">Recipient's Phone Number (Optional)</label> 
-     <input type="text" id="recipientPhone" name="recipientPhone"> 
-    </div> 
-    <div class="form-section"> <label for="recipientAddress">Recipient's Address</label> 
-     <input type="text" id="recipientAddress" name="recipientAddress" required> 
-    </div> 
-    <div class="form-section"> <label for="deliveryDate">Date of Delivery</label> 
-     <input type="date" id="deliveryDate" name="deliveryDate" required> 
-    </div> 
-    <div class="form-section"> <label for="deliveryTime">Time of Delivery (HH:MM)</label> 
-     <input type="time" id="deliveryTime" name="deliveryTime" required> 
-    </div> 
-    <div class="form-section"> <label for="itemType">Item Type</label> <select id="itemType" name="itemType" required> <option value="message">Message (Speak in front of Recipient)</option> <option value="myLetter">My Letter</option> <option value="letterByTimeLine">Letter written by Time Line</option> <option value="itemsByCustomer">Items (Send by Customer)</option> <option value="itemsByTimeLine">Items (Buy by Time Line)</option> </select> 
-    </div> 
-    <div class="form-section" id="messageSection"> <label for="message">Write your message</label> <textarea id="message" name="message"></textarea> 
-    </div> 
-    <div class="form-section" id="letterSection"> <label for="letter">Write your letter</label> <textarea id="letter" name="letter"></textarea> 
-    </div> 
-    <div class="form-section" id="itemSection"> <label for="itemDescription">Describe Your Product</label> <textarea id="itemDescription" name="itemDescription"></textarea> 
-    </div> 
-    <div class="form-section"> <label for="liveDelivery">Check to see live/recorded delivery</label> 
-     <input type="checkbox" id="liveDelivery" name="liveDelivery"> 
-    </div> 
-    <div class="form-section" id="watchingMethodSection"> <label for="watchingMethod">Watching Method</label> <select id="watchingMethod" name="watchingMethod"> <option value="live">Live Delivery on Video Call</option> <option value="recorded">Recorded Video of Delivery</option> </select> 
-    </div> 
-    <div class="form-section" id="platformSection"> <label for="platform">Choose Platform</label> <select id="platform" name="platform"> <option value="whatsapp">WhatsApp</option> <option value="googleMeet">Google Meet</option> <option value="email">Email</option> <option value="instagram">Instagram</option> </select> 
-    </div> 
-    <div class="form-section" id="whatsappSection"> <label for="whatsappNumber">Fill Your WhatsApp Number</label> 
-     <input type="text" id="whatsappNumber" name="whatsappNumber"> 
-    </div> 
-    <div class="form-section" id="emailSection"> <label for="email">Enter your Email</label> 
-     <input type="email" id="email" name="email"> 
-    </div> 
-    <div class="form-section" id="instagramSection"> <label for="instagramId">Enter your Instagram ID</label> 
-     <input type="text" id="instagramId" name="instagramId"> 
-    </div> 
-    <div class="qr-code"> 
-     <img src="1000027407.png" alt="PhonePe QR Code"> 
-    </div> 
-    <div class="upload-section"> <label for="paymentReceipt">Upload Payment Receipt</label> 
-     <input type="file" id="paymentReceipt" name="paymentReceipt"> 
-    </div> 
-    <div class="form-section"> <button type="submit">Submit</button> 
-    </div> 
+  <header> 
+   <div class="logo"> 
+    <h1>TIME LINE</h1> 
+    <p>Delivering Emotions On Time</p> 
+   </div> 
+  </header> 
+  <nav> 
+   <ul> 
+    <li><a href="#home">Home</a></li> 
+    <li><a href="#features">Features</a></li> 
+    <li><a href="#order">Order Now</a></li> 
+    <li><a href="#instructions">Instructions</a></li> 
+    <li><a href="#contact">Contact</a></li> 
+   </ul> 
+  </nav> 
+  <section id="home" class="section"> 
+   <h2>Welcome to TIME LINE</h2> 
+   <p>Delivering emotions, surprises, and gifts to your loved ones on time.</p> 
+  </section> 
+  <section id="features" class="section"> 
+   <h2>Why Choose Us?</h2> 
+   <ul> 
+    <li>Specific date and time delivery</li> 
+    <li>Personalized message reading</li> 
+    <li>Live delivery viewing via video call</li> 
+    <li>Handwritten or printed letters</li> 
+    <li>Secure and reliable service</li> 
+   </ul> 
+  </section> 
+  <section id="instructions" class="section"> 
+   <h2>How It Works</h2> 
+   <ol> 
+    <li>Fill out the order form with recipient details.</li> 
+    <li>Choose the type of delivery (message, letter, or item).</li> 
+    <li>Select the date and time for delivery.</li> 
+    <li>Proceed to payment and upload the payment receipt.</li> 
+    <li>Track your delivery and receive a confirmation video.</li> 
+   </ol> 
+  </section> 
+  <section id="order" class="section"> 
+   <h2>Place Your Order</h2> 
+   <form id="orderForm"> <label for="customerName">Your Name (Optional):</label> 
+    <input type="text" id="customerName" name="customerName" placeholder="Leave blank for a random token"> 
+    <p id="tokenDisplay" class="token"></p> <label for="phoneNumber">Your Phone Number:</label> 
+    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" pattern="^[0-9]{10}$" required> <label for="photoUpload">Upload Photo <span class="info">?</span></label> 
+    <input type="file" id="photoUpload" name="photoUpload" accept="image/*"> <label for="recipientName">Recipient's Name:</label> 
+    <input type="text" id="recipientName" name="recipientName" required> <label for="recipientPhoneNumber">Recipient's Phone Number (Optional):</label> 
+    <input type="tel" id="recipientPhoneNumber" name="recipientPhoneNumber" placeholder="Enter recipient's phone number" pattern="^[0-9]{10}$"> <label for="address">Recipient's Address:</label> <textarea id="address" name="address" rows="3" required></textarea> <label for="district">District:</label> <select id="district" name="district" required> <option value="Varanasi">Varanasi</option> </select> <label for="state">State:</label> <select id="state" name="state" required> <option value="Uttar Pradesh">Uttar Pradesh</option> </select> <label for="pincode">Pin Code:</label> 
+    <input type="text" id="pincode" name="pincode" required> <label for="itemType">Item Type:</label> <select id="itemType" name="itemType" required> <option value="message">Message (Speak in front of Recipient)</option> <option value="myLetter">My Letter</option> <option value="writtenByTimeline">Letter written by Time Line (In Your Words)</option> <option value="itemsSendByCustomer">Items (Send by Customer)</option> <option value="itemsBuyByTimeline">Items (Buy by Time Line)</option> </select> 
+    <div id="additionalSections"></div> <label for="contactNumber">Contact Number:</label> 
+    <input type="tel" id="contactNumber" name="contactNumber" placeholder="Enter contact number" pattern="^[0-9]{10}$" required> <label for="liveDelivery">Check to see live/recorded delivery:</label> 
+    <input type="checkbox" id="liveDelivery" name="liveDelivery"> 
+    <div id="liveDeliveryOptions"></div> <button type="submit">Proceed to Payment</button> 
    </form> 
-  </div> 
-  <div id="popup" class="popup"> 
-   <p>This photo is asked for better identification of recipients during the time of delivery.</p> <button onclick="closePopup()">OK</button> 
-  </div> 
-  <script>
-        document.getElementById('itemType').addEventListener('change', function() {
-            var messageSection = document.getElementById('messageSection');
-            var letterSection = document.getElementById('letterSection');
-            var itemSection = document.getElementById('itemSection');
+  </section> 
+  <section id="payment" class="section"> 
+   <h2>Payment</h2> 
+   <div class="qr-code"> 
+    <img src="1000027407.png" alt="PhonePe QR Code"> 
+   </div> <label for="paymentReceipt">Upload Payment Receipt:</label> 
+   <input type="file" id="paymentReceipt" name="paymentReceipt" accept="image/*"> 
+  </section> 
+  <section id="contact" class="section"> 
+   <h2>Contact Us</h2> 
+   <p>Email: timelinedeliveryofficial@gmail.com</p> 
+   <p>Instagram: <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank">@time_line.official</a></p> 
+  </section> 
+  <footer> 
+   <p>© 2025 TIME LINE. All Rights Reserved.</p> 
+  </footer> 
 
-            messageSection.style.display = 'none';
-            letterSection.style.display = 'none';
-            itemSection.style.display = 'none';
+<script type="text/javascript" id="dcoder_script">// Generate Random Token
+function generateToken() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
 
-            if (this.value === 'message') {
-                messageSection.style.display = 'block';
-            } else if (this.value === 'letterByTimeLine') {
-                letterSection.style.display = 'block';
-            } else if (this.value === 'itemsByTimeLine') {
-                itemSection.style.display = 'block';
-            }
-        });
+// Display Token if Name is Empty
+document.getElementById('customerName').addEventListener('blur', function() {
+  if (this.value === "") {
+    document.getElementById('tokenDisplay').textContent = "Your Token: " + generateToken();
+  } else {
+    document.getElementById('tokenDisplay').textContent = "";
+  }
+});
 
-        document.getElementById('liveDelivery').addEventListener('change', function() {
-            var watchingMethodSection = document.getElementById('watchingMethodSection');
-            var platformSection = document.getElementById('platformSection');
-            var whatsappSection = document.getElementById('whatsappSection');
-            var emailSection = document.getElementById('emailSection');
-            var instagramSection = document.getElementById('instagramSection');
+// Show Popup for "Why?"
+document.querySelector(".info").addEventListener("click", function() {
+  alert("This photo is asked for better identification of recipient's during the time of delivery.");
+});
 
-            watchingMethodSection.style.display = 'none';
-            platformSection.style.display = 'none';
-            whatsappSection.style.display = 'none';
-            emailSection.style.display = 'none';
-            instagramSection.style.display = 'none';
+// Handle Live Delivery Options
+document.getElementById("liveDelivery").addEventListener("change", function() {
+  const liveDeliveryOptions = document.getElementById("liveDeliveryOptions");
+  if (this.checked) {
+    liveDeliveryOptions.innerHTML = `
+      <label for="deliveryMethod">Delivery Method:</label>
+      <select id="deliveryMethod" name="deliveryMethod">
+        <option value="videoCall">Live delivery on video call</option>
+        <option value="recorded">Recorded video of delivery</option>
+      </select>
+      <label for="platform">Choose Platform:</label>
+      <select id="platform" name="platform">
+        <option value="whatsapp">WhatsApp</option>
+        <option value="googleMeet">Google Meet</option>
+        <option value="instagram">Instagram</option>
+      </select>
+    `;
+  } else {
+    liveDeliveryOptions.innerHTML = '';
+  }
+});
 
-            if (this.checked) {
-                watchingMethodSection.style.display = 'block';
-                platformSection.style.display = 'block';
+// Handle Item Type Selection
+document.getElementById("itemType").addEventListener("change", function() {
+  const selectedItemType = this.value;
+  const additionalSections = document.getElementById("additionalSections");
 
-                document.getElementById('watchingMethod').addEventListener('change', function() {
-                    whatsappSection.style.display = 'none';
-                    emailSection.style.display = 'none';
-                    instagramSection.style.display = 'none';
+  switch (selectedItemType) {
+    case 'message':
+      additionalSections.innerHTML = `
+        <h3>Write Your Message</h3>
+        <textarea name="message" rows="4" placeholder="Write your message here..." required></textarea>
+      `;
+      break;
+    case 'myLetter':
+      additionalSections.innerHTML = `
+        <h3>Send Letter At</h3>
+        <textarea rows="3" readonly>Company Address: 123 Time Line St, Varanasi, UP</textarea>
+        <button type="button" onclick="copyAddress()">Copy Address</button>
+      `;
+      break;
+    case 'writtenByTimeline':
+      additionalSections.innerHTML = `
+        <h3>Write Your Letter</h3>
+        <textarea name="letter" rows="4" placeholder="Write your letter here..." required></textarea>
+      `;
+      break;
+    case 'itemsSendByCustomer':
+      additionalSections.innerHTML = `
+        <h3>Send Item At</h3>
+        <textarea rows="3" readonly>Company Address: 123 Time Line St, Varanasi, UP</textarea>
+        <button type="button" onclick="copyAddress()">Copy Address</button>
+      `;
+      break;
+    case 'itemsBuyByTimeline':
+      additionalSections.innerHTML = `
+        <h3>Describe Your Product</h3>
+        <textarea name="productDescription" rows="4" placeholder="Describe your product..." required></textarea>
+        <h3>Optional: Product Link</h3>
+        <input type="url" name="productLink" placeholder="Paste the product link here">
+      `;
+      break;
+    default:
+      additionalSections.innerHTML = '';
+      break;
+  }
+});
 
-                    if (this.value === 'live') {
-                        whatsappSection.style.display = 'block';
-                        emailSection.style.display = 'block';
-                    } else if (this.value === 'recorded') {
-                        whatsappSection.style.display = 'block';
-                        emailSection.style.display = 'block';
-                        instagramSection.style.display = 'block';
-                    }
-                });
-            }
-        });
-
-        function closePopup() {
-            document.getElementById('popup').style.display = 'none';
-        }
-
-        document.getElementById('deliveryForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var formData = new FormData(this);
-            fetch('https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec', {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    alert('Form submitted successfully!');
-                } else {
-                    alert('Form submission failed!');
-                }
-            });
-        });
-    </script> 
- 
-<script type="text/javascript" id="dcoder_script">function doPost(e) {
-    var sheet = SpreadsheetApp.openById('1m4bp4i9YtyBUL9PWyNg9i1FG1kFkfLbzpWSD7ZpXpWA').getActiveSheet();
-    var data = JSON.parse(e.postData.contents);
-    sheet.appendRow([
-        data.customerName,
-        data.customerPhone,
-        data.recipientName,
-        data.recipientPhone,
-        data.recipientAddress,
-        data.deliveryDate,
-        data.deliveryTime,
-        data.itemType,
-        data.message,
-        data.letter,
-        data.itemDescription,
-        data.liveDelivery,
-        data.watchingMethod,
-        data.platform,
-        data.whatsappNumber,
-        data.email,
-        data.instagramId
-    ]);
-    return ContentService.createTextOutput('Success');
+function copyAddress() {
+  const addressText = document.querySelector('textarea[readonly]');
+  addressText.select();
+  document.execCommand('copy');
+  alert("Address copied to clipboard!");
 }</script></body></html>
