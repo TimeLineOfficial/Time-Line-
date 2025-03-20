@@ -34,6 +34,9 @@ header p {
 nav {
   background-color: #333;
   padding: 10px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 nav ul {
@@ -41,6 +44,7 @@ nav ul {
   display: flex;
   justify-content: center;
   padding: 0;
+  margin: 0;
 }
 
 nav ul li {
@@ -115,14 +119,25 @@ footer {
   font-weight: bold;
 }
 
-.qr-code {
-  text-align: center;
-  margin: 20px 0;
+.service-info {
+  color: #ff6347;
+  font-weight: bold;
 }
 
-.qr-code img {
-  width: 200px;
-  height: auto;
+#askButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ff6347;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#askButton:hover {
+  background-color: #ff4500;
 }</style></head> 
  <body> 
   <header> 
@@ -136,7 +151,8 @@ footer {
     <li><a href="#home">Home</a></li> 
     <li><a href="#features">Features</a></li> 
     <li><a href="#order">Order Now</a></li> 
-    <li><a href="#instructions">Instructions</a></li> 
+    <li><a href="#price">Price</a></li> 
+    <li><a href="#policy">Policy</a></li> 
     <li><a href="#contact">Contact</a></li> 
    </ul> 
   </nav> 
@@ -153,16 +169,7 @@ footer {
     <li>Handwritten or printed letters</li> 
     <li>Secure and reliable service</li> 
    </ul> 
-  </section> 
-  <section id="instructions" class="section"> 
-   <h2>How It Works</h2> 
-   <ol> 
-    <li>Fill out the order form with recipient details.</li> 
-    <li>Choose the type of delivery (message, letter, or item).</li> 
-    <li>Select the date and time for delivery.</li> 
-    <li>Proceed to payment and upload the payment receipt.</li> 
-    <li>Track your delivery and receive a confirmation video.</li> 
-   </ol> 
+   <p class="service-info">This service is currently available only in Varanasi.</p> 
   </section> 
   <section id="order" class="section"> 
    <h2>Place Your Order</h2> 
@@ -173,28 +180,41 @@ footer {
     <input type="file" id="photoUpload" name="photoUpload" accept="image/*"> <label for="recipientName">Recipient's Name:</label> 
     <input type="text" id="recipientName" name="recipientName" required> <label for="recipientPhoneNumber">Recipient's Phone Number (Optional):</label> 
     <input type="tel" id="recipientPhoneNumber" name="recipientPhoneNumber" placeholder="Enter recipient's phone number" pattern="^[0-9]{10}$"> <label for="address">Recipient's Address:</label> <textarea id="address" name="address" rows="3" required></textarea> <label for="district">District:</label> <select id="district" name="district" required> <option value="Varanasi">Varanasi</option> </select> <label for="state">State:</label> <select id="state" name="state" required> <option value="Uttar Pradesh">Uttar Pradesh</option> </select> <label for="pincode">Pin Code:</label> 
-    <input type="text" id="pincode" name="pincode" required> <label for="itemType">Item Type:</label> <select id="itemType" name="itemType" required> <option value="message">Message (Speak in front of Recipient)</option> <option value="myLetter">My Letter</option> <option value="writtenByTimeline">Letter written by Time Line (In Your Words)</option> <option value="itemsSendByCustomer">Items (Send by Customer)</option> <option value="itemsBuyByTimeline">Items (Buy by Time Line)</option> </select> 
+    <input type="text" id="pincode" name="pincode" required> <label for="itemType">Item Type:</label> <select id="itemType" name="itemType" required> <option value="message">Message (Speak in front of Recipient)</option> <option value="writtenByTimeline">Letter written by Time Line (In Your Words)</option> <option value="itemsSendByCustomer">Items (Send by Customer)</option> <option value="itemsBuyByTimeline">Items (Buy by Time Line)</option> </select> 
     <div id="additionalSections"></div> <label for="contactNumber">Contact Number:</label> 
     <input type="tel" id="contactNumber" name="contactNumber" placeholder="Enter contact number" pattern="^[0-9]{10}$" required> <label for="liveDelivery">Check to see live/recorded delivery:</label> 
     <input type="checkbox" id="liveDelivery" name="liveDelivery"> 
     <div id="liveDeliveryOptions"></div> <button type="submit">Proceed to Payment</button> 
    </form> 
   </section> 
-  <section id="payment" class="section"> 
-   <h2>Payment</h2> 
-   <div class="qr-code"> 
-    <img src="1000027407.png" alt="PhonePe QR Code"> 
-   </div> <label for="paymentReceipt">Upload Payment Receipt:</label> 
-   <input type="file" id="paymentReceipt" name="paymentReceipt" accept="image/*"> 
+  <section id="price" class="section"> 
+   <h2>Price List</h2> 
+   <ul> 
+    <li>Handwritten or Printed Letter (No Reading): ₹150 + ₹50 for specific time</li> 
+    <li>Letter Delivery with Reading Message Aloud: ₹180 + ₹50 for specific time</li> 
+    <li>Parcel Sent by Customer: ₹250 + ₹50 for specific time</li> 
+    <li>Parcel Delivery with Message Read Aloud: ₹300 + ₹50 for specific time</li> 
+    <li>Recorded Delivery Video: ₹25</li> 
+    <li>Live Video Call During Delivery: ₹35</li> 
+   </ul> 
+  </section> 
+  <section id="policy" class="section"> 
+   <h2>Policy</h2> 
+   <ul> 
+    <li>Refund Policy: If delivery fails, the amount (excluding distance charges) will be refunded within twelve hours.</li> 
+    <li>If the customer wants the parcel back, they must pay courier charges for retrieval and ₹20 extra for convenience charges.</li> 
+   </ul> 
   </section> 
   <section id="contact" class="section"> 
    <h2>Contact Us</h2> 
    <p>Email: timelinedeliveryofficial@gmail.com</p> 
    <p>Instagram: <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank">@time_line.official</a></p> 
+   <p>Address: Time Line Office, Parle-G factor, Patanava, Ramnagar, Ramnagar industrial area, Varanasi, Uttar Pradesh, 221009</p> 
+   <p>Contact no.: 7007677139</p> 
   </section> 
   <footer> 
    <p>© 2025 TIME LINE. All Rights Reserved.</p> 
-  </footer> 
+  </footer> <button id="askButton">Ask</button> 
  
 <script type="text/javascript" id="dcoder_script">// Generate Random Token
 function generateToken() {
@@ -231,7 +251,35 @@ document.getElementById("liveDelivery").addEventListener("change", function() {
         <option value="googleMeet">Google Meet</option>
         <option value="instagram">Instagram</option>
       </select>
+      <div id="platformDetails"></div>
     `;
+
+    document.getElementById("platform").addEventListener("change", function() {
+      const platformDetails = document.getElementById("platformDetails");
+      switch (this.value) {
+        case 'whatsapp':
+          platformDetails.innerHTML = `
+            <label for="whatsappNumber">Fill Your WhatsApp Number:</label>
+            <input type="tel" id="whatsappNumber" name="whatsappNumber" placeholder="Enter your WhatsApp number" pattern="^[0-9]{10}$">
+          `;
+          break;
+        case 'googleMeet':
+          platformDetails.innerHTML = `
+            <label for="email">Enter your Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email">
+          `;
+          break;
+        case 'instagram':
+          platformDetails.innerHTML = `
+            <label for="instagramId">Enter your Instagram ID:</label>
+            <input type="text" id="instagramId" name="instagramId" placeholder="Enter your Instagram ID">
+          `;
+          break;
+        default:
+          platformDetails.innerHTML = '';
+          break;
+      }
+    });
   } else {
     liveDeliveryOptions.innerHTML = '';
   }
@@ -249,13 +297,6 @@ document.getElementById("itemType").addEventListener("change", function() {
         <textarea name="message" rows="4" placeholder="Write your message here..." required></textarea>
       `;
       break;
-    case 'myLetter':
-      additionalSections.innerHTML = `
-        <h3>Send Letter At</h3>
-        <textarea rows="3" readonly>Company Address: 123 Time Line St, Varanasi, UP</textarea>
-        <button type="button" onclick="copyAddress()">Copy Address</button>
-      `;
-      break;
     case 'writtenByTimeline':
       additionalSections.innerHTML = `
         <h3>Write Your Letter</h3>
@@ -265,7 +306,7 @@ document.getElementById("itemType").addEventListener("change", function() {
     case 'itemsSendByCustomer':
       additionalSections.innerHTML = `
         <h3>Send Item At</h3>
-        <textarea rows="3" readonly>Company Address: 123 Time Line St, Varanasi, UP</textarea>
+        <textarea rows="3" readonly>Time Line Office, Parle-G factor, Patanava, Ramnagar, Ramnagar industrial area, Varanasi, Uttar Pradesh, 221009</textarea>
         <button type="button" onclick="copyAddress()">Copy Address</button>
       `;
       break;
@@ -288,4 +329,9 @@ function copyAddress() {
   addressText.select();
   document.execCommand('copy');
   alert("Address copied to clipboard!");
-}</script></body></html>
+}
+
+// Ask Button Functionality
+document.getElementById("askButton").addEventListener("click", function() {
+  alert("Feel free to ask any questions! We're here to help.");
+});</script></body></html>
