@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+  <title>TIME LINE - Delivering Emotions On Time</title> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="script.js" defer></script> <!-- Main page script --> 
+ </head> 
+ <body> 
+  <header> 
+   <div class="logo"> 
+    <h1>TIME LINE</h1> 
+    <p>Delivering Emotions On Time</p> 
+   </div> 
+  </header> 
+  <nav> 
+   <ul> 
+    <li><a href="#home">Home</a></li> 
+    <li><a href="#features">Features</a></li> 
+    <li><a href="#order">Order Now</a></li> 
+    <li><a href="#price">Price</a></li> 
+    <li><a href="#policy">Policy</a></li> 
+    <li><a href="#contact">Contact</a></li> 
+   </ul> 
+  </nav> 
+  <section id="home" class="section"> 
+   <h2>Welcome to TIME LINE</h2> 
+   <p>Delivering emotions, surprises, and gifts to your loved ones on time.</p> 
+  </section> 
+  <section id="features" class="section"> 
+   <h2>Why Choose Us?</h2> 
+   <ul> 
+    <li>Specific date and time delivery</li> 
+    <li>Personalized message reading</li> 
+    <li>Live delivery viewing via video call</li> 
+    <li>Handwritten or printed letters</li> 
+    <li>Secure and reliable service</li> 
+   </ul> 
+   <p class="service-info">This service is currently available only in Varanasi.</p> 
+  </section> 
+  <section id="order" class="section"> 
+   <h2>Place Your Order</h2> 
+   <form id="orderForm"> <label for="customerName">Your Name (Optional):</label> 
+    <input type="text" id="customerName" name="customerName" placeholder="Leave blank for a random token"> 
+    <p id="tokenDisplay" class="token"></p> <label for="phoneNumber">Your Phone Number:</label> 
+    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" pattern="^[0-9]{10}$" required> <label for="photoUpload">Upload Photo <span class="info">?</span></label> 
+    <input type="file" id="photoUpload" name="photoUpload" accept="image/*"> <label for="recipientName">Recipient's Name:</label> 
+    <input type="text" id="recipientName" name="recipientName" required> <label for="recipientPhoneNumber">Recipient's Phone Number (Optional):</label> 
+    <input type="tel" id="recipientPhoneNumber" name="recipientPhoneNumber" placeholder="Enter recipient's phone number" pattern="^[0-9]{10}$"> <label for="address">Recipient's Address:</label> <textarea id="address" name="address" rows="3" required></textarea> <label for="district">District:</label> <select id="district" name="district" required> <option value="Varanasi">Varanasi</option> </select> <label for="state">State:</label> <select id="state" name="state" required> <option value="Uttar Pradesh">Uttar Pradesh</option> </select> <label for="pincode">Pin Code:</label> 
+    <input type="text" id="pincode" name="pincode" required> <label for="itemType">Item Type:</label> <select id="itemType" name="itemType" required> <option value="message">Message (Speak in front of Recipient)</option> <option value="writtenByTimeline">Letter written by Time Line (In Your Words)</option> <option value="itemsSendByCustomer">Items (Send by Customer)</option> <option value="itemsBuyByTimeline">Items (Buy by Time Line)</option> </select> 
+    <div id="additionalSections"></div> <label for="deliveryDate">Delivery Date:</label> 
+    <input type="date" id="deliveryDate" name="deliveryDate" required> <label for="deliveryTime">Delivery Time:</label> 
+    <input type="time" id="deliveryTime" name="deliveryTime" required> <label for="contactNumber">Contact Number:</label> 
+    <input type="tel" id="contactNumber" name="contactNumber" placeholder="Enter contact number" pattern="^[0-9]{10}$" required> <label for="liveDelivery">Check to see live/recorded delivery:</label> 
+    <input type="checkbox" id="liveDelivery" name="liveDelivery"> 
+    <div id="liveDeliveryOptions"></div> <button type="submit">Proceed to Payment</button> 
+   </form> 
+  </section> 
+  <section id="price" class="section"> 
+   <h2>Price List</h2> 
+   <ul> 
+    <li>Handwritten or Printed Letter (No Reading): ₹150 + ₹50 for specific time</li> 
+    <li>Letter Delivery with Reading Message Aloud: ₹180 + ₹50 for specific time</li> 
+    <li>Parcel Sent by Customer: ₹250 + ₹50 for specific time</li> 
+    <li>Parcel Delivery with Message Read Aloud: ₹300 + ₹50 for specific time</li> 
+    <li>Recorded Delivery Video: ₹25</li> 
+    <li>Live Video Call During Delivery: ₹35</li> 
+   </ul> 
+  </section> 
+  <section id="policy" class="section"> 
+   <h2>Policy</h2> 
+   <ul> 
+    <li>Refund Policy: If delivery fails, the amount (excluding distance charges) will be refunded within twelve hours.</li> 
+    <li>If the customer wants the parcel back, they must pay courier charges for retrieval and ₹20 extra for convenience charges.</li> 
+   </ul> 
+  </section> 
+  <section id="contact" class="section"> 
+   <h2>Contact Us</h2> 
+   <p>Email: <a href="mailto:timelinedeliveryofficial@gmail.com">timelinedeliveryofficial@gmail.com</a></p> 
+   <p>Instagram: <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank">@time_line.official</a></p> 
+   <p>Address: Time Line Office, Parle-G factor, Patanava, Ramnagar, Ramnagar industrial area, Varanasi, Uttar Pradesh, 221009</p> 
+   <p>Contact no.: 7007677139</p> 
+  </section> 
+  <footer> 
+   <p>© 2025 TIME LINE. All Rights Reserved.</p> 
+  </footer> <button id="askButton">Ask</button> 
+  <div id="popup" class="popup"> 
+   <p id="popupMessage"></p> <button onclick="closePopup()">OK</button> 
+  </div> 
+ </body>
+</html>
