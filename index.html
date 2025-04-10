@@ -175,18 +175,6 @@ footer {
   margin-top: 10px;
 }
 
-.success-message {
-  color: #4CAF50;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-.error-message {
-  color: #f44336;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
 @media (max-width: 600px) {
   nav ul {
     justify-content: space-around;
@@ -243,7 +231,7 @@ footer {
   </section> 
   <section id="order" class="section"> 
    <h2>Place Your Order</h2> 
-   <form id="orderForm" action="https://formspree.io/f/mldjaoaw" method="POST"> 
+   <form id="orderForm"> 
     <label for="customerName">Your Name (Optional):</label> 
     <input type="text" id="customerName" name="customerName" placeholder="Leave blank for a random token"> 
     <p id="tokenDisplay" class="token"></p> 
@@ -283,7 +271,6 @@ footer {
     <input type="time" id="deliveryTime" name="deliveryTime" required> 
     <label><input type="checkbox" id="liveDelivery" name="liveDelivery"> Check to see live/recorded delivery</label> 
     <div id="liveDeliveryOptions"></div> 
-    <div id="formStatus"></div>
     <button type="submit">Proceed to Payment</button> 
    </form> 
   </section> 
@@ -532,10 +519,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Form submission
-  const form = document.getElementById("orderForm");
-  const formStatus = document.getElementById("formStatus");
-  
-  form.addEventListener("submit", async function(event) {
+  document.getElementById("orderForm").addEventListener("submit", function(event) {
     event.preventDefault();
     
     // Validate pincode
@@ -597,44 +581,10 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     
-    // Add token to form data if name is empty
-    const customerName = document.getElementById("customerName").value;
-    const token = document.getElementById("tokenDisplay").textContent.replace("Your Token: ", "");
-    if (!customerName && token) {
-      const tokenInput = document.createElement('input');
-      tokenInput.type = 'hidden';
-      tokenInput.name = 'token';
-      tokenInput.value = token;
-      form.appendChild(tokenInput);
-    }
-    
-    // Submit to Formspree
-    const formData = new FormData(form);
-    
-    try {
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (response.ok) {
-        formStatus.innerHTML = '<p class="success-message">Thank you for your order! We will contact you shortly.</p>';
-        form.reset();
-        document.getElementById("tokenDisplay").textContent = "";
-      } else {
-        const errorData = await response.json();
-        if (errorData.errors) {
-          formStatus.innerHTML = '<p class="error-message">Error: ' + errorData.errors.map(error => error.message).join(', ') + '</p>';
-        } else {
-          formStatus.innerHTML = '<p class="error-message">There was a problem submitting your form. Please try again.</p>';
-        }
-      }
-    } catch (error) {
-      formStatus.innerHTML = '<p class="error-message">There was a problem submitting your form. Please try again.</p>';
-    }
+    const customerName = document.getElementById("customerName").value || document.getElementById("tokenDisplay").textContent;
+    localStorage.setItem("customerName", customerName);
+    localStorage.setItem("token", document.getElementById("tokenDisplay").textContent);
+    window.location.href = "payment.html";
   });
 });
 
