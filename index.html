@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"> 
- <head> 
+<head> 
   <meta charset="UTF-8"> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
@@ -175,6 +175,68 @@ footer {
   margin-top: 10px;
 }
 
+.success-message {
+  color: #4CAF50;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: #f44336;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.total-amount {
+  background-color: #333;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.contact-options {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background-color: #1f1f1f;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.contact-options button {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px 15px;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact-options button:hover {
+  background-color: #ff4500;
+}
+
+.company-address {
+  background-color: #1f1f1f;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 15px 0;
+  text-align: left;
+}
+
+.company-address h3 {
+  margin-top: 0;
+  color: #ff6347;
+}
+
 @media (max-width: 600px) {
   nav ul {
     justify-content: space-around;
@@ -195,9 +257,14 @@ footer {
   .section {
     padding: 15px 10px;
   }
+  
+  .company-address {
+    padding: 10px;
+    font-size: 0.9em;
+  }
 }</style> 
- </head> 
- <body> 
+</head> 
+<body> 
   <header> 
    <div class="logo"> 
     <h1>TIME LINE</h1> 
@@ -265,43 +332,59 @@ footer {
      <option value="itemsBuyByTimeline">Items (Buy by Time Line)</option> 
     </select> 
     <div id="additionalSections"></div> 
+    <div id="totalAmount" class="total-amount">Total Amount: ₹0</div>
     <label for="deliveryDate">Delivery Date:</label> 
     <input type="date" id="deliveryDate" name="deliveryDate" required> 
     <label for="deliveryTime">Delivery Time:</label> 
     <input type="time" id="deliveryTime" name="deliveryTime" required> 
     <label><input type="checkbox" id="liveDelivery" name="liveDelivery"> Check to see live/recorded delivery</label> 
     <div id="liveDeliveryOptions"></div> 
+    
+    <div class="company-address">
+      <h3>Our Office Address (For Item Drop-off):</h3>
+      <p>Time Line Office, Parle-G factory, Patanava</p>
+      <p>Ramnagar industrial area, Ramnagar</p>
+      <p>Varanasi, Uttar Pradesh - 221008</p>
+      <p>Contact: 7007677139 (Call/WhatsApp)</p>
+      <p>Email: timelinedeliveryofficial@gmail.com</p>
+    </div>
+    
     <button type="submit">Proceed to Payment</button> 
    </form> 
   </section> 
   <section id="price" class="section"> 
    <h2>Price List</h2> 
    <ul> 
-    <li>Handwritten or Printed Letter (No Reading): ₹150 + ₹50 for specific time</li> 
-    <li>Letter Delivery with Reading Message Aloud: ₹180 + ₹50 for specific time</li> 
-    <li>Parcel Sent by Customer: ₹250 + ₹50 for specific time</li> 
-    <li>Parcel Delivery with Message Read Aloud: ₹300 + ₹50 for specific time</li> 
-    <li>Recorded Delivery Video: ₹25</li> 
-    <li>Live Video Call During Delivery: ₹35</li> 
-   </ul> 
+    <li>Normal delivery (Including letters, Voice message, small gifts, etc): ₹249</li>
+    <li>Items Delivery (Send by customer or buy by Time Line): ₹299</li>
+   </ul>
+   <p class="instruction">Note - All delivery will include any specific acts like Singing, shayari, Confession, etc.</p>
+   <p class="instruction">Note - All these things will be completed in less than 15 minutes.</p>
   </section> 
   <section id="policy" class="section"> 
    <h2>Policy</h2> 
    <ul> 
     <li>Refund Policy: If delivery fails, the amount (excluding distance charges) will be refunded within twelve hours.</li> 
     <li>If the customer wants the parcel back, they must pay courier charges for retrieval and ₹20 extra for convenience charges.</li> 
+    <li>For warranty claims on items sent by customer, we'll record opening the package and refund full amount (excluding ₹100 fuel charge) if items are damaged/missing.</li>
    </ul> 
   </section> 
   <section id="contact" class="section"> 
    <h2>Contact Us</h2> 
    <p>Email: <a href="mailto:timelinedeliveryofficial@gmail.com">timelinedeliveryofficial@gmail.com</a></p> 
    <p>Instagram: <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank">@time_line.official</a></p> 
-   <p>Address: Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008 . Contact no.: 7007677139</p> 
+   <p>Address: Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008</p> 
+   <p>Contact no.: 7007677139 (Call/WhatsApp)</p> 
   </section> 
   <footer> 
    <p>© 2025 TIME LINE. All Rights Reserved.</p> 
   </footer> 
-  <button id="askButton">Ask</button> 
+  <button id="askButton">Ask</button>
+  <div id="contactOptions" class="contact-options">
+    <button onclick="redirectToInstagram()">Instagram</button>
+    <button onclick="redirectToGmail()">Gmail</button>
+    <button onclick="hideContactOptions()">Back</button>
+  </div>
   <div id="popup" class="popup"> 
    <p id="popupMessage"></p> 
    <button onclick="closePopup()">OK</button> 
@@ -399,9 +482,11 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById("itemType").addEventListener("change", function() {
     const selectedItemType = this.value;
     const additionalSections = document.getElementById("additionalSections");
+    const totalAmountDiv = document.getElementById("totalAmount");
 
     switch (selectedItemType) {
       case 'message':
+      case 'writtenByTimeline':
         additionalSections.innerHTML = `
           <h3>Write Your Message</h3>
           <textarea name="message" rows="4" placeholder="Write your message here..." required></textarea>
@@ -412,47 +497,24 @@ document.addEventListener('DOMContentLoaded', function() {
               Upload Audio (max 50MB): <input type="file" name="messageAudio" accept="audio/*">
             </label>
             <label class="file-input-label">
-              Upload Video (max 500MB, MP4/MKV): <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
+              Upload Video (max 200MB, MP4/MKV): <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
             </label>
           </div>
           <div class="upload-section">
-            <h3>Delivery Instructions (Required) <span class="info" onclick="showInstructionInfo()">i</span></h3>
-            <p>Write or record instructions for the delivery person</p>
-            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..." required></textarea>
+            <h3>Delivery Instructions <span class="info" onclick="showInstructionInfo()">i</span></h3>
+            <p>Write or record instructions for the delivery person (at least one required)</p>
+            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
             <label class="file-input-label">
-              Or Upload Audio Instructions (max 10MB): <input type="file" name="instructionAudio" accept="audio/*" required>
+              Or Upload Audio Instructions (max 10MB): <input type="file" name="instructionAudio" accept="audio/*">
             </label>
           </div>
         `;
-        break;
-      case 'writtenByTimeline':
-        additionalSections.innerHTML = `
-          <h3>Write Your Letter</h3>
-          <textarea name="letter" rows="4" placeholder="Write your letter here..." required></textarea>
-          <div class="upload-section">
-            <h3>Your Message (Optional) <span class="info" onclick="showMessageInfo()">i</span></h3>
-            <p>Upload an audio or video message to be played during delivery</p>
-            <label class="file-input-label">
-              Upload Audio (max 50MB): <input type="file" name="messageAudio" accept="audio/*">
-            </label>
-            <label class="file-input-label">
-              Upload Video (max 500MB, MP4/MKV): <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
-            </label>
-          </div>
-          <div class="upload-section">
-            <h3>Delivery Instructions (Required) <span class="info" onclick="showInstructionInfo()">i</span></h3>
-            <p>Write or record instructions for the delivery person</p>
-            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..." required></textarea>
-            <label class="file-input-label">
-              Or Upload Audio Instructions (max 10MB): <input type="file" name="instructionAudio" accept="audio/*" required>
-            </label>
-          </div>
-        `;
+        totalAmountDiv.textContent = "Total Amount: ₹249";
         break;
       case 'itemsSendByCustomer':
         additionalSections.innerHTML = `
           <h3>Send Item At</h3>
-          <textarea rows="3" readonly>Time Line Office, Parle-G factor, Patanava, Ramnagar, Ramnagar industrial area, Varanasi, Uttar Pradesh, 221009</textarea>
+          <textarea rows="3" readonly>Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008</textarea>
           <button type="button" onclick="copyAddress()">Copy Address</button>
           <p class="instruction">Please write your token number on the delivery package for better identification.</p>
           <div class="upload-section">
@@ -462,23 +524,28 @@ document.addEventListener('DOMContentLoaded', function() {
               Upload Audio (max 50MB): <input type="file" name="messageAudio" accept="audio/*">
             </label>
             <label class="file-input-label">
-              Upload Video (max 500MB, MP4/MKV): <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
+              Upload Video (max 200MB, MP4/MKV): <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
             </label>
           </div>
           <div class="upload-section">
-            <h3>Delivery Instructions (Required) <span class="info" onclick="showInstructionInfo()">i</span></h3>
-            <p>Write or record instructions for the delivery person</p>
-            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..." required></textarea>
+            <h3>Delivery Instructions <span class="info" onclick="showInstructionInfo()">i</span></h3>
+            <p>Write or record instructions for the delivery person (at least one required)</p>
+            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
             <label class="file-input-label">
-              Or Upload Audio Instructions (max 10MB): <input type="file" name="instructionAudio" accept="audio/*" required>
+              Or Upload Audio Instructions (max 10MB): <input type="file" name="instructionAudio" accept="audio/*">
             </label>
           </div>
+          <label><input type="checkbox" id="claimWarranty" name="claimWarranty"> Claim Warranty <span class="info" onclick="showWarrantyInfo()">i</span></label>
         `;
+        totalAmountDiv.textContent = "Total Amount: ₹299";
         break;
       case 'itemsBuyByTimeline':
         additionalSections.innerHTML = `
           <h3>Describe Your Product</h3>
           <textarea name="productDescription" rows="4" placeholder="Describe your product..." required></textarea>
+          <h3>Product Price</h3>
+          <input type="number" id="productPrice" name="productPrice" placeholder="Enter estimated product price" required>
+          <p class="instruction">Please enter slightly higher amount than actual price as product may be available at higher rate in our area. If we get it cheaper, we'll refund the difference within 24 hours.</p>
           <h3>Optional: Product Link</h3>
           <input type="url" name="productLink" placeholder="Paste the product link here">
           <div class="upload-section">
@@ -488,37 +555,40 @@ document.addEventListener('DOMContentLoaded', function() {
               Upload Audio (max 50MB): <input type="file" name="messageAudio" accept="audio/*">
             </label>
             <label class="file-input-label">
-              Upload Video (max 500MB, MP4/MKV): <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
+              Upload Video (max 200MB, MP4/MKV): <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
             </label>
           </div>
           <div class="upload-section">
-            <h3>Delivery Instructions (Required) <span class="info" onclick="showInstructionInfo()">i</span></h3>
-            <p>Write or record instructions for the delivery person</p>
-            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..." required></textarea>
+            <h3>Delivery Instructions <span class="info" onclick="showInstructionInfo()">i</span></h3>
+            <p>Write or record instructions for the delivery person (at least one required)</p>
+            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
             <label class="file-input-label">
-              Or Upload Audio Instructions (max 10MB): <input type="file" name="instructionAudio" accept="audio/*" required>
+              Or Upload Audio Instructions (max 10MB): <input type="file" name="instructionAudio" accept="audio/*">
             </label>
           </div>
         `;
+        // Add event listener for price changes
+        document.getElementById("productPrice").addEventListener("input", updateTotalAmount);
+        updateTotalAmount();
         break;
       default:
         additionalSections.innerHTML = '';
+        totalAmountDiv.textContent = "Total Amount: ₹0";
         break;
     }
   });
 
   // Ask Button Functionality
   document.getElementById("askButton").addEventListener("click", function() {
-    const choice = confirm("How would you like to contact us?\n\nClick OK for Gmail or Cancel for Instagram");
-    if (choice) {
-      window.location.href = "mailto:timelinedeliveryofficial@gmail.com";
-    } else {
-      window.open("https://www.instagram.com/time_line.official", "_blank");
-    }
+    const contactOptions = document.getElementById("contactOptions");
+    contactOptions.style.display = contactOptions.style.display === "block" ? "none" : "block";
   });
 
   // Form submission
-  document.getElementById("orderForm").addEventListener("submit", function(event) {
+  const form = document.getElementById("orderForm");
+  const formStatus = document.getElementById("formStatus");
+  
+  form.addEventListener("submit", async function(event) {
     event.preventDefault();
     
     // Validate pincode
@@ -526,6 +596,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!/^\d{6}$/.test(pincode.value)) {
       alert("Pin code must be exactly 6 digits");
       pincode.focus();
+      return;
+    }
+    
+    // Validate delivery instructions (at least one required)
+    const instructionsText = document.querySelector('textarea[name="instructions"]')?.value;
+    const instructionAudio = document.querySelector('input[name="instructionAudio"]')?.files[0];
+    if (!instructionsText && !instructionAudio) {
+      alert("Please provide delivery instructions (text or audio)");
       return;
     }
     
@@ -555,12 +633,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Validate file sizes
-    const instructionAudio = document.querySelector('input[name="instructionAudio"]');
-    if (instructionAudio && instructionAudio.files[0] && instructionAudio.files[0].size > 10 * 1024 * 1024) {
-      alert("Instruction audio file must be less than 10MB");
-      return;
-    }
-    
     const messageAudio = document.querySelector('input[name="messageAudio"]');
     if (messageAudio && messageAudio.files[0] && messageAudio.files[0].size > 50 * 1024 * 1024) {
       alert("Message audio file must be less than 50MB");
@@ -569,8 +641,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const messageVideo = document.querySelector('input[name="messageVideo"]');
     if (messageVideo && messageVideo.files[0]) {
-      if (messageVideo.files[0].size > 500 * 1024 * 1024) {
-        alert("Message video file must be less than 500MB");
+      if (messageVideo.files[0].size > 200 * 1024 * 1024) {
+        alert("Message video file must be less than 200MB");
         return;
       }
       const validFormats = ['video/mp4', 'video/x-matroska'];
@@ -580,9 +652,22 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     
-    const customerName = document.getElementById("customerName").value || document.getElementById("tokenDisplay").textContent;
-    localStorage.setItem("customerName", customerName);
-    localStorage.setItem("token", document.getElementById("tokenDisplay").textContent);
+    const instructionAudioFile = document.querySelector('input[name="instructionAudio"]');
+    if (instructionAudioFile && instructionAudioFile.files[0] && instructionAudioFile.files[0].size > 10 * 1024 * 1024) {
+      alert("Instruction audio file must be less than 10MB");
+      return;
+    }
+    
+    // Calculate total amount
+    const totalAmount = calculateTotalAmount();
+    
+    // Store order details in localStorage for payment page
+    localStorage.setItem("orderDetails", JSON.stringify({
+      customerName: document.getElementById("customerName").value || document.getElementById("tokenDisplay").textContent,
+      totalAmount: totalAmount
+    }));
+    
+    // Redirect to payment page
     window.location.href = "payment.html";
   });
 });
@@ -618,11 +703,15 @@ function setMinDeliveryTime() {
 }
 
 function showInstructionInfo() {
-  alert("Delivery instructions are required to ensure your delivery is handled exactly as you want. This helps our delivery team understand any special requirements you might have for the delivery process, such as specific timing, how to present the item, or any other important details.");
+  alert("Delivery instructions help our team understand how you want the delivery to be performed. Please provide clear instructions for the best experience.");
 }
 
 function showMessageInfo() {
-  alert("Adding a personal message (audio or video) makes the delivery more special and emotional for your recipient. While optional, it can significantly enhance the experience by allowing you to personally express your feelings even when you can't be there in person. The delivery person will play this message at the perfect moment during delivery.");
+  alert("Adding a personal message makes the delivery more special. You can record your voice or video message that will be played during delivery.");
+}
+
+function showWarrantyInfo() {
+  alert("By claiming warranty, you authorize us to open your package upon arrival and record a video/pictures of the contents. If recipient reports any damage or missing items, we'll refund full amount (excluding ₹100 fuel charge).");
 }
 
 function copyAddress() {
@@ -634,4 +723,40 @@ function copyAddress() {
 
 function closePopup() {
   document.getElementById('popup').style.display = 'none';
-}</script></body></html>
+}
+
+function redirectToInstagram() {
+  window.open("https://www.instagram.com/time_line.official", "_blank");
+}
+
+function redirectToGmail() {
+  window.location.href = "mailto:timelinedeliveryofficial@gmail.com";
+}
+
+function hideContactOptions() {
+  document.getElementById("contactOptions").style.display = "none";
+}
+
+function calculateTotalAmount() {
+  const itemType = document.getElementById("itemType").value;
+  let amount = 0;
+  
+  if (itemType === "message" || itemType === "writtenByTimeline") {
+    amount = 249;
+  } else if (itemType === "itemsSendByCustomer") {
+    amount = 299;
+  } else if (itemType === "itemsBuyByTimeline") {
+    const productPrice = parseFloat(document.getElementById("productPrice").value) || 0;
+    amount = 299 + productPrice;
+  }
+  
+  document.getElementById("totalAmount").textContent = `Total Amount: ₹${amount}`;
+  return amount;
+}
+
+function updateTotalAmount() {
+  calculateTotalAmount();
+}
+
+// Initialize total amount calculation
+document.getElementById("itemType").addEventListener("change", calculateTotalAmount);</script></body></html>
