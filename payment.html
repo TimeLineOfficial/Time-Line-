@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Payment - TIME LINE</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="payment.js" defer></script> <!-- Payment page script -->
-<style type="text/css" id="dcoder_stylesheet">body {
+  <style type="text/css" id="dcoder_stylesheet">body {
   font-family: Arial, sans-serif;
   background-color: #121212;
   color: #ffffff;
@@ -68,87 +66,30 @@ nav ul li a:hover {
   text-align: center;
 }
 
-form {
+.payment-container {
   display: flex;
   flex-direction: column;
   max-width: 500px;
   margin: 0 auto;
+  background-color: #1f1f1f;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-form label {
-  margin-top: 10px;
+.payment-info {
+  margin-bottom: 20px;
   text-align: left;
 }
 
-form input, form textarea, form select, form button {
-  margin-top: 5px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #444;
-  background-color: #1f1f1f;
-  color: #fff;
+.payment-info p {
+  margin: 5px 0;
 }
 
-form button {
-  background-color: #ff6347;
-  border: none;
-  cursor: pointer;
-}
-
-form button:hover {
-  background-color: #ff4500;
-}
-
-footer {
-  background-color: #1f1f1f;
-  text-align: center;
-  padding: 10px 0;
-  margin-top: 20px;
-}
-
-.info {
-  cursor: pointer;
+.payment-amount {
+  font-size: 1.5em;
+  font-weight: bold;
   color: #ff6347;
-  font-weight: bold;
-}
-
-.info:hover {
-  text-decoration: underline;
-}
-
-.token {
-  color: #ffcc00;
-  font-weight: bold;
-}
-
-.service-info {
-  color: #ff6347;
-  font-weight: bold;
-}
-
-.popup {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #333;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
-.popup button {
-  margin-top: 10px;
-}
-
-.captcha {
-  background-color: #333;
-  padding: 10px;
-  margin: 10px 0;
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
+  margin: 15px 0;
 }
 
 .qr-code {
@@ -159,11 +100,69 @@ footer {
 .qr-code img {
   width: 200px;
   height: auto;
+  border: 2px solid #ff6347;
+  border-radius: 10px;
+}
+
+.upi-button {
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upi-button:hover {
+  background-color: #ff4500;
+}
+
+.upi-button img {
+  width: 30px;
+  margin-right: 10px;
 }
 
 .instruction {
   color: #ff6347;
   font-weight: bold;
+  margin: 10px 0;
+}
+
+.receipt-upload {
+  margin-top: 20px;
+}
+
+.receipt-upload label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.receipt-upload input {
+  width: 100%;
+}
+
+.success-message {
+  color: #4CAF50;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: #f44336;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+footer {
+  background-color: #1f1f1f;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: 20px;
 }
 
 @media (max-width: 600px) {
@@ -179,14 +178,15 @@ footer {
     font-size: 12px;
   }
   
-  .section {
-    padding: 15px 10px;
+  .payment-container {
+    padding: 15px;
   }
   
   .qr-code img {
     width: 150px;
   }
-}</style></head>
+}</style>
+</head>
 <body>
   <header>
     <div class="logo">
@@ -205,68 +205,101 @@ footer {
     </ul>
   </nav>
   <section id="payment" class="section">
-    <h2>Payment</h2>
-    <div id="captchaSection">
-      <label for="captcha">Enter CAPTCHA:</label>
-      <input type="text" id="captchaInput" name="captchaInput" placeholder="Enter CAPTCHA" required>
-      <div id="captchaDisplay" class="captcha"></div>
-      <button type="button" onclick="generateCaptcha()">Refresh CAPTCHA</button>
-      <button type="button" onclick="validateCaptcha()">Submit CAPTCHA</button>
-    </div>
-    <div id="qrCodeSection" style="display: none;">
+    <h2>Complete Your Payment</h2>
+    <div class="payment-container">
+      <div class="payment-info">
+        <p>Order for: <span id="customerNameDisplay"></span></p>
+        <div class="payment-amount" id="paymentAmount">Total: ₹0</div>
+      </div>
+      
+      <p class="instruction">Please pay the exact amount shown above</p>
+      
       <div class="qr-code">
         <img src="1000027407.png" alt="PhonePe QR Code">
+        <p>Scan QR code to pay</p>
       </div>
-      <p class="instruction">Please scan the QR code to make the payment. After payment, upload the receipt below.</p>
-      <label for="receiptUpload">Upload Payment Receipt (Max 4MB):</label>
-      <input type="file" id="receiptUpload" name="receiptUpload" accept="image/*" required>
-      <button type="button" onclick="submitOrder()">Submit</button>
+      
+      <p>OR</p>
+      
+      <button class="upi-button" onclick="payWithUPI()">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" alt="UPI Logo">
+        Pay with UPI Apps
+      </button>
+      
+      <div class="receipt-upload">
+        <p class="instruction">After payment, upload your receipt</p>
+        <label for="receiptUpload">Payment Receipt (Max 4MB):</label>
+        <input type="file" id="receiptUpload" name="receiptUpload" accept="image/*" required>
+        <button class="upi-button" onclick="submitPayment()">Submit Payment</button>
+      </div>
+      
+      <div id="paymentStatus"></div>
     </div>
   </section>
   <footer>
     <p>© 2025 TIME LINE. All Rights Reserved.</p>
   </footer>
-  <div id="popup" class="popup">
-    <p id="popupMessage"></p>
-    <button onclick="closePopup()">OK</button>
-  </div>
 
-<script type="text/javascript" id="dcoder_script">// Generate CAPTCHA
-function generateCaptcha() {
-  const captcha = Math.random().toString(36).substring(2, 8).toUpperCase();
-  document.getElementById("captchaDisplay").textContent = captcha;
-}
-
-// Initialize CAPTCHA
-generateCaptcha();
-
-// Validate CAPTCHA (case-insensitive)
-function validateCaptcha() {
-  const captchaInput = document.getElementById("captchaInput").value.toUpperCase(); // Convert input to uppercase
-  const captchaDisplay = document.getElementById("captchaDisplay").textContent;
-
-  if (captchaInput === captchaDisplay) {
-    document.getElementById("qrCodeSection").style.display = "block";
-    document.getElementById("captchaSection").style.display = "none";
+<script type="text/javascript" id="dcoder_script">// Load order details from localStorage
+document.addEventListener('DOMContentLoaded', function() {
+  const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
+  if (orderDetails) {
+    document.getElementById('customerNameDisplay').textContent = orderDetails.customerName;
+    document.getElementById('paymentAmount').textContent = `Total: ₹${orderDetails.totalAmount}`;
   } else {
-    alert("Invalid CAPTCHA. Please try again.");
-    generateCaptcha();
+    // If no order details found, redirect back to order page
+    window.location.href = 'index.html';
   }
+});
+
+// Pay with UPI function
+function payWithUPI() {
+  const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
+  const amount = orderDetails.totalAmount;
+  
+  // UPI deep link - replace with your actual UPI ID
+  const upiId = '7007677139@ybl'; // Example UPI ID
+  const upiLink = `upi://pay?pa=${upiId}&pn=TIME%20LINE&am=${amount}&cu=INR`;
+  
+  // Try to open UPI app
+  window.location.href = upiLink;
+  
+  // Fallback in case UPI app not installed
+  setTimeout(function() {
+    alert('Could not open UPI app. Please scan the QR code or use any UPI app to send payment to 7007677139@ybl');
+  }, 500);
 }
 
-// Submit Order
-function submitOrder() {
-  const receiptUpload = document.getElementById("receiptUpload");
-  if (receiptUpload.files.length > 0 && receiptUpload.files[0].size <= 4 * 1024 * 1024) {
-    const customerName = localStorage.getItem("customerName") || localStorage.getItem("token");
-    document.getElementById("popupMessage").innerHTML = `Your Order is submitted <strong>${customerName}</strong>. Please write your token number on the delivery package for better identification.`;
-    document.getElementById("popup").style.display = "block";
-  } else {
-    alert("Please upload a valid payment receipt (max 4MB).");
+// Submit payment with receipt
+function submitPayment() {
+  const receiptUpload = document.getElementById('receiptUpload');
+  const paymentStatus = document.getElementById('paymentStatus');
+  
+  if (receiptUpload.files.length === 0) {
+    paymentStatus.innerHTML = '<p class="error-message">Please upload your payment receipt</p>';
+    return;
   }
-}
-
-// Close Popup
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
-}</script></body></html>
+  
+  if (receiptUpload.files[0].size > 4 * 1024 * 1024) {
+    paymentStatus.innerHTML = '<p class="error-message">Receipt must be less than 4MB</p>';
+    return;
+  }
+  
+  // Here you would normally send the receipt to your server
+  // For this example, we'll just show a success message
+  
+  paymentStatus.innerHTML = `
+    <div class="success-message">
+      <p>Payment successful! Your order has been confirmed.</p>
+      <p>We will contact you shortly with delivery details.</p>
+    </div>
+  `;
+  
+  // Clear the order from localStorage
+  localStorage.removeItem('orderDetails');
+  
+  // Scroll to show the success message
+  paymentStatus.scrollIntoView({ behavior: 'smooth' });
+}</script>
+</body>
+</html>
