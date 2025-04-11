@@ -158,6 +158,12 @@ nav ul li a:hover {
   margin-top: 20px;
 }
 
+.loading-message {
+  color: #ffcc00;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
 footer {
   background-color: #1f1f1f;
   text-align: center;
@@ -209,13 +215,14 @@ footer {
     <div class="payment-container">
       <div class="payment-info">
         <p>Order for: <span id="customerNameDisplay"></span></p>
+        <p>Token Number: <span id="tokenNumberDisplay" class="token"></span></p>
         <div class="payment-amount" id="paymentAmount">Total: ₹0</div>
       </div>
       
       <p class="instruction">Please pay the exact amount shown above</p>
       
       <div class="qr-code">
-        <img src="10000274077.png" alt="PhonePe QR Code">
+        <img src="1000027407.png" alt="PhonePe QR Code" id="dynamicQR">
         <p>Scan QR code to pay</p>
       </div>
       
@@ -240,12 +247,21 @@ footer {
     <p>© 2025 TIME LINE. All Rights Reserved.</p>
   </footer>
 
-<script type="text/javascript" id="dcoder_script">// Load order details from localStorage
+<script type="text/javascript" id="dcoder_script">
+// Configuration - Replace with your actual Google Apps Script URL
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5wtRs_ShNdA4vx8QjGXVdT_rBFcdWlvQVIGy_ypHiZtwUUWFQ71eodoJfVOP3mtav/exec';
+
+// Load order details from localStorage
 document.addEventListener('DOMContentLoaded', function() {
   const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
   if (orderDetails) {
     document.getElementById('customerNameDisplay').textContent = orderDetails.customerName;
+    document.getElementById('tokenNumberDisplay').textContent = orderDetails.tokenNumber || 'N/A';
     document.getElementById('paymentAmount').textContent = `Total: ₹${orderDetails.totalAmount}`;
+    
+    // Update QR code with actual amount
+    const qrCodeImg = document.getElementById('dynamicQR');
+    qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=7007677139@ybl&pn=TIME%20LINE&am=${orderDetails.totalAmount}&cu=INR`;
   } else {
     // If no order details found, redirect back to order page
     window.location.href = 'index.html';
@@ -257,8 +273,8 @@ function payWithUPI() {
   const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
   const amount = orderDetails.totalAmount;
   
-  // UPI deep link - replace with your actual UPI ID
-  const upiId = '7007677139@ybl'; // Example UPI ID
+  // UPI deep link - using your UPI ID
+  const upiId = '7007677139@ybl';
   const upiLink = `upi://pay?pa=${upiId}&pn=TIME%20LINE&am=${amount}&cu=INR`;
   
   // Try to open UPI app
@@ -270,10 +286,30 @@ function payWithUPI() {
   }, 500);
 }
 
-// Submit payment with receipt
-function submitPayment() {
+// Convert file to Base64
+async function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve({
+      filename: file.name,
+      mimeType: file.type,
+      content: reader.result.split(',')[1]
+    });
+    reader.onerror = error => reject(error);
+  });
+}
+
+// Submit payment with receipt to Google Sheets
+async function submitPayment() {
   const receiptUpload = document.getElementById('receiptUpload');
   const paymentStatus = document.getElementById('paymentStatus');
+  const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
+  
+  if (!orderDetails) {
+    paymentStatus.innerHTML = '<p class="error-message">Order details not found. Please start again from order page.</p>';
+    return;
+  }
   
   if (receiptUpload.files.length === 0) {
     paymentStatus.innerHTML = '<p class="error-message">Please upload your payment receipt</p>';
@@ -285,21 +321,62 @@ function submitPayment() {
     return;
   }
   
-  // Here you would normally send the receipt to your server
-  // For this example, we'll just show a success message
+  // Show loading state
+  paymentStatus.innerHTML = '<p class="loading-message">Processing your payment...</p>';
+  const submitButton = document.querySelector('.receipt-upload button');
+  submitButton.disabled = true;
+  submitButton.textContent = 'Processing...';
   
-  paymentStatus.innerHTML = `
-    <div class="success-message">
-      <p>Payment successful! Your order has been confirmed.</p>
-      <p>We will contact you shortly with delivery details.</p>
-    </div>
-  `;
+  try {
+    // Convert receipt to Base64
+    const receiptData = await toBase64(receiptUpload.files[0]);
+    
+    // Prepare payment data
+    const paymentData = {
+      action: 'record_payment',
+      tokenNumber: orderDetails.tokenNumber,
+      customerName: orderDetails.customerName,
+      totalAmount: orderDetails.totalAmount,
+      receiptData: receiptData
+    };
+    
+    // Send to Google Apps Script
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(paymentData),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    
+    const result = await response.json();
+    
+    if (result.status === 'success') {
+      paymentStatus.innerHTML = `
+        <div class="success-message">
+          <p>Payment successful! Your order has been confirmed.</p>
+          <p>Transaction ID: ${result.transactionId || 'N/A'}</p>
+          <p>We will contact you shortly with delivery details.</p>
+        </div>
+      `;
+      
+      // Clear the order from localStorage
+      localStorage.removeItem('orderDetails');
+      
+      // Disable further submissions
+      receiptUpload.disabled = true;
+      submitButton.style.display = 'none';
+    } else {
+      throw new Error(result.message || 'Payment recording failed');
+    }
+  } catch (error) {
+    console.error('Payment submission error:', error);
+    paymentStatus.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
+    submitButton.disabled = false;
+    submitButton.textContent = 'Submit Payment';
+  }
   
-  // Clear the order from localStorage
-  localStorage.removeItem('orderDetails');
-  
-  // Scroll to show the success message
+  // Scroll to show the status message
   paymentStatus.scrollIntoView({ behavior: 'smooth' });
-}</script>
-</body>
-</html>
+}
+</script>
+
+</body></html>
