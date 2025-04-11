@@ -237,6 +237,138 @@ footer {
   color: #ff6347;
 }
 
+/* Timeline Styles from second code */
+.timeline {
+  position: relative;
+  padding: 20px 0;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background-color: #ff6347;
+  transform: translateX(-50%);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 40px;
+  width: 50%;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #1f1f1f;
+  border-radius: 5px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.timeline-item:nth-child(odd) {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.timeline-item:nth-child(even) {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  top: 30px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ff6347;
+}
+
+.timeline-item:nth-child(odd)::after {
+  right: -10px;
+}
+
+.timeline-item:nth-child(even)::after {
+  left: -10px;
+}
+
+.timeline-date {
+  font-weight: bold;
+  color: #ff6347;
+  margin-bottom: 10px;
+}
+
+.timeline-content h3 {
+  margin-top: 0;
+  color: #ff6347;
+}
+
+.timeline-content p {
+  color: #ccc;
+}
+
+/* Order form from second code - adapted to match your style */
+.order-form-container {
+  background-color: #1f1f1f;
+  padding: 30px;
+  border-radius: 5px;
+  margin: 40px auto;
+  max-width: 800px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input, 
+.form-group textarea, 
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: inherit;
+  background-color: #1f1f1f;
+  color: #fff;
+}
+
+.file-upload {
+  margin-top: 10px;
+  color: #ccc;
+}
+
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 20px;
+  }
+  
+  .timeline-item {
+    width: 100%;
+    padding-left: 50px;
+    padding-right: 20px;
+  }
+  
+  .timeline-item:nth-child(odd),
+  .timeline-item:nth-child(even) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .timeline-item::after {
+    left: 10px;
+  }
+}
+
 @media (max-width: 600px) {
   nav ul {
     justify-content: space-around;
@@ -275,6 +407,7 @@ footer {
    <ul> 
     <li><a href="#home">Home</a></li> 
     <li><a href="#features">Features</a></li> 
+    <li><a href="#timeline">Our Story</a></li>
     <li><a href="#order">Order Now</a></li> 
     <li><a href="#price">Price</a></li> 
     <li><a href="#policy">Policy</a></li> 
@@ -296,6 +429,45 @@ footer {
    </ul> 
    <p class="service-info">This service is currently available only in Varanasi and Chandauli.</p> 
   </section> 
+  
+  <!-- New Timeline Section -->
+  <section id="timeline" class="section">
+    <h2>Our Journey</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">January 2023</div>
+        <div class="timeline-content">
+          <h3>Time Line Founded</h3>
+          <p>Started with a vision to deliver emotions and surprises at the perfect moment.</p>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-date">March 2023</div>
+        <div class="timeline-content">
+          <h3>First 100 Deliveries</h3>
+          <p>Successfully completed our first 100 deliveries with 100% customer satisfaction.</p>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-date">June 2023</div>
+        <div class="timeline-content">
+          <h3>Expanded to Chandauli</h3>
+          <p>Extended our services to Chandauli district after success in Varanasi.</p>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-date">December 2023</div>
+        <div class="timeline-content">
+          <h3>1000+ Happy Customers</h3>
+          <p>Celebrated serving over 1000 customers with our unique delivery service.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
   <section id="order" class="section"> 
    <h2>Place Your Order</h2> 
    <form id="orderForm"> 
@@ -759,4 +931,18 @@ function updateTotalAmount() {
 }
 
 // Initialize total amount calculation
-document.getElementById("itemType").addEventListener("change", calculateTotalAmount);</script></body></html>
+document.getElementById("itemType").addEventListener("change", calculateTotalAmount);
+
+// File to Base64 conversion from second code
+async function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve({
+      filename: file.name,
+      mimeType: file.type,
+      content: reader.result.split(',')[1]
+    });
+    reader.onerror = error => reject(error);
+  });
+}</script></body></html>
