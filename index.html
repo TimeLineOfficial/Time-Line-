@@ -237,7 +237,7 @@ footer {
   color: #ff6347;
 }
 
-/* Timeline Styles from second code */
+/* Timeline Styles */
 .timeline {
   position: relative;
   padding: 20px 0;
@@ -310,7 +310,7 @@ footer {
   color: #ccc;
 }
 
-/* Order form from second code - adapted to match your style */
+/* Order form styles */
 .order-form-container {
   background-color: #1f1f1f;
   padding: 30px;
@@ -430,7 +430,6 @@ footer {
    <p class="service-info">This service is currently available only in Varanasi and Chandauli.</p> 
   </section> 
   
-  <!-- New Timeline Section -->
   <section id="timeline" class="section">
     <h2>Our Journey</h2>
     <div class="timeline">
@@ -563,8 +562,8 @@ footer {
   </div> 
  
 <script type="text/javascript" id="dcoder_script">
-// Configuration - Replace with your actual Google Apps Script URL
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwi9nWCnhCtnMDd4Sj8auOITZFjtLdE2p9dT5DtuHzeA2RyCAnkOx8TkjnBePUsDHWu/exec';
+// Updated Google Apps Script URL
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlPLolcWOw9lZN9HQ_piq0CeTQgjOTPLw8GBU9ZgIGPV5FbrYib8WwHR4YnKtd7NC7/exec';
 
 // Generate Random Alphanumeric Token
 function generateToken() {
@@ -872,106 +871,115 @@ document.addEventListener('DOMContentLoaded', function() {
     contactOptions.style.display = contactOptions.style.display === "block" ? "none" : "block";
   });
 
-  // NEW SUBMISSION HANDLER
+  // Form submission handler
   document.getElementById('orderForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    // Validate required fields
-    const required = ['phoneNumber', 'recipientName', 'address', 'pincode'];
-    const missing = required.filter(id => !document.getElementById(id).value.trim());
-    if (missing.length > 0) {
-      alert(`Missing required fields: ${missing.join(', ')}`);
-      return;
-    }
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.textContent = "Processing...";
+    submitBtn.disabled = true;
 
-    // Validate pincode format
-    if (!/^\d{6}$/.test(document.getElementById('pincode').value)) {
-      alert("Pin code must be exactly 6 digits");
-      return;
-    }
-
-    // Validate delivery instructions (at least one required)
-    const instructionsText = document.querySelector('textarea[name="instructions"]')?.value;
-    const instructionAudio = document.querySelector('input[name="instructionAudio"]')?.files[0];
-    if (!instructionsText && !instructionAudio) {
-      alert("Please provide delivery instructions (text or audio)");
-      return;
-    }
-
-    // Prepare form data
-    const formData = {
-      tokenNumber: document.getElementById('tokenDisplay').textContent.replace('Your Token: ', '') || generateToken(),
-      customerName: document.getElementById('customerName').value.trim(),
-      phoneNumber: document.getElementById('phoneNumber').value.trim(),
-      recipientName: document.getElementById('recipientName').value.trim(),
-      recipientPhoneNumber: document.getElementById('recipientPhoneNumber').value.trim(),
-      address: document.getElementById('address').value.trim(),
-      district: document.getElementById('district').value,
-      pincode: document.getElementById('pincode').value.trim(),
-      itemType: document.getElementById('itemType').value,
-      deliveryDate: document.getElementById('deliveryDate').value,
-      deliveryTime: document.getElementById('deliveryTime').value,
-      totalAmount: calculateTotalAmount(),
-      liveDelivery: document.getElementById('liveDelivery').checked,
-      claimWarranty: document.getElementById('claimWarranty')?.checked || false
-    };
-
-    // Add conditional data
-    if (formData.itemType === 'message' || formData.itemType === 'writtenByTimeline') {
-      formData.messageText = document.querySelector('textarea[name="message"]').value;
-    }
-    if (formData.itemType === 'itemsBuyByTimeline') {
-      formData.productDescription = document.querySelector('textarea[name="productDescription"]').value;
-      formData.productPrice = document.getElementById('productPrice').value;
-    }
-
-    // Process file uploads
-    const processFile = async (inputId) => {
-      const fileInput = document.getElementById(inputId);
-      if (!fileInput?.files[0]) return null;
-      const file = fileInput.files[0];
-      return {
-        filename: file.name,
-        mimeType: file.type,
-        content: await new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target.result.split(',')[1]);
-          reader.readAsDataURL(file);
-        })
-      };
-    };
-
-    // Add files to formData
-    formData.photo = await processFile('photoUpload');
-    formData.messageAudio = await processFile('messageAudio');
-    formData.messageVideo = await processFile('messageVideo');
-    formData.instructionAudio = await processFile('instructionAudio');
-
-    // Submit to Google Apps Script
     try {
+      // Validate required fields
+      const required = ['phoneNumber', 'recipientName', 'address', 'pincode', 'itemType', 'deliveryDate', 'deliveryTime'];
+      const missing = required.filter(id => !document.getElementById(id).value.trim());
+      if (missing.length > 0) {
+        throw new Error(`Missing required fields: ${missing.join(', ')}`);
+      }
+
+      // Validate pincode format
+      if (!/^\d{6}$/.test(document.getElementById('pincode').value)) {
+        throw new Error("Pin code must be exactly 6 digits");
+      }
+
+      // Prepare form data
+      const formData = {
+        tokenNumber: document.getElementById('tokenDisplay').textContent.replace('Your Token: ', '') || generateToken(),
+        customerName: document.getElementById('customerName').value.trim(),
+        phoneNumber: document.getElementById('phoneNumber').value.trim(),
+        recipientName: document.getElementById('recipientName').value.trim(),
+        recipientPhoneNumber: document.getElementById('recipientPhoneNumber').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        district: document.getElementById('district').value,
+        state: document.getElementById('state').value,
+        pincode: document.getElementById('pincode').value.trim(),
+        itemType: document.getElementById('itemType').value,
+        deliveryDate: document.getElementById('deliveryDate').value,
+        deliveryTime: document.getElementById('deliveryTime').value,
+        totalAmount: calculateTotalAmount(),
+        liveDelivery: document.getElementById('liveDelivery').checked,
+        claimWarranty: document.getElementById('claimWarranty')?.checked || false
+      };
+
+      // Add conditional data
+      if (formData.itemType === 'message' || formData.itemType === 'writtenByTimeline') {
+        formData.messageText = document.querySelector('textarea[name="message"]').value;
+      }
+      if (formData.itemType === 'itemsBuyByTimeline') {
+        formData.productDescription = document.querySelector('textarea[name="productDescription"]').value;
+        formData.productPrice = document.getElementById('productPrice').value;
+        formData.productLink = document.querySelector('input[name="productLink"]')?.value;
+      }
+
+      // Process file uploads
+      const processFile = async (inputId) => {
+        const fileInput = document.getElementById(inputId);
+        if (!fileInput?.files[0]) return null;
+        
+        const file = fileInput.files[0];
+        const maxSize = {
+          photoUpload: 5 * 1024 * 1024, // 5MB
+          messageAudio: 50 * 1024 * 1024, // 50MB
+          messageVideo: 200 * 1024 * 1024, // 200MB
+          instructionAudio: 10 * 1024 * 1024 // 10MB
+        }[inputId];
+        
+        if (file.size > maxSize) {
+          throw new Error(`File ${file.name} is too large (max ${maxSize/1024/1024}MB)`);
+        }
+        
+        return await toBase64(file);
+      };
+
+      // Add files to formData
+      formData.photo = await processFile('photoUpload');
+      formData.messageAudio = await processFile('messageAudio');
+      formData.messageVideo = await processFile('messageVideo');
+      formData.instructionAudio = await processFile('instructionAudio');
+
+      // Submit to Google Apps Script
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify({
-          action: 'submit_order',
-          ...formData
-        }),
+        body: JSON.stringify(formData),
         headers: { 'Content-Type': 'application/json' }
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       
       const result = await response.json();
       
       if (result.status === 'success') {
         localStorage.setItem('currentOrder', JSON.stringify({
           tokenNumber: formData.tokenNumber,
-          amount: formData.totalAmount
+          amount: formData.totalAmount,
+          customerName: formData.customerName || `Customer-${formData.tokenNumber}`
         }));
         window.location.href = 'payment.html';
       } else {
-        alert('Submission failed: ' + (result.message || 'Unknown error'));
+        throw new Error(result.message || 'Submission failed');
       }
     } catch (error) {
-      alert('Network error: ' + error.message);
+      console.error('Submission error:', error);
+      alert('Error: ' + error.message);
+    } finally {
+      submitBtn.textContent = originalBtnText;
+      submitBtn.disabled = false;
     }
   });
 });
-</script></body></html>
+</script>
+</body>
+</html>
