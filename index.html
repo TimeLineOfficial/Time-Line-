@@ -564,7 +564,7 @@ footer {
  
 <script type="text/javascript" id="dcoder_script">
 // Configuration - Replace with your actual Google Apps Script URL
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5wtRs_ShNdA4vx8QjGXVdT_rBFcdWlvQVIGy_ypHiZtwUUWFQ71eodoJfVOP3mtav/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxAiGfIBSkYr7y3gksUTnk7qE3i-oIR49dafoyNjDaY6xXKSbus7Cw7ZxMjqkGff2Kz/exec';
 
 // Generate Random Alphanumeric Token
 function generateToken() {
@@ -590,94 +590,6 @@ async function toBase64(file) {
   });
 }
 
-// Submit form data to Google Sheets
-async function submitFormData(formData) {
-  // Prepare all data
-  const submission = {
-    tokenNumber: document.getElementById("tokenDisplay").textContent.replace("Your Token: ", "") || generateToken(),
-    customerName: formData.customerName,
-    phoneNumber: formData.phoneNumber,
-    recipientName: formData.recipientName,
-    recipientPhoneNumber: formData.recipientPhoneNumber,
-    address: formData.address,
-    district: formData.district,
-    state: formData.state,
-    pincode: formData.pincode,
-    itemType: formData.itemType,
-    deliveryDate: formData.deliveryDate,
-    deliveryTime: formData.deliveryTime,
-    liveDelivery: document.getElementById("liveDelivery").checked,
-    totalAmount: calculateTotalAmount()
-  };
-
-  // Add conditional fields
-  const messageText = document.querySelector('textarea[name="message"]')?.value;
-  if (messageText) submission.messageText = messageText;
-  
-  const productDescription = document.querySelector('textarea[name="productDescription"]')?.value;
-  if (productDescription) submission.productDescription = productDescription;
-  
-  const productPrice = document.getElementById("productPrice")?.value;
-  if (productPrice) submission.productPrice = productPrice;
-  
-  const productLink = document.querySelector('input[name="productLink"]')?.value;
-  if (productLink) submission.productLink = productLink;
-  
-  const instructions = document.querySelector('textarea[name="instructions"]')?.value;
-  if (instructions) submission.instructions = instructions;
-  
-  if (document.getElementById("claimWarranty")?.checked) submission.claimWarranty = true;
-  
-  if (document.getElementById("liveDelivery").checked) {
-    submission.deliveryMethod = document.getElementById("deliveryMethod").value;
-    submission.platform = document.getElementById("platform").value;
-    submission.platformDetails = document.getElementById(
-      submission.platform === 'whatsapp' ? 'whatsappNumber' :
-      submission.platform === 'googleMeet' ? 'email' : 'instagramId'
-    ).value;
-  }
-
-  // Process file uploads
-  const filesToUpload = [
-    { id: 'photoUpload', field: 'photo' },
-    { id: 'messageAudio', field: 'messageAudio' },
-    { id: 'messageVideo', field: 'messageVideo' },
-    { id: 'instructionAudio', field: 'instructionAudio' }
-  ];
-
-  for (const fileInfo of filesToUpload) {
-    const fileInput = document.querySelector(`input[name="${fileInfo.id}"]`);
-    if (fileInput?.files[0]) {
-      try {
-        submission[fileInfo.field] = await toBase64(fileInput.files[0]);
-      } catch (error) {
-        console.error(`Error processing ${fileInfo.id}:`, error);
-      }
-    }
-  }
-
-  // Submit to Google Apps Script
-  try {
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(submission),
-      headers: { 'Content-Type': 'application/json' }
-    });
-    
-    const result = await response.json();
-    if (result.status === 'success') {
-      // Store folder URL for future reference
-      localStorage.setItem(`order_${submission.tokenNumber}`, result.folderUrl);
-      return true;
-    }
-    throw new Error(result.message);
-  } catch (err) {
-    console.error('Submission error:', err);
-    alert('Error submitting form: ' + err.message);
-    return false;
-  }
-}
-
 // Calculate total amount based on selections
 function calculateTotalAmount() {
   const itemType = document.getElementById("itemType").value;
@@ -694,6 +606,85 @@ function calculateTotalAmount() {
   
   document.getElementById("totalAmount").textContent = `Total Amount: ₹${amount}`;
   return amount;
+}
+
+// Set minimum delivery time
+function setMinDeliveryTime() {
+  const now = new Date();
+  const deliveryDate = document.getElementById('deliveryDate');
+  const deliveryTime = document.getElementById('deliveryTime');
+  
+  // Set minimum date to today
+  const today = now.toISOString().split('T')[0];
+  deliveryDate.min = today;
+  
+  // Set minimum time to 2 hours from now
+  now.setHours(now.getHours() + 2);
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const minTime = `${hours}:${minutes}`;
+  
+  // If delivery date is today, set min time
+  if (deliveryDate.value === today) {
+    deliveryTime.min = minTime;
+  }
+  
+  // Update time min when date changes
+  deliveryDate.addEventListener('change', function() {
+    if (this.value === today) {
+      deliveryTime.min = minTime;
+    } else {
+      deliveryTime.removeAttribute('min');
+    }
+  });
+}
+
+// Show instruction info popup
+function showInstructionInfo() {
+  alert("Delivery instructions help our team understand how you want the delivery to be performed. Please provide clear instructions for the best experience.");
+}
+
+// Show message info popup
+function showMessageInfo() {
+  alert("Adding a personal message makes the delivery more special. You can record your voice or video message that will be played during delivery.");
+}
+
+// Show warranty info popup
+function showWarrantyInfo() {
+  alert("By claiming warranty, you authorize us to open your package upon arrival and record a video/pictures of the contents. If recipient reports any damage or missing items, we'll refund full amount (excluding ₹100 fuel charge).");
+}
+
+// Copy address to clipboard
+function copyAddress() {
+  const addressText = document.querySelector('textarea[readonly]');
+  addressText.select();
+  document.execCommand('copy');
+  alert("Address copied to clipboard!");
+}
+
+// Close popup
+function closePopup() {
+  document.getElementById('popup').style.display = 'none';
+}
+
+// Redirect to Instagram
+function redirectToInstagram() {
+  window.open("https://www.instagram.com/time_line.official", "_blank");
+}
+
+// Redirect to Gmail
+function redirectToGmail() {
+  window.location.href = "mailto:timelinedeliveryofficial@gmail.com";
+}
+
+// Hide contact options
+function hideContactOptions() {
+  document.getElementById("contactOptions").style.display = "none";
+}
+
+// Update total amount
+function updateTotalAmount() {
+  calculateTotalAmount();
 }
 
 // Initialize the page
@@ -881,20 +872,24 @@ document.addEventListener('DOMContentLoaded', function() {
     contactOptions.style.display = contactOptions.style.display === "block" ? "none" : "block";
   });
 
-  // Form submission
-  const form = document.getElementById("orderForm");
-  
-  form.addEventListener("submit", async function(event) {
-    event.preventDefault();
+  // NEW SUBMISSION HANDLER
+  document.getElementById('orderForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
     
-    // Validate pincode
-    const pincode = document.getElementById('pincode');
-    if (!/^\d{6}$/.test(pincode.value)) {
-      alert("Pin code must be exactly 6 digits");
-      pincode.focus();
+    // Validate required fields
+    const required = ['phoneNumber', 'recipientName', 'address', 'pincode'];
+    const missing = required.filter(id => !document.getElementById(id).value.trim());
+    if (missing.length > 0) {
+      alert(`Missing required fields: ${missing.join(', ')}`);
       return;
     }
-    
+
+    // Validate pincode format
+    if (!/^\d{6}$/.test(document.getElementById('pincode').value)) {
+      alert("Pin code must be exactly 6 digits");
+      return;
+    }
+
     // Validate delivery instructions (at least one required)
     const instructionsText = document.querySelector('textarea[name="instructions"]')?.value;
     const instructionAudio = document.querySelector('input[name="instructionAudio"]')?.files[0];
@@ -902,156 +897,81 @@ document.addEventListener('DOMContentLoaded', function() {
       alert("Please provide delivery instructions (text or audio)");
       return;
     }
-    
-    // Validate live delivery options if checked
-    const liveDeliveryChecked = document.getElementById('liveDelivery').checked;
-    if (liveDeliveryChecked) {
-      const platform = document.getElementById('platform');
-      if (!platform || !platform.value) {
-        alert("Please select a platform for live delivery");
-        return;
-      }
-      
-      let valid = true;
-      
-      if (platform.value === 'whatsapp' && !document.getElementById('whatsappNumber').value) {
-        valid = false;
-        alert("Please enter your WhatsApp number for live delivery");
-      } else if (platform.value === 'googleMeet' && !document.getElementById('email').value) {
-        valid = false;
-        alert("Please enter your email for Google Meet live delivery");
-      } else if (platform.value === 'instagram' && !document.getElementById('instagramId').value) {
-        valid = false;
-        alert("Please enter your Instagram ID for live delivery");
-      }
-      
-      if (!valid) return;
-    }
-    
-    // Validate file sizes
-    const messageAudio = document.querySelector('input[name="messageAudio"]');
-    if (messageAudio && messageAudio.files[0] && messageAudio.files[0].size > 50 * 1024 * 1024) {
-      alert("Message audio file must be less than 50MB");
-      return;
-    }
-    
-    const messageVideo = document.querySelector('input[name="messageVideo"]');
-    if (messageVideo && messageVideo.files[0]) {
-      if (messageVideo.files[0].size > 200 * 1024 * 1024) {
-        alert("Message video file must be less than 200MB");
-        return;
-      }
-      const validFormats = ['video/mp4', 'video/x-matroska'];
-      if (!validFormats.includes(messageVideo.files[0].type)) {
-        alert("Video must be in MP4 or MKV format");
-        return;
-      }
-    }
-    
-    const instructionAudioFile = document.querySelector('input[name="instructionAudio"]');
-    if (instructionAudioFile && instructionAudioFile.files[0] && instructionAudioFile.files[0].size > 10 * 1024 * 1024) {
-      alert("Instruction audio file must be less than 10MB");
-      return;
-    }
-    
-    // Submit form data
+
+    // Prepare form data
     const formData = {
-      customerName: document.getElementById("customerName").value,
-      phoneNumber: document.getElementById("phoneNumber").value,
-      recipientName: document.getElementById("recipientName").value,
-      recipientPhoneNumber: document.getElementById("recipientPhoneNumber").value,
-      address: document.getElementById("address").value,
-      district: document.getElementById("district").value,
-      state: document.getElementById("state").value,
-      pincode: document.getElementById("pincode").value,
-      itemType: document.getElementById("itemType").value,
-      deliveryDate: document.getElementById("deliveryDate").value,
-      deliveryTime: document.getElementById("deliveryTime").value
+      tokenNumber: document.getElementById('tokenDisplay').textContent.replace('Your Token: ', '') || generateToken(),
+      customerName: document.getElementById('customerName').value.trim(),
+      phoneNumber: document.getElementById('phoneNumber').value.trim(),
+      recipientName: document.getElementById('recipientName').value.trim(),
+      recipientPhoneNumber: document.getElementById('recipientPhoneNumber').value.trim(),
+      address: document.getElementById('address').value.trim(),
+      district: document.getElementById('district').value,
+      pincode: document.getElementById('pincode').value.trim(),
+      itemType: document.getElementById('itemType').value,
+      deliveryDate: document.getElementById('deliveryDate').value,
+      deliveryTime: document.getElementById('deliveryTime').value,
+      totalAmount: calculateTotalAmount(),
+      liveDelivery: document.getElementById('liveDelivery').checked,
+      claimWarranty: document.getElementById('claimWarranty')?.checked || false
     };
-    
-    const success = await submitFormData(formData);
-    if (success) {
-      // Store order details in localStorage for payment page
-      localStorage.setItem("orderDetails", JSON.stringify({
-        customerName: document.getElementById("customerName").value || document.getElementById("tokenDisplay").textContent,
-        totalAmount: calculateTotalAmount()
-      }));
+
+    // Add conditional data
+    if (formData.itemType === 'message' || formData.itemType === 'writtenByTimeline') {
+      formData.messageText = document.querySelector('textarea[name="message"]').value;
+    }
+    if (formData.itemType === 'itemsBuyByTimeline') {
+      formData.productDescription = document.querySelector('textarea[name="productDescription"]').value;
+      formData.productPrice = document.getElementById('productPrice').value;
+    }
+
+    // Process file uploads
+    const processFile = async (inputId) => {
+      const fileInput = document.getElementById(inputId);
+      if (!fileInput?.files[0]) return null;
+      const file = fileInput.files[0];
+      return {
+        filename: file.name,
+        mimeType: file.type,
+        content: await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+          reader.readAsDataURL(file);
+        })
+      };
+    };
+
+    // Add files to formData
+    formData.photo = await processFile('photoUpload');
+    formData.messageAudio = await processFile('messageAudio');
+    formData.messageVideo = await processFile('messageVideo');
+    formData.instructionAudio = await processFile('instructionAudio');
+
+    // Submit to Google Apps Script
+    try {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'submit_order',
+          ...formData
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      });
       
-      // Redirect to payment page
-      window.location.href = "payment.html";
+      const result = await response.json();
+      
+      if (result.status === 'success') {
+        localStorage.setItem('currentOrder', JSON.stringify({
+          tokenNumber: formData.tokenNumber,
+          amount: formData.totalAmount
+        }));
+        window.location.href = 'payment.html';
+      } else {
+        alert('Submission failed: ' + (result.message || 'Unknown error'));
+      }
+    } catch (error) {
+      alert('Network error: ' + error.message);
     }
   });
 });
-
-function setMinDeliveryTime() {
-  const now = new Date();
-  const deliveryDate = document.getElementById('deliveryDate');
-  const deliveryTime = document.getElementById('deliveryTime');
-  
-  // Set minimum date to today
-  const today = now.toISOString().split('T')[0];
-  deliveryDate.min = today;
-  
-  // Set minimum time to 2 hours from now
-  now.setHours(now.getHours() + 2);
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const minTime = `${hours}:${minutes}`;
-  
-  // If delivery date is today, set min time
-  if (deliveryDate.value === today) {
-    deliveryTime.min = minTime;
-  }
-  
-  // Update time min when date changes
-  deliveryDate.addEventListener('change', function() {
-    if (this.value === today) {
-      deliveryTime.min = minTime;
-    } else {
-      deliveryTime.removeAttribute('min');
-    }
-  });
-}
-
-function showInstructionInfo() {
-  alert("Delivery instructions help our team understand how you want the delivery to be performed. Please provide clear instructions for the best experience.");
-}
-
-function showMessageInfo() {
-  alert("Adding a personal message makes the delivery more special. You can record your voice or video message that will be played during delivery.");
-}
-
-function showWarrantyInfo() {
-  alert("By claiming warranty, you authorize us to open your package upon arrival and record a video/pictures of the contents. If recipient reports any damage or missing items, we'll refund full amount (excluding ₹100 fuel charge).");
-}
-
-function copyAddress() {
-  const addressText = document.querySelector('textarea[readonly]');
-  addressText.select();
-  document.execCommand('copy');
-  alert("Address copied to clipboard!");
-}
-
-function closePopup() {
-  document.getElementById('popup').style.display = 'none';
-}
-
-function redirectToInstagram() {
-  window.open("https://www.instagram.com/time_line.official", "_blank");
-}
-
-function redirectToGmail() {
-  window.location.href = "mailto:timelinedeliveryofficial@gmail.com";
-}
-
-function hideContactOptions() {
-  document.getElementById("contactOptions").style.display = "none";
-}
-
-function updateTotalAmount() {
-  calculateTotalAmount();
-}
-
-// Initialize total amount calculation
-document.getElementById("itemType").addEventListener("change", calculateTotalAmount);
 </script></body></html>
