@@ -1,31 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TimeLine - Your Personal History Tracker</title>
-    <!-- Supabase Integration -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Animate.css -->
+    <title>TIME LINE - Delivering Emotions On Time</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            --primary-color: #6c5ce7;
-            --secondary-color: #a29bfe;
-            --accent-color: #fd79a8;
-            --dark-color: #2d3436;
-            --light-color: #f5f6fa;
-            --success-color: #00b894;
-            --warning-color: #fdcb6e;
-            --danger-color: #d63031;
-            --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --primary: #FF6B6B;
+            --primary-dark: #ff5252;
+            --secondary: #4ECDC4;
+            --secondary-dark: #3fd8d1;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-hover: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --shadow-hover: 0 15px 30px rgba(0,0,0,0.2);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
         }
 
         * {
@@ -36,2428 +41,1586 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--light-color);
-            color: var(--dark-color);
+            background-color: var(--dark);
+            color: var(--light);
             line-height: 1.6;
             overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 20%, rgba(31,31,31,0.8) 0%, rgba(18,18,18,1) 90%);
         }
 
-        /* Preloader */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--light-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
         }
 
-        .preloader.fade-out {
-            opacity: 0;
-        }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--secondary-color);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Auth Modal */
-        .auth-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .auth-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: var(--shadow);
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-        }
-
-        .auth-container.active {
-            transform: translateY(0);
-        }
-
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 1.5rem;
-        }
-
-        .auth-tab {
-            flex: 1;
-            text-align: center;
-            padding: 0.5rem;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: var(--transition);
-        }
-
-        .auth-tab.active {
-            border-bottom: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-            animation: slideUp 0.4s ease;
-        }
-
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .auth-form input {
-            width: 100%;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .auth-form input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-        }
-
-        .auth-btn {
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .auth-btn:hover {
-            background: #5649c0;
-            transform: translateY(-2px);
-        }
-
-        .auth-footer {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .auth-footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .social-auth {
-            margin-top: 1.5rem;
-        }
-
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.7rem;
-            margin-bottom: 0.7rem;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .social-btn.google {
-            background: #fff;
-            color: #757575;
-            border: 1px solid #ddd;
-        }
-
-        .social-btn.google:hover {
-            background: #f5f5f5;
-        }
-
-        .social-btn i {
-            margin-right: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        /* Header */
+        /* Header styles */
         header {
-            background: white;
+            background: var(--darker);
+            text-align: center;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
             box-shadow: var(--shadow);
-            position: fixed;
-            width: 100%;
+            z-index: 10;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
             top: 0;
-            z-index: 100;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #ff8c00, #ff6347);
+            animation: rainbow 8s linear infinite;
         }
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+        @keyframes rainbow {
+            0% {background-position: 0% 50%}
+            50% {background-position: 100% 50%}
+            100% {background-position: 0% 50%}
         }
 
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
+        header h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 3rem;
             font-weight: 700;
-            color: var(--primary-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255,99,71,0.3);
+            animation: pulse 2s infinite alternate;
         }
 
-        .logo i {
-            margin-right: 0.5rem;
-            font-size: 1.5rem;
+        @keyframes pulse {
+            from {text-shadow: 0 0 10px rgba(255,99,71,0.3);}
+            to {text-shadow: 0 0 20px rgba(255,99,71,0.6);}
         }
 
-        .nav-links {
-            display: flex;
-            list-style: none;
+        header p {
+            margin: 0.5rem 0 0;
+            color: var(--light);
+            font-size: 1.2rem;
+            font-weight: 300;
+            animation: fadeIn 1.5s ease;
         }
 
-        .nav-links li {
-            margin-left: 2rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark-color);
-            font-weight: 500;
+        /* Navigation */
+        nav {
+            background-color: rgba(31, 31, 31, 0.95);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             transition: var(--transition);
+            animation: fadeIn 1s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.5rem 0;
+            background-color: rgba(10, 10, 10, 0.98);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            margin: 0.5rem 1rem;
             position: relative;
         }
 
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-links a::after {
+        nav ul li::after {
             content: '';
             position: absolute;
             bottom: -5px;
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--primary-color);
+            background: var(--primary);
             transition: var(--transition);
         }
 
-        .nav-links a:hover::after {
+        nav ul li:hover::after {
             width: 100%;
         }
 
-        .user-actions {
-            display: flex;
-            align-items: center;
-        }
-
-        .auth-btn-nav {
-            padding: 0.5rem 1rem;
-            margin-left: 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .login-btn {
-            background: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .login-btn:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .signup-btn {
-            background: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            color: white;
-        }
-
-        .signup-btn:hover {
-            background: #5649c0;
-            transform: translateY(-2px);
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .profile-pic {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 0.5rem;
-            border: 2px solid var(--primary-color);
-        }
-
-        .profile-dropdown {
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background: white;
-            border-radius: 5px;
-            box-shadow: var(--shadow);
-            width: 200px;
-            overflow: hidden;
-            display: none;
-            z-index: 10;
-            animation: dropdownFade 0.3s ease;
-        }
-
-        @keyframes dropdownFade {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .profile-dropdown.show {
-            display: block;
-        }
-
-        .dropdown-item {
-            padding: 0.8rem 1rem;
-            display: flex;
-            align-items: center;
-            transition: var(--transition);
-        }
-
-        .dropdown-item:hover {
-            background: #f5f5f5;
-        }
-
-        .dropdown-item i {
-            margin-right: 0.7rem;
-            color: var(--primary-color);
-            width: 20px;
-            text-align: center;
-        }
-
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 0 2rem;
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
-            color: white;
-            margin-top: 70px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
-        }
-
-        .hero-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-text {
-            flex: 1;
-            padding-right: 2rem;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            max-width: 600px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
+        nav ul li a {
             text-decoration: none;
+            color: var(--light);
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .section:nth-child(even) {
+            background-color: rgba(31, 31, 31, 0.5);
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            position: relative;
             display: inline-block;
         }
 
-        .btn-primary {
-            background: white;
-            color: var(--primary-color);
-            border: 2px solid white;
-        }
-
-        .btn-primary:hover {
-            background: transparent;
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: var(--primary-color);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .hero-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-img {
-            max-width: 100%;
-            height: auto;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Features Section */
-        .features {
-            padding: 5rem 2rem;
-            background: white;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            font-family: 'Montserrat', sans-serif;
-            color: var(--dark-color);
-            position: relative;
-        }
-
-        .section-title::after {
+        .section h2::after {
             content: '';
             position: absolute;
             bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
             width: 80px;
-            height: 4px;
-            background: var(--primary-color);
-            border-radius: 2px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
         }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
+        .section ul {
+            list-style: none;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            text-align: left;
+        }
+
+        .section ul li {
+            padding: 0.8rem 0;
+            position: relative;
+            padding-left: 2rem;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .section ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .section ul li i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+
+        /* Form styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
             margin: 0 auto;
-        }
-
-        .feature-card {
-            background: white;
-            border-radius: 10px;
             padding: 2rem;
+            background-color: rgba(31, 31, 31, 0.8);
+            border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             transition: var(--transition);
-            text-align: center;
-            border: 1px solid #eee;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.05);
+            animation: fadeInUp 0.8s ease;
         }
 
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        form:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
         }
 
-        .feature-icon {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
+        form label {
+            margin-top: 1rem;
+            text-align: left;
+            color: var(--light);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
         }
 
-        .feature-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            font-family: 'Montserrat', sans-serif;
+        form input, form textarea, form select, form button {
+            margin-top: 0.5rem;
+            padding: 0.8rem 1rem;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: rgba(31, 31, 31, 0.8);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+            font-size: 15px;
         }
 
-        .feature-desc {
-            color: #666;
-            font-size: 1rem;
+        form input:focus, form textarea:focus, form select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
         }
 
-        /* Timeline Section */
-        .timeline-section {
-            padding: 5rem 2rem;
-            background: #f9f9f9;
-        }
-
-        .timeline-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .timeline-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 100%;
-            background: var(--primary-color);
-        }
-
-        .timeline-item {
-            padding: 1rem 2rem;
-            position: relative;
-            width: 50%;
-            margin-bottom: 2rem;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .timeline-item.visible {
-            opacity: 1;
-        }
-
-        .timeline-item:nth-child(odd) {
-            left: 0;
-        }
-
-        .timeline-item:nth-child(even) {
-            left: 50%;
-        }
-
-        .timeline-content {
-            padding: 1.5rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-
-        .timeline-item:nth-child(odd) .timeline-content::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            right: -10px;
-            width: 0;
-            height: 0;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-left: 10px solid white;
-        }
-
-        .timeline-item:nth-child(even) .timeline-content::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: -10px;
-            width: 0;
-            height: 0;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-right: 10px solid white;
-        }
-
-        .timeline-date {
-            position: absolute;
-            top: 10px;
-            color: var(--primary-color);
+        form button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 14px;
+            margin-top: 1.5rem;
+            border-radius: var(--border-radius-sm);
+            font-size: 16px;
             font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .timeline-item:nth-child(odd) .timeline-date {
-            right: -120px;
+        form button:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
-        .timeline-item:nth-child(even) .timeline-date {
-            left: -120px;
+        form button i {
+            margin-left: 0.5rem;
         }
 
-        .timeline-dot {
+        form button::after {
+            content: '';
             position: absolute;
-            top: 20px;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255,255,255,0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        form button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
+        /* Info styles */
+        .info {
+            cursor: pointer;
+            color: var(--primary);
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2);
-        }
-
-        .timeline-item:nth-child(odd) .timeline-dot {
-            right: -48px;
-        }
-
-        .timeline-item:nth-child(even) .timeline-dot {
-            left: -48px;
-        }
-
-        .timeline-title {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .timeline-text {
-            color: #666;
-            margin-bottom: 1rem;
-        }
-
-        .timeline-image {
-            width: 100%;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
-
-        /* Create Timeline Section */
-        .create-timeline {
-            padding: 5rem 2rem;
-            background: white;
-        }
-
-        .create-form {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--dark-color);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
+            background: rgba(255, 107, 107, 0.2);
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
             transition: var(--transition);
         }
 
-        .form-control:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        .info:hover {
+            background: rgba(255, 107, 107, 0.3);
+            transform: scale(1.1);
         }
 
-        textarea.form-control {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .form-submit {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
+        /* Token styles */
+        .token {
+            color: #ffcc00;
+            font-weight: bold;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(255, 204, 0, 0.1);
             border-radius: 5px;
-            font-size: 1rem;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        /* Service info */
+        .service-info {
+            color: var(--primary);
+            font-weight: bold;
+            background: rgba(255,99,71,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .service-info i {
+            margin-right: 0.5rem;
+        }
+
+        /* Floating animation */
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {transform: translateY(0px);}
+            50% {transform: translateY(-10px);}
+            100% {transform: translateY(0px);}
+        }
+
+        /* Upload section */
+        .upload-section {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: rgba(31, 31, 31, 0.5);
+            border-radius: var(--border-radius-sm);
+            border: 1px dashed rgba(255,255,255,0.1);
+            transition: var(--transition);
+        }
+
+        .upload-section:hover {
+            border-color: var(--primary);
+            background-color: rgba(31, 31, 31, 0.7);
+        }
+
+        .upload-section h3 {
+            margin-top: 0;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .upload-section h3 i {
+            margin-right: 0.5rem;
+        }
+
+        .file-input-label {
+            display: block;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(31, 31, 31, 0.5);
+            border-radius: var(--border-radius-sm);
             cursor: pointer;
             transition: var(--transition);
+            border: 1px dashed rgba(255,255,255,0.1);
         }
 
-        .form-submit:hover {
-            background: #5649c0;
-            transform: translateY(-2px);
+        .file-input-label:hover {
+            background: rgba(31, 31, 31, 0.7);
+            border-color: var(--primary);
+        }
+
+        /* Total amount */
+        .total-amount {
+            background: linear-gradient(135deg, rgba(255,99,71,0.2), rgba(255,99,71,0.1));
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: var(--border-radius-sm);
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: white;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,99,71,0.2);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {box-shadow: 0 0 5px rgba(255,99,71,0.3);}
+            to {box-shadow: 0 0 15px rgba(255,99,71,0.5);}
+        }
+
+        /* Company address */
+        .company-address {
+            background-color: rgba(31, 31, 31, 0.7);
+            padding: 1.5rem;
+            border-radius: var(--border-radius-sm);
+            margin: 1.5rem 0;
+            text-align: left;
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .company-address:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .company-address h3 {
+            margin-top: 0;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+
+        .company-address h3 i {
+            margin-right: 0.5rem;
+        }
+
+        .company-address p {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .company-address p i {
+            margin-right: 0.5rem;
+            width: 20px;
+            text-align: center;
         }
 
         /* Footer */
         footer {
-            background: var(--dark-color);
-            color: white;
-            padding: 3rem 2rem;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-        }
-
-        .footer-logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 1rem;
-            display: inline-block;
-        }
-
-        .footer-about {
-            margin-bottom: 1.5rem;
-            color: #bbb;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transition: var(--transition);
-        }
-
-        .social-link:hover {
-            background: var(--primary-color);
-            transform: translateY(-3px);
-        }
-
-        .footer-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links a {
-            color: #bbb;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .footer-links a:hover {
-            color: white;
-            padding-left: 5px;
-        }
-
-        .footer-contact p {
-            margin-bottom: 0.8rem;
-            color: #bbb;
-            display: flex;
-            align-items: center;
-        }
-
-        .footer-contact i {
-            margin-right: 0.5rem;
-            color: var(--primary-color);
-        }
-
-        .footer-bottom {
+            background-color: var(--darker);
             text-align: center;
-            padding-top: 2rem;
-            margin-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #bbb;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            position: relative;
+            animation: fadeIn 1s ease;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient);
+        }
+
+        footer p {
+            margin: 0;
+            color: var(--gray);
             font-size: 0.9rem;
         }
 
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero-title {
-                font-size: 2.8rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .timeline-container::before {
-                left: 31px;
-            }
-            
-            .timeline-item {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-            
-            .timeline-item:nth-child(even) {
-                left: 0;
-            }
-            
-            .timeline-dot {
-                left: 20px !important;
-            }
-            
-            .timeline-date {
-                position: relative;
-                top: 0;
-                left: 0 !important;
-                margin-bottom: 0.5rem;
-            }
-            
-            .timeline-item:nth-child(odd) .timeline-content::after,
-            .timeline-item:nth-child(even) .timeline-content::after {
-                left: -10px;
-                right: auto;
-                border-right: 10px solid white;
-                border-left: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 80%;
-                height: calc(100vh - 70px);
-                background: white;
-                flex-direction: column;
-                align-items: center;
-                padding: 2rem 0;
-                transition: var(--transition);
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            }
-            
-            .nav-links.active {
-                left: 0;
-            }
-            
-            .nav-links li {
-                margin: 1rem 0;
-            }
-            
-            .hamburger {
-                display: block;
-            }
-            
-            .hero-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .hero-text {
-                padding-right: 0;
-                margin-bottom: 2rem;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-            
-            .hero-title {
-                font-size: 2.5rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero-title {
-                font-size: 2rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .btn {
-                padding: 0.7rem 1.2rem;
-                font-size: 0.9rem;
-            }
-            
-            .auth-container {
-                width: 95%;
-            }
-        }
-
-        /* Animations */
-        .animate-pop {
-            animation: pop 0.5s ease;
-        }
-
-        @keyframes pop {
-            0% { transform: scale(0.9); opacity: 0; }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .animate-bounce {
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-20px); }
-            60% { transform: translateY(-10px); }
-        }
-
-        /* Toast Notifications */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--dark-color);
-            color: white;
-            padding: 1rem;
-            border-radius: 5px;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            z-index: 1000;
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast i {
-            margin-right: 0.5rem;
-            font-size: 1.2rem;
-        }
-
-        .toast.success i {
-            color: var(--success-color);
-        }
-
-        .toast.error i {
-            color: var(--danger-color);
-        }
-
-        .toast.warning i {
-            color: var(--warning-color);
-        }
-
-        /* Timeline Filters */
-        .timeline-filters {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .filter-btn {
-            padding: 0.5rem 1rem;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        /* Timeline Search */
-        .timeline-search {
-            max-width: 600px;
-            margin: 0 auto 3rem;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.8rem 1rem 0.8rem 3rem;
-            border: 1px solid #ddd;
-            border-radius: 30px;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .search-input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #777;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #5649c0;
-        }
-
-        /* Floating Action Button */
-        .fab {
+        /* Ask button */
+        #askButton {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
             width: 60px;
             height: 60px;
-            background: var(--primary-color);
-            color: white;
             border-radius: 50%;
+            cursor: pointer;
+            box-shadow: var(--shadow);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
-            cursor: pointer;
             z-index: 100;
             transition: var(--transition);
+            animation: fadeInRight 1s ease;
         }
 
-        .fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.6);
+        #askButton:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: var(--shadow-hover);
         }
 
-        /* Timeline Tags */
-        .timeline-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+        #askButton i {
+            font-size: 1.8rem;
         }
 
-        .timeline-tag {
-            background: var(--secondary-color);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        /* Contact options */
+        .contact-options {
+            display: none;
+            position: fixed;
+            bottom: 8rem;
+            right: 2rem;
+            background-color: rgba(31, 31, 31, 0.95);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            z-index: 99;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.3s ease;
         }
 
-        /* Timeline Actions */
-        .timeline-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .action-btn {
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
+        .contact-options button {
             display: flex;
             align-items: center;
-        }
-
-        .action-btn i {
-            margin-right: 0.3rem;
-        }
-
-        .like-btn {
-            background: #f5f5f5;
-            color: #666;
-        }
-
-        .like-btn.liked {
-            background: #ffebee;
-            color: #d63031;
-        }
-
-        .comment-btn {
-            background: #f5f5f5;
-            color: #666;
-        }
-
-        .share-btn {
-            background: #f5f5f5;
-            color: #666;
-        }
-
-        /* Comment Section */
-        .comment-section {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #eee;
-        }
-
-        .comment-form {
-            display: flex;
-            margin-bottom: 1.5rem;
-        }
-
-        .comment-input {
-            flex: 1;
-            padding: 0.7rem;
-            border: 1px solid #ddd;
-            border-radius: 5px 0 0 5px;
-            font-size: 0.9rem;
-        }
-
-        .comment-submit {
-            padding: 0 1rem;
-            background: var(--primary-color);
+            justify-content: flex-start;
+            width: 100%;
+            margin: 0.5rem 0;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255,255,255,0.1);
             color: white;
             border: none;
-            border-radius: 0 5px 5px 0;
+            border-radius: var(--border-radius-sm);
             cursor: pointer;
+            transition: var(--transition);
         }
 
-        .comments-list {
-            max-height: 300px;
-            overflow-y: auto;
-            padding-right: 0.5rem;
+        .contact-options button:hover {
+            background: var(--primary);
+            transform: translateX(-5px);
         }
 
-        .comment {
+        .contact-options button i {
+            margin-right: 0.5rem;
+        }
+
+        /* Popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(31, 31, 31, 0.95);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            z-index: 1001;
+            box-shadow: var(--shadow-hover);
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .popup p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .popup button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .popup button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Google login container */
+        #google-login-container {
             display: flex;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #f5f5f5;
+            justify-content: center;
+            margin: 1rem 0;
+            animation: fadeIn 1s ease;
         }
 
-        .comment-avatar {
+        /* User info */
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(31, 31, 31, 0.7);
+            border-radius: var(--border-radius-sm);
+            animation: fadeIn 1s ease;
+        }
+
+        .user-info img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             margin-right: 1rem;
-            object-fit: cover;
         }
 
-        .comment-content {
-            flex: 1;
+        .user-info span {
+            font-weight: 500;
+            flex-grow: 1;
         }
 
-        .comment-author {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
-        }
-
-        .comment-text {
-            font-size: 0.9rem;
-            color: #555;
-        }
-
-        .comment-time {
-            font-size: 0.8rem;
-            color: #999;
-            margin-top: 0.3rem;
-        }
-
-        /* Stats Cards */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        /* Progress Bars */
-        .progress-container {
-            margin-bottom: 2rem;
-        }
-
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: #f1f1f1;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--primary-color);
-            border-radius: 5px;
-            transition: width 1s ease;
-        }
-
-        /* Dark Mode Toggle */
-        .dark-mode-toggle {
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            width: 50px;
-            height: 50px;
-            background: var(--dark-color);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        .user-info button {
+            margin-left: 1rem;
+            background: rgba(255, 107, 107, 0.2);
+            color: var(--primary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
             cursor: pointer;
-            z-index: 100;
             transition: var(--transition);
         }
 
-        .dark-mode-toggle:hover {
-            transform: scale(1.1);
+        .user-info button:hover {
+            background: rgba(255, 107, 107, 0.3);
         }
 
-        /* Dark Mode Styles */
-        body.dark-mode {
-            background: #121212;
-            color: #e0e0e0;
+        /* Order count warning */
+        .order-count-warning {
+            color: var(--warning);
+            background: rgba(255, 193, 7, 0.1);
+            padding: 0.8rem;
+            border-radius: var(--border-radius-sm);
+            border-left: 4px solid var(--warning);
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            animation: fadeIn 1s ease;
         }
 
-        body.dark-mode header {
-            background: #1e1e1e;
+        .order-count-warning i {
+            margin-right: 0.5rem;
         }
 
-        body.dark-mode .nav-links a {
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .feature-card,
-        body.dark-mode .timeline-content,
-        body.dark-mode .create-form,
-        body.dark-mode .stat-card {
-            background: #1e1e1e;
-            color: #e0e0e0;
-            border-color: #333;
-        }
-
-        body.dark-mode .form-control,
-        body.dark-mode .search-input,
-        body.dark-mode .comment-input {
-            background: #2d2d2d;
-            border-color: #333;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .footer-about,
-        body.dark-mode .footer-links a,
-        body.dark-mode .footer-contact p,
-        body.dark-mode .footer-bottom,
-        body.dark-mode .timeline-text,
-        body.dark-mode .feature-desc,
-        body.dark-mode .comment-text {
-            color: #bbb;
-        }
-
-        body.dark-mode .filter-btn {
-            background: #2d2d2d;
-            border-color: #333;
-            color: #e0e0e0;
-        }
-
-        body.dark-mode .filter-btn.active,
-        body.dark-mode .filter-btn:hover {
-            background: var(--primary-color);
+        /* Price tag */
+        .price-tag {
+            background: var(--gradient);
             color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+            font-weight: bold;
         }
 
-        body.dark-mode .action-btn,
-        body.dark-mode .like-btn,
-        body.dark-mode .comment-btn,
-        body.dark-mode .share-btn {
-            background: #2d2d2d;
-            color: #e0e0e0;
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
         }
 
-        body.dark-mode .comment-section {
-            border-top-color: #333;
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--darker);
+            color: #fff;
+            text-align: center;
+            border-radius: var(--border-radius-sm);
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            font-size: 14px;
+            font-weight: normal;
         }
 
-        body.dark-mode .comment {
-            border-bottom-color: #333;
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
         }
 
-        body.dark-mode .progress-bar {
-            background: #2d2d2d;
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            nav ul {
+                justify-content: space-around;
+            }
+            
+            nav ul li {
+                margin: 0.3rem;
+            }
+            
+            nav ul li a {
+                font-size: 0.9rem;
+            }
+            
+            .section {
+                padding: 3rem 1rem;
+            }
+            
+            .section h2 {
+                font-size: 2rem;
+            }
+            
+            form {
+                padding: 1.5rem;
+            }
+            
+            #askButton {
+                width: 50px;
+                height: 50px;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+            
+            .contact-options {
+                bottom: 7rem;
+                right: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            nav ul li a {
+                font-size: 0.8rem;
+            }
+            
+            .section h2 {
+                font-size: 1.8rem;
+            }
+            
+            form {
+                padding: 1rem;
+            }
+            
+            .total-amount {
+                font-size: 1.1rem;
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="loader"></div>
-    </div>
-
-    <!-- Auth Modal -->
-    <div class="auth-modal" id="authModal">
-        <div class="auth-container animate-pop" id="authContainer">
-            <div class="auth-tabs">
-                <div class="auth-tab active" data-tab="login">Login</div>
-                <div class="auth-tab" data-tab="signup">Sign Up</div>
-            </div>
-            
-            <div class="auth-form active" id="loginForm">
-                <div class="social-auth">
-                    <button class="social-btn google" id="googleLogin">
-                        <i class="fab fa-google"></i> Continue with Google
-                    </button>
-                </div>
-                
-                <div class="divider">
-                    <span>or</span>
-                </div>
-                
-                <form id="loginFormData">
-                    <input type="email" id="loginEmail" placeholder="Email" required>
-                    <input type="password" id="loginPassword" placeholder="Password" required>
-                    <button type="submit" class="auth-btn">Login</button>
-                </form>
-                
-                <div class="auth-footer">
-                    <a href="#" id="forgotPassword">Forgot password?</a>
-                </div>
-            </div>
-            
-            <div class="auth-form" id="signupForm">
-                <div class="social-auth">
-                    <button class="social-btn google" id="googleSignup">
-                        <i class="fab fa-google"></i> Continue with Google
-                    </button>
-                </div>
-                
-                <div class="divider">
-                    <span>or</span>
-                </div>
-                
-                <form id="signupFormData">
-                    <input type="text" id="signupName" placeholder="Full Name" required>
-                    <input type="email" id="signupEmail" placeholder="Email" required>
-                    <input type="password" id="signupPassword" placeholder="Password" required>
-                    <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required>
-                    <button type="submit" class="auth-btn">Create Account</button>
-                </form>
-                
-                <div class="auth-footer">
-                    By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
-                </div>
-            </div>
-            
-            <div class="auth-form" id="forgotForm">
-                <h3>Reset Password</h3>
-                <p>Enter your email and we'll send you a link to reset your password.</p>
-                
-                <form id="forgotFormData">
-                    <input type="email" id="forgotEmail" placeholder="Email" required>
-                    <button type="submit" class="auth-btn">Send Reset Link</button>
-                </form>
-                
-                <div class="auth-footer">
-                    <a href="#" id="backToLogin">Back to login</a>
-                </div>
-            </div>
+    <header class="animate__animated animate__fadeIn">
+        <div class="logo">
+            <h1>TIME LINE</h1>
+            <p>Delivering Emotions On Time</p>
         </div>
-    </div>
-
-    <!-- Header -->
-    <header>
-        <nav class="navbar">
-            <a href="#" class="logo">
-                <i class="fas fa-stream"></i> TimeLine
-            </a>
-            
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#timeline">Timeline</a></li>
-                <li><a href="#create">Create</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
-            
-            <div class="user-actions" id="userActions">
-                <button class="auth-btn-nav login-btn" id="loginBtnNav">Login</button>
-                <button class="auth-btn-nav signup-btn" id="signupBtnNav">Sign Up</button>
-                <!-- User profile will be shown here after login -->
-            </div>
-            
-            <div class="hamburger" id="hamburger">
-                <i class="fas fa-bars"></i>
-            </div>
-        </nav>
     </header>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <div class="hero-text" data-aos="fade-right">
-                <h1 class="hero-title">Capture Your Journey</h1>
-                <p class="hero-subtitle">Create beautiful timelines to document your life's most important moments. Share your stories, relive your memories, and inspire others.</p>
-                <div class="hero-buttons">
-                    <a href="#create" class="btn btn-primary">Start Creating</a>
-                    <a href="#timeline" class="btn btn-secondary">Explore Timelines</a>
-                </div>
-            </div>
-            <div class="hero-image" data-aos="fade-left">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Timeline Illustration" class="hero-img">
-            </div>
-        </div>
+    
+    <nav id="mainNav" class="animate__animated animate__fadeIn animate__delay-1s">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#order">Order Now</a></li>
+            <li><a href="#price">Price</a></li>
+            <li><a href="#policy">Policy</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <section id="home" class="section">
+        <h2 class="animate__animated animate__fadeInUp">Welcome to TIME LINE</h2>
+        <p class="animate__animated animate__fadeInUp animate__delay-1s">Delivering emotions, surprises, and gifts to your loved ones on time.</p>
     </section>
-
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Amazing Features</h2>
-            <div class="features-grid">
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <h3 class="feature-title">Easy Timeline Creation</h3>
-                    <p class="feature-desc">Create beautiful timelines in minutes with our intuitive editor. Add events, dates, and media effortlessly.</p>
-                </div>
-                
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-icon">
-                        <i class="fas fa-share-alt"></i>
-                    </div>
-                    <h3 class="feature-title">Share With Anyone</h3>
-                    <p class="feature-desc">Share your timelines publicly or keep them private. Perfect for personal journals or collaborative projects.</p>
-                </div>
-                
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3 class="feature-title">Fully Responsive</h3>
-                    <p class="feature-desc">Your timelines look great on any device - desktop, tablet, or mobile. Access your memories anywhere.</p>
-                </div>
-                
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="feature-icon">
-                        <i class="fas fa-photo-video"></i>
-                    </div>
-                    <h3 class="feature-title">Rich Media Support</h3>
-                    <p class="feature-desc">Add photos, videos, and documents to your timeline events. Bring your memories to life.</p>
-                </div>
-                
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="feature-title">Progress Tracking</h3>
-                    <p class="feature-desc">Track your progress on goals and projects with our visual progress indicators and milestone tracking.</p>
-                </div>
-                
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
-                    <div class="feature-icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <h3 class="feature-title">Secure Storage</h3>
-                    <p class="feature-desc">Your data is securely stored and backed up. We prioritize your privacy and data security.</p>
-                </div>
-            </div>
-        </div>
+    
+    <section id="features" class="section">
+        <h2 class="animate__animated animate__fadeInUp">Why Choose Us?</h2>
+        <ul class="animate__animated animate__fadeInUp animate__delay-1s">
+            <li><i class="fas fa-calendar-check"></i> Specific date and time delivery</li>
+            <li><i class="fas fa-envelope-open-text"></i> Personalized message reading</li>
+            <li><i class="fas fa-video"></i> Live delivery viewing via video call</li>
+            <li><i class="fas fa-pen-fancy"></i> Handwritten or printed letters</li>
+            <li><i class="fas fa-shield-alt"></i> Secure and reliable service</li>
+        </ul>
+        <p class="service-info floating animate__animated animate__pulse animate__infinite">
+            <i class="fas fa-info-circle"></i> This service is currently available only in Varanasi and Chandauli.
+        </p>
     </section>
-
-    <!-- Stats Section -->
-    <section class="features" style="background: #f5f6fa;">
-        <div class="container">
-            <div class="stats-container">
-                <div class="stat-card" data-aos="fade-up">
-                    <div class="stat-number" id="timelinesCount">10,000+</div>
-                    <div class="stat-label">Timelines Created</div>
-                </div>
-                <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stat-number" id="usersCount">5,000+</div>
-                    <div class="stat-label">Happy Users</div>
-                </div>
-                <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="stat-number" id="eventsCount">250,000+</div>
-                    <div class="stat-label">Events Logged</div>
-                </div>
-                <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="stat-number" id="countriesCount">100+</div>
-                    <div class="stat-label">Countries</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Timeline Section -->
-    <section class="timeline-section" id="timeline">
-        <div class="timeline-container">
-            <h2 class="section-title" data-aos="fade-up">Explore Timelines</h2>
-            
-            <div class="timeline-search" data-aos="fade-up">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" placeholder="Search timelines...">
-            </div>
-            
-            <div class="timeline-filters" data-aos="fade-up">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="personal">Personal</button>
-                <button class="filter-btn" data-filter="professional">Professional</button>
-                <button class="filter-btn" data-filter="travel">Travel</button>
-                <button class="filter-btn" data-filter="education">Education</button>
-                <button class="filter-btn" data-filter="health">Health</button>
-            </div>
-            
-            <div class="timeline-item" data-category="personal" data-aos="fade-up">
-                <div class="timeline-content">
-                    <div class="timeline-date">June 12, 2023</div>
-                    <div class="timeline-dot"></div>
-                    <h3 class="timeline-title">My European Adventure</h3>
-                    <div class="timeline-tags">
-                        <span class="timeline-tag">Travel</span>
-                        <span class="timeline-tag">Personal</span>
-                    </div>
-                    <p class="timeline-text">An unforgettable journey through Italy, France, and Spain. Visited the Colosseum, Eiffel Tower, and Sagrada Familia.</p>
-                    <img src="https://images.unsplash.com/photo-1503917988258-f87a78e3c995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80" alt="European Adventure" class="timeline-image">
-                    <div class="timeline-actions">
-                        <button class="action-btn like-btn"><i class="far fa-heart"></i> Like</button>
-                        <button class="action-btn comment-btn"><i class="far fa-comment"></i> Comment</button>
-                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i> Share</button>
-                    </div>
-                    <div class="comment-section">
-                        <div class="comment-form">
-                            <input type="text" class="comment-input" placeholder="Add a comment...">
-                            <button class="comment-submit"><i class="fas fa-paper-plane"></i></button>
-                        </div>
-                        <div class="comments-list">
-                            <div class="comment">
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="comment-avatar">
-                                <div class="comment-content">
-                                    <div class="comment-author">Sarah Johnson</div>
-                                    <div class="comment-text">Looks amazing! Which was your favorite country?</div>
-                                    <div class="comment-time">2 hours ago</div>
-                                </div>
-                            </div>
-                            <div class="comment">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="comment-avatar">
-                                <div class="comment-content">
-                                    <div class="comment-author">Michael Chen</div>
-                                    <div class="comment-text">Great photos! I'm planning a similar trip next year.</div>
-                                    <div class="comment-time">1 day ago</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="timeline-item" data-category="professional" data-aos="fade-up">
-                <div class="timeline-content">
-                    <div class="timeline-date">May 5, 2023</div>
-                    <div class="timeline-dot"></div>
-                    <h3 class="timeline-title">Product Launch Timeline</h3>
-                    <div class="timeline-tags">
-                        <span class="timeline-tag">Work</span>
-                        <span class="timeline-tag">Project</span>
-                    </div>
-                    <p class="timeline-text">The complete development and launch process for our new mobile app. From initial concept to App Store release.</p>
-                    <div class="progress-container">
-                        <div class="progress-label">
-                            <span>Development Progress</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div class="timeline-actions">
-                        <button class="action-btn like-btn"><i class="far fa-heart"></i> Like</button>
-                        <button class="action-btn comment-btn"><i class="far fa-comment"></i> Comment</button>
-                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i> Share</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="timeline-item" data-category="education" data-aos="fade-up">
-                <div class="timeline-content">
-                    <div class="timeline-date">March 15, 2023</div>
-                    <div class="timeline-dot"></div>
-                    <h3 class="timeline-title">Computer Science Degree</h3>
-                    <div class="timeline-tags">
-                        <span class="timeline-tag">Education</span>
-                        <span class="timeline-tag">Achievement</span>
-                    </div>
-                    <p class="timeline-text">My four-year journey through university, documenting all the courses, projects, and experiences along the way.</p>
-                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Graduation" class="timeline-image">
-                    <div class="timeline-actions">
-                        <button class="action-btn like-btn liked"><i class="fas fa-heart"></i> Liked</button>
-                        <button class="action-btn comment-btn"><i class="far fa-comment"></i> Comment</button>
-                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i> Share</button>
-                    </div>
-                    <div class="comment-section">
-                        <div class="comment-form">
-                            <input type="text" class="comment-input" placeholder="Add a comment...">
-                            <button class="comment-submit"><i class="fas fa-paper-plane"></i></button>
-                        </div>
-                        <div class="comments-list">
-                            <div class="comment">
-                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" class="comment-avatar">
-                                <div class="comment-content">
-                                    <div class="comment-author">Emily Rodriguez</div>
-                                    <div class="comment-text">Congratulations! What are your plans after graduation?</div>
-                                    <div class="comment-time">3 days ago</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="timeline-item" data-category="health" data-aos="fade-up">
-                <div class="timeline-content">
-                    <div class="timeline-date">January 1, 2023 - Present</div>
-                    <div class="timeline-dot"></div>
-                    <h3 class="timeline-title">Fitness Journey</h3>
-                    <div class="timeline-tags">
-                        <span class="timeline-tag">Health</span>
-                        <span class="timeline-tag">Fitness</span>
-                    </div>
-                    <p class="timeline-text">Tracking my fitness progress throughout the year. Documenting workouts, diet, and measurements.</p>
-                    <div class="progress-container">
-                        <div class="progress-label">
-                            <span>Weight Loss Goal</span>
-                            <span>60%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 60%"></div>
-                        </div>
-                    </div>
-                    <div class="timeline-actions">
-                        <button class="action-btn like-btn"><i class="far fa-heart"></i> Like</button>
-                        <button class="action-btn comment-btn"><i class="far fa-comment"></i> Comment</button>
-                        <button class="action-btn share-btn"><i class="fas fa-share-alt"></i> Share</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Create Timeline Section -->
-    <section class="create-timeline" id="create">
-        <h2 class="section-title" data-aos="fade-up">Create Your Timeline</h2>
-        <div class="create-form" data-aos="fade-up">
-            <form id="timelineForm">
-                <div class="form-group">
-                    <label for="timelineTitle" class="form-label">Timeline Title</label>
-                    <input type="text" id="timelineTitle" class="form-control" placeholder="My Awesome Timeline" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="timelineDescription" class="form-label">Description</label>
-                    <textarea id="timelineDescription" class="form-control" placeholder="Tell us about your timeline..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="timelineCategory" class="form-label">Category</label>
-                    <select id="timelineCategory" class="form-control" required>
-                        <option value="">Select a category</option>
-                        <option value="personal">Personal</option>
-                        <option value="professional">Professional</option>
-                        <option value="travel">Travel</option>
-                        <option value="education">Education</option>
-                        <option value="health">Health & Fitness</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Privacy</label>
-                    <div style="display: flex; gap: 1rem;">
-                        <label style="display: flex; align-items: center; gap: 0.5rem;">
-                            <input type="radio" name="privacy" value="public" checked> Public
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 0.5rem;">
-                            <input type="radio" name="privacy" value="private"> Private
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="timelineCover" class="form-label">Cover Image (URL)</label>
-                    <input type="url" id="timelineCover" class="form-control" placeholder="https://example.com/image.jpg">
-                </div>
-                
-                <div class="form-group">
-                    <label for="timelineTags" class="form-label">Tags (comma separated)</label>
-                    <input type="text" id="timelineTags" class="form-control" placeholder="travel, adventure, europe">
-                </div>
-                
-                <button type="submit" class="form-submit">Create Timeline</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-about">
-                <a href="#" class="footer-logo">
-                    <i class="fas fa-stream"></i> TimeLine
-                </a>
-                <p class="footer-about">Capture, organize, and share your life's most important moments with beautiful interactive timelines.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            
-            <div class="footer-links">
-                <h3 class="footer-title">Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#timeline">Timelines</a></li>
-                    <li><a href="#create">Create</a></li>
-                    <li><a href="#about">About Us</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-links">
-                <h3 class="footer-title">Categories</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Personal</a></li>
-                    <li><a href="#">Professional</a></li>
-                    <li><a href="#">Travel</a></li>
-                    <li><a href="#">Education</a></li>
-                    <li><a href="#">Health</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-contact">
-                <h3 class="footer-title">Contact Us</h3>
-                <p><i class="fas fa-map-marker-alt"></i> 123 Timeline Street, Digital City</p>
-                <p><i class="fas fa-phone-alt"></i> +1 (555) 123-4567</p>
-                <p><i class="fas fa-envelope"></i> info@timelineapp.com</p>
-                <p><i class="fas fa-clock"></i> Mon-Fri: 9AM - 5PM</p>
-            </div>
+    
+    <section id="order" class="section">
+        <h2 class="animate__animated animate__fadeInUp">Place Your Order</h2>
+        
+        <!-- Google Login Container -->
+        <div id="google-login-container"></div>
+        
+        <!-- User Info Display -->
+        <div id="user-info" class="user-info" style="display: none;">
+            <img id="user-pic" src="" alt="User picture">
+            <span id="user-name"></span>
+            <button id="sign-out-button">Sign Out</button>
         </div>
         
-        <div class="footer-bottom">
-            <p>&copy; 2023 TimeLine. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <!-- Order Limit Warning -->
+        <div id="order-limit-warning" class="order-count-warning" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i> You've reached your limit of 2 orders in 24 hours. Please try again later.
         </div>
+        
+        <form id="orderForm" class="animate__animated animate__fadeInUp animate__delay-1s">
+            <label for="customerName">Your Name (Optional):</label>
+            <input type="text" id="customerName" name="customerName" placeholder="Leave blank for a random token">
+            <p id="tokenDisplay" class="token"></p>
+            
+            <label for="phoneNumber">Your Phone Number:</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" pattern="^[0-9]{10}$" required>
+            
+            <label for="photoUpload">Upload Photo <span class="info tooltip">?<span class="tooltiptext">This helps us better identify the recipient during delivery</span></span></label>
+            <input type="file" id="photoUpload" name="photoUpload" accept="image/*">
+            
+            <label for="recipientName">Recipient's Name:</label>
+            <input type="text" id="recipientName" name="recipientName" required>
+            
+            <label for="recipientPhoneNumber">Recipient's Phone Number (Optional):</label>
+            <input type="tel" id="recipientPhoneNumber" name="recipientPhoneNumber" placeholder="Enter recipient's phone number" pattern="^[0-9]{10}$">
+            
+            <label for="address">Recipient's Address:</label>
+            <textarea id="address" name="address" rows="3" required></textarea>
+            
+            <label for="district">District:</label>
+            <select id="district" name="district" required>
+                <option value="Varanasi">Varanasi</option>
+                <option value="Chandauli">Chandauli</option>
+            </select>
+            
+            <label for="state">State:</label>
+            <select id="state" name="state" required>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+            </select>
+            
+            <label for="pincode">Pin Code:</label>
+            <input type="text" id="pincode" name="pincode" pattern="^[0-9]{6}$" required>
+            
+            <label for="itemType">Item Type:</label>
+            <select id="itemType" name="itemType" required>
+                <option value="">-- Select Item Type --</option>
+                <option value="message">Message (Speak in front of Recipient)</option>
+                <option value="writtenByTimeline">Letter written by Time Line (In Your Words)</option>
+                <option value="itemsSendByCustomer">Items (Send by Customer)</option>
+                <option value="itemsBuyByTimeline">Items (Buy by Time Line)</option>
+            </select>
+            
+            <div id="additionalSections"></div>
+            <div id="totalAmount" class="total-amount">Total Amount: ₹0</div>
+            
+            <label for="deliveryDate">Delivery Date:</label>
+            <input type="date" id="deliveryDate" name="deliveryDate" required>
+            
+            <label for="deliveryTime">Delivery Time:</label>
+            <input type="time" id="deliveryTime" name="deliveryTime" required>
+            
+            <label><input type="checkbox" id="liveDelivery" name="liveDelivery"> Check to see live/recorded delivery</label>
+            <div id="liveDeliveryOptions"></div>
+            
+            <div class="company-address">
+                <h3><i class="fas fa-map-marker-alt"></i> Our Office Address (For Item Drop-off):</h3>
+                <p><i class="fas fa-building"></i> Time Line Office, Parle-G factory, Patanava</p>
+                <p><i class="fas fa-industry"></i> Ramnagar industrial area, Ramnagar</p>
+                <p><i class="fas fa-city"></i> Varanasi, Uttar Pradesh - 221008</p>
+                <p><i class="fas fa-phone"></i> Contact: 7007677139 (Call/WhatsApp)</p>
+                <p><i class="fas fa-envelope"></i> Email: timelinedeliveryofficial@gmail.com</p>
+            </div>
+            
+            <button type="submit" id="submit-button">Proceed to Payment <i class="fas fa-arrow-right"></i></button>
+        </form>
+    </section>
+    
+    <section id="price" class="section">
+        <h2 class="animate__animated animate__fadeInUp">Price List</h2>
+        <ul class="animate__animated animate__fadeInUp animate__delay-1s">
+            <li><span class="price-tag">₹249</span> Normal delivery (Including letters, Voice message, small gifts, etc)</li>
+            <li><span class="price-tag">₹299</span> Items Delivery (Send by customer or buy by Time Line)</li>
+        </ul>
+        <div class="service-info">
+            <p><i class="fas fa-info-circle"></i> All deliveries include specific acts like Singing, shayari, Confession, etc.</p>
+            <p><i class="fas fa-clock"></i> All services completed in less than 15 minutes</p>
+        </div>
+    </section>
+    
+    <section id="policy" class="section">
+        <h2 class="animate__animated animate__fadeInUp">Policy</h2>
+        <ul class="animate__animated animate__fadeInUp animate__delay-1s">
+            <li><i class="fas fa-undo"></i> <strong>Refund Policy:</strong> If delivery fails, the amount (excluding distance charges) will be refunded within twelve hours.</li>
+            <li><i class="fas fa-box-open"></i> <strong>Return Policy:</strong> If the customer wants the parcel back, they must pay courier charges for retrieval and ₹20 extra for convenience charges.</li>
+            <li><i class="fas fa-shield-alt"></i> <strong>Warranty:</strong> For items sent by customer, we'll record opening the package and refund full amount (excluding ₹100 fuel charge) if items are damaged/missing.</li>
+        </ul>
+    </section>
+    
+    <section id="contact" class="section">
+        <h2 class="animate__animated animate__fadeInUp">Contact Us</h2>
+        <div class="contact-cards animate__animated animate__fadeInUp animate__delay-1s">
+            <div class="company-address">
+                <h3><i class="fas fa-envelope"></i> Email</h3>
+                <p><a href="mailto:timelinedeliveryofficial@gmail.com">timelinedeliveryofficial@gmail.com</a></p>
+            </div>
+            <div class="company-address">
+                <h3><i class="fab fa-instagram"></i> Instagram</h3>
+                <p><a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank">@time_line.official</a></p>
+            </div>
+            <div class="company-address">
+                <h3><i class="fas fa-map-marked-alt"></i> Address</h3>
+                <p>Time Line Office, Parle-G factory, Patanava</p>
+                <p>Ramnagar industrial area, Ramnagar</p>
+                <p>Varanasi, Uttar Pradesh, 221008</p>
+            </div>
+            <div class="company-address">
+                <h3><i class="fas fa-phone-alt"></i> Contact</h3>
+                <p>7007677139 (Call/WhatsApp)</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="animate__animated animate__fadeIn animate__delay-1s">
+        <p>© 2025 TIME LINE. All Rights Reserved.</p>
     </footer>
-
-    <!-- Floating Action Button -->
-    <div class="fab" id="fab">
-        <i class="fas fa-plus"></i>
+    
+    <button id="askButton" class="animate__animated animate__fadeInRight animate__delay-2s">
+        <i class="fas fa-question"></i>
+    </button>
+    
+    <div id="contactOptions" class="contact-options">
+        <button onclick="redirectToInstagram()">
+            <i class="fab fa-instagram"></i> Instagram
+        </button>
+        <button onclick="redirectToGmail()">
+            <i class="fas fa-envelope"></i> Gmail
+        </button>
+        <button onclick="hideContactOptions()">
+            <i class="fas fa-times"></i> Close
+        </button>
+    </div>
+    
+    <div id="popup" class="popup">
+        <p id="popupMessage"></p>
+        <button onclick="closePopup()">OK</button>
     </div>
 
-    <!-- Dark Mode Toggle -->
-    <div class="dark-mode-toggle" id="darkModeToggle">
-        <i class="fas fa-moon"></i>
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Operation successful!</span>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Initialize AOS animation library
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true
-        });
-
-        // Supabase Configuration
-        const supabaseUrl = 'https://your-project.supabase.co';
-        const supabaseKey = 'your-supabase-key';
+        // Supabase initialization
+        const supabaseUrl = 'https://hseqvitreugkqgumgffa.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzZXF2aXRyZXVna3FndW1nZmZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ1MzY5MzUsImV4cCI6MjA2MDExMjkzNX0.p3qK1ojwxbfQBWVD_KIFVNuPveY6-rFs2gkKAJQshPo';
+        
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-        // DOM Elements
-        const preloader = document.querySelector('.preloader');
-        const authModal = document.getElementById('authModal');
-        const authContainer = document.getElementById('authContainer');
-        const loginForm = document.getElementById('loginForm');
-        const signupForm = document.getElementById('signupForm');
-        const forgotForm = document.getElementById('forgotForm');
-        const authTabs = document.querySelectorAll('.auth-tab');
-        const loginBtnNav = document.getElementById('loginBtnNav');
-        const signupBtnNav = document.getElementById('signupBtnNav');
-        const userActions = document.getElementById('userActions');
-        const navLinks = document.getElementById('navLinks');
-        const hamburger = document.getElementById('hamburger');
-        const googleLogin = document.getElementById('googleLogin');
-        const googleSignup = document.getElementById('googleSignup');
-        const loginFormData = document.getElementById('loginFormData');
-        const signupFormData = document.getElementById('signupFormData');
-        const forgotFormData = document.getElementById('forgotFormData');
-        const forgotPassword = document.getElementById('forgotPassword');
-        const backToLogin = document.getElementById('backToLogin');
-        const fab = document.getElementById('fab');
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toastMessage');
-        const timelineForm = document.getElementById('timelineForm');
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        const likeBtns = document.querySelectorAll('.like-btn');
-        const commentBtns = document.querySelectorAll('.comment-btn');
-        const commentSections = document.querySelectorAll('.comment-section');
-
-        // Current User
+        
+        // Global variables
         let currentUser = null;
-
-        // Preloader
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                preloader.classList.add('fade-out');
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 500);
-            }, 1000);
-        });
-
-        // Auth Modal Toggle
-        function toggleAuthModal() {
-            authModal.style.display = authModal.style.display === 'flex' ? 'none' : 'flex';
-            document.body.style.overflow = authModal.style.display === 'flex' ? 'hidden' : 'auto';
-            
-            if (authModal.style.display === 'flex') {
-                setTimeout(() => {
-                    authContainer.classList.add('active');
-                }, 10);
-            } else {
-                authContainer.classList.remove('active');
+        let userOrders = [];
+        
+        // Generate Random Alphanumeric Token
+        function generateToken() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let token = '';
+            for (let i = 0; i < 8; i++) {
+                token += chars.charAt(Math.floor(Math.random() * chars.length));
             }
+            return token;
         }
-
-        // Switch Auth Tabs
-        authTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabName = tab.getAttribute('data-tab');
-                
-                authTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                loginForm.classList.remove('active');
-                signupForm.classList.remove('active');
-                forgotForm.classList.remove('active');
-                
-                if (tabName === 'login') {
-                    loginForm.classList.add('active');
-                } else if (tabName === 'signup') {
-                    signupForm.classList.add('active');
+        
+        // Initialize Google Sign-In
+        function initializeGoogleSignIn() {
+            google.accounts.id.initialize({
+                client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+                callback: handleCredentialResponse,
+                auto_select: false,
+                cancel_on_tap_outside: true
+            });
+            
+            google.accounts.id.renderButton(
+                document.getElementById('google-login-container'),
+                { 
+                    theme: 'filled_blue', 
+                    size: 'large',
+                    width: '300',
+                    text: 'continue_with',
+                    shape: 'pill'
                 }
-            });
-        });
-
-        // Forgot Password
-        forgotPassword.addEventListener('click', (e) => {
-            e.preventDefault();
-            loginForm.classList.remove('active');
-            signupForm.classList.remove('active');
-            forgotForm.classList.add('active');
-        });
-
-        // Back to Login
-        backToLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            forgotForm.classList.remove('active');
-            loginForm.classList.add('active');
-            authTabs[0].click();
-        });
-
-        // Nav Login Button
-        loginBtnNav.addEventListener('click', () => {
-            toggleAuthModal();
-            authTabs[0].click();
-        });
-
-        // Nav Signup Button
-        signupBtnNav.addEventListener('click', () => {
-            toggleAuthModal();
-            authTabs[1].click();
-        });
-
-        // Hamburger Menu
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            hamburger.innerHTML = navLinks.classList.contains('active') ? 
-                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-        });
-
-        // Close Modal on Click Outside
-        authModal.addEventListener('click', (e) => {
-            if (e.target === authModal) {
-                toggleAuthModal();
-            }
-        });
-
-        // Google Login
-        googleLogin.addEventListener('click', async () => {
+            );
+            
+            google.accounts.id.prompt();
+        }
+        
+        // Handle Google Sign-In Response
+        async function handleCredentialResponse(response) {
             try {
-                const { user, session, error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                });
+                const userInfo = await verifyGoogleToken(response.credential);
+                currentUser = {
+                    id: userInfo.sub,
+                    name: userInfo.name,
+                    email: userInfo.email,
+                    picture: userInfo.picture
+                };
                 
-                if (error) throw error;
+                displayUserInfo();
+                checkOrderLimit();
                 
-                showToast('Logged in successfully!', 'success');
-                toggleAuthModal();
-                checkAuthState();
+                // Store user in localStorage
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
             } catch (error) {
-                showToast(error.message, 'error');
+                showPopup('Error signing in with Google. Please try again.');
+                console.error('Google Sign-In Error:', error);
             }
-        });
-
-        // Google Signup
-        googleSignup.addEventListener('click', async () => {
-            try {
-                const { user, session, error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                });
-                
-                if (error) throw error;
-                
-                showToast('Account created successfully!', 'success');
-                toggleAuthModal();
-                checkAuthState();
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        // Email/Password Login
-        loginFormData.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        }
+        
+        // Verify Google Token (mock function - in production, verify on your backend)
+        async function verifyGoogleToken(token) {
+            // In a real app, you would send this to your backend for verification
+            // This is a simplified version for demo purposes
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
             
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+            return JSON.parse(jsonPayload);
+        }
+        
+        // Display User Info
+        function displayUserInfo() {
+            const userInfoDiv = document.getElementById('user-info');
+            const userPic = document.getElementById('user-pic');
+            const userName = document.getElementById('user-name');
             
-            try {
-                const { user, error } = await supabase.auth.signInWithPassword({
-                    email,
-                    password
-                });
-                
-                if (error) throw error;
-                
-                showToast('Logged in successfully!', 'success');
-                toggleAuthModal();
-                checkAuthState();
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        // Email/Password Signup
-        signupFormData.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('signupConfirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                showToast('Passwords do not match!', 'error');
-                return;
-            }
-            
-            try {
-                const { user, error } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: {
-                            full_name: name
-                        }
-                    }
-                });
-                
-                if (error) throw error;
-                
-                showToast('Account created successfully! Please check your email for verification.', 'success');
-                toggleAuthModal();
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        // Forgot Password
-        forgotFormData.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('forgotEmail').value;
-            
-            try {
-                const { error } = await supabase.auth.resetPasswordForEmail(email);
-                
-                if (error) throw error;
-                
-                showToast('Password reset link sent to your email!', 'success');
-                backToLogin.click();
-            } catch (error) {
-                showToast(error.message, 'error');
-            }
-        });
-
-        // Check Auth State
-        async function checkAuthState() {
-            const { data: { user } } = await supabase.auth.getUser();
-            
-            if (user) {
-                currentUser = user;
-                updateUIForLoggedInUser(user);
+            if (currentUser) {
+                userInfoDiv.style.display = 'flex';
+                userPic.src = currentUser.picture;
+                userName.textContent = currentUser.name;
             } else {
-                currentUser = null;
-                updateUIForLoggedOutUser();
+                userInfoDiv.style.display = 'none';
             }
         }
-
-        // Update UI for Logged In User
-        function updateUIForLoggedInUser(user) {
-            userActions.innerHTML = `
-                <div class="user-profile" id="userProfile">
-                    <img src="${user.user_metadata?.avatar_url || 'https://www.gravatar.com/avatar/?d=mp'}" 
-                         alt="Profile" class="profile-pic">
-                    <span>${user.user_metadata?.full_name || user.email.split('@')[0]}</span>
-                    <div class="profile-dropdown" id="profileDropdown">
-                        <div class="dropdown-item">
-                            <i class="fas fa-user"></i> Profile
-                        </div>
-                        <div class="dropdown-item">
-                            <i class="fas fa-cog"></i> Settings
-                        </div>
-                        <div class="dropdown-item">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            const userProfile = document.getElementById('userProfile');
-            const profileDropdown = document.getElementById('profileDropdown');
-            
-            userProfile.addEventListener('click', (e) => {
-                e.stopPropagation();
-                profileDropdown.classList.toggle('show');
-            });
-            
-            // Logout
-            document.querySelector('.dropdown-item:last-child').addEventListener('click', async () => {
-                const { error } = await supabase.auth.signOut();
-                
-                if (error) {
-                    showToast(error.message, 'error');
-                } else {
-                    showToast('Logged out successfully!', 'success');
-                    currentUser = null;
-                    updateUIForLoggedOutUser();
-                }
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!userProfile.contains(e.target)) {
-                    profileDropdown.classList.remove('show');
-                }
-            });
-        }
-
-        // Update UI for Logged Out User
-        function updateUIForLoggedOutUser() {
-            userActions.innerHTML = `
-                <button class="auth-btn-nav login-btn" id="loginBtnNav">Login</button>
-                <button class="auth-btn-nav signup-btn" id="signupBtnNav">Sign Up</button>
-            `;
-            
-            // Reattach event listeners
-            document.getElementById('loginBtnNav').addEventListener('click', () => {
-                toggleAuthModal();
-                authTabs[0].click();
-            });
-            
-            document.getElementById('signupBtnNav').addEventListener('click', () => {
-                toggleAuthModal();
-                authTabs[1].click();
-            });
-        }
-
-        // Show Toast Notification
-        function showToast(message, type = 'success') {
-            toast.className = 'toast';
-            toast.classList.add(type);
-            toastMessage.textContent = message;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // FAB Click
-        fab.addEventListener('click', () => {
-            if (!currentUser) {
-                showToast('Please login to create a timeline', 'warning');
-                toggleAuthModal();
-            } else {
-                window.location.href = '#create';
-                document.getElementById('timelineTitle').focus();
-            }
+        
+        // Sign Out
+        document.getElementById('sign-out-button').addEventListener('click', function() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            displayUserInfo();
+            showPopup('You have been signed out.');
         });
-
-        // Timeline Form Submission
-        timelineForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            if (!currentUser) {
-                showToast('Please login to create a timeline', 'warning');
-                toggleAuthModal();
-                return;
-            }
-            
-            const title = document.getElementById('timelineTitle').value;
-            const description = document.getElementById('timelineDescription').value;
-            const category = document.getElementById('timelineCategory').value;
-            const privacy = document.querySelector('input[name="privacy"]:checked').value;
-            const cover = document.getElementById('timelineCover').value;
-            const tags = document.getElementById('timelineTags').value.split(',').map(tag => tag.trim());
+        
+        // Check Order Limit
+        async function checkOrderLimit() {
+            if (!currentUser) return;
             
             try {
                 const { data, error } = await supabase
-                    .from('timelines')
+                    .from('orders')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+                
+                if (error) throw error;
+                
+                userOrders = data || [];
+                
+                const orderLimitWarning = document.getElementById('order-limit-warning');
+                const submitButton = document.getElementById('submit-button');
+                
+                if (userOrders.length >= 2) {
+                    orderLimitWarning.style.display = 'block';
+                    submitButton.disabled = true;
+                    submitButton.style.opacity = '0.5';
+                    submitButton.style.cursor = 'not-allowed';
+                } else {
+                    orderLimitWarning.style.display = 'none';
+                    submitButton.disabled = false;
+                    submitButton.style.opacity = '1';
+                    submitButton.style.cursor = 'pointer';
+                }
+            } catch (error) {
+                console.error('Error checking order limit:', error);
+            }
+        }
+        
+        // Store Order in Supabase
+        async function storeOrder(orderData) {
+            if (!currentUser) {
+                showPopup('Please sign in with Google to place an order.');
+                return false;
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('orders')
                     .insert([
-                        { 
-                            title, 
-                            description, 
-                            category, 
-                            privacy, 
-                            cover_image: cover, 
-                            tags, 
-                            user_id: currentUser.id 
+                        {
+                            user_id: currentUser.id,
+                            user_email: currentUser.email,
+                            customer_name: orderData.customerName || document.getElementById('tokenDisplay').textContent.replace('Your Token: ', ''),
+                            phone_number: orderData.phoneNumber,
+                            recipient_name: orderData.recipientName,
+                            recipient_phone: orderData.recipientPhoneNumber,
+                            address: orderData.address,
+                            district: orderData.district,
+                            state: orderData.state,
+                            pincode: orderData.pincode,
+                            item_type: orderData.itemType,
+                            delivery_date: orderData.deliveryDate,
+                            delivery_time: orderData.deliveryTime,
+                            live_delivery: orderData.liveDelivery || false,
+                            total_amount: orderData.totalAmount,
+                            status: 'pending'
                         }
                     ])
                     .select();
                 
                 if (error) throw error;
                 
-                showToast('Timeline created successfully!', 'success');
-                timelineForm.reset();
+                // Upload photo if provided
+                const photoFile = document.getElementById('photoUpload').files[0];
+                if (photoFile) {
+                    const fileExt = photoFile.name.split('.').pop();
+                    const fileName = `${currentUser.id}_${Date.now()}.${fileExt}`;
+                    const { error: uploadError } = await supabase
+                        .storage
+                        .from('customer-photos')
+                        .upload(`orders/${fileName}`, photoFile);
+                    
+                    if (uploadError) throw uploadError;
+                    
+                    // Update order with photo URL
+                    const { publicURL } = supabase
+                        .storage
+                        .from('customer-photos')
+                        .getPublicUrl(`orders/${fileName}`);
+                    
+                    await supabase
+                        .from('orders')
+                        .update({ recipient_photo: publicURL })
+                        .eq('id', data[0].id);
+                }
                 
-                // In a real app, you would redirect to the new timeline or update the UI
+                return true;
             } catch (error) {
-                showToast(error.message, 'error');
+                console.error('Error storing order:', error);
+                showPopup('Error saving your order. Please try again.');
+                return false;
             }
-        });
-
-        // Filter Timelines
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const filter = btn.getAttribute('data-filter');
-                
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                timelineItems.forEach(item => {
-                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // Like Button
-        likeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (!currentUser) {
-                    showToast('Please login to like timelines', 'warning');
-                    toggleAuthModal();
-                    return;
-                }
-                
-                btn.classList.toggle('liked');
-                const icon = btn.querySelector('i');
-                
-                if (btn.classList.contains('liked')) {
-                    icon.className = 'fas fa-heart';
-                    showToast('Added to your favorites', 'success');
-                } else {
-                    icon.className = 'far fa-heart';
-                    showToast('Removed from your favorites', 'info');
-                }
-            });
-        });
-
-        // Comment Button
-        commentBtns.forEach((btn, index) => {
-            btn.addEventListener('click', () => {
-                if (!currentUser) {
-                    showToast('Please login to comment', 'warning');
-                    toggleAuthModal();
-                    return;
-                }
-                
-                commentSections[index].style.display = commentSections[index].style.display === 'block' ? 'none' : 'block';
-            });
-        });
-
-        // Comment Submission
-        document.querySelectorAll('.comment-submit').forEach((btn, index) => {
-            btn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                const input = document.querySelectorAll('.comment-input')[index];
-                const text = input.value.trim();
-                
-                if (!text) return;
-                
-                try {
-                    const { data, error } = await supabase
-                        .from('comments')
-                        .insert([
-                            { 
-                                text, 
-                                user_id: currentUser.id,
-                                timeline_id: 1, // In a real app, this would be the actual timeline ID
-                                user_name: currentUser.user_metadata?.full_name || currentUser.email.split('@')[0],
-                                user_avatar: currentUser.user_metadata?.avatar_url || 'https://www.gravatar.com/avatar/?d=mp'
-                            }
-                        ])
-                        .select();
-                    
-                    if (error) throw error;
-                    
-                    // In a real app, you would append the new comment to the list
-                    showToast('Comment added!', 'success');
-                    input.value = '';
-                } catch (error) {
-                    showToast(error.message, 'error');
-                }
-            });
-        });
-
-        // Dark Mode Toggle
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
+        }
+        
+        // DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Google Sign-In
+            initializeGoogleSignIn();
             
-            const icon = darkModeToggle.querySelector('i');
-            if (document.body.classList.contains('dark-mode')) {
-                icon.className = 'fas fa-sun';
-                localStorage.setItem('darkMode', 'enabled');
-            } else {
-                icon.className = 'fas fa-moon';
-                localStorage.setItem('darkMode', 'disabled');
+            // Check if user is already signed in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                displayUserInfo();
+                checkOrderLimit();
             }
-        });
-
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            darkModeToggle.querySelector('i').className = 'fas fa-sun';
-        }
-
-        // Smooth Scrolling for Anchor Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            
+            // Token generation
+            const customerName = document.getElementById('customerName');
+            const tokenDisplay = document.getElementById('tokenDisplay');
+            
+            customerName.addEventListener('blur', function() {
+                if (this.value === "") {
+                    tokenDisplay.textContent = "Your Token: " + generateToken();
+                } else {
+                    tokenDisplay.textContent = "";
+                }
+            });
+            
+            if (customerName.value === "") {
+                tokenDisplay.textContent = "Your Token: " + generateToken();
+            }
+            
+            // Set minimum delivery date and time
+            setMinDeliveryTime();
+            
+            // Photo upload info
+            document.getElementById("photoInfo").addEventListener("click", function(e) {
                 e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
+                showPopup("This photo is asked for better identification of recipient's during the time of delivery.");
+            });
+            
+            // Live delivery options
+            document.getElementById("liveDelivery").addEventListener("change", function() {
+                const liveDeliveryOptions = document.getElementById("liveDeliveryOptions");
+                if (this.checked) {
+                    liveDeliveryOptions.innerHTML = `
+                        <label for="deliveryMethod">Delivery Method:</label>
+                        <select id="deliveryMethod" name="deliveryMethod" class="animate__animated animate__fadeIn">
+                            <option value="videoCall">Live delivery on video call</option>
+                            <option value="recorded">Recorded video of delivery</option>
+                        </select>
+                        <label for="platform">Choose Platform:</label>
+                        <select id="platform" name="platform" class="animate__animated animate__fadeIn">
+                            <option value="">-- Select Platform --</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="googleMeet">Google Meet</option>
+                            <option value="instagram">Instagram</option>
+                        </select>
+                        <div id="platformDetails" class="animate__animated animate__fadeIn"></div>
+                    `;
                     
-                    // Close mobile menu if open
-                    if (navLinks.classList.contains('active')) {
-                        navLinks.classList.remove('active');
-                        hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+                    document.getElementById("platform").addEventListener("change", function() {
+                        const platformDetails = document.getElementById("platformDetails");
+                        switch (this.value) {
+                            case 'whatsapp':
+                                platformDetails.innerHTML = `
+                                    <label for="whatsappNumber">Fill Your WhatsApp Number:</label>
+                                    <input type="tel" id="whatsappNumber" name="whatsappNumber" placeholder="Enter your WhatsApp number" pattern="^[0-9]{10}$" required>
+                                `;
+                                break;
+                            case 'googleMeet':
+                                platformDetails.innerHTML = `
+                                    <label for="email">Enter your Email:</label>
+                                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                                `;
+                                break;
+                            case 'instagram':
+                                platformDetails.innerHTML = `
+                                    <label for="instagramId">Enter your Instagram ID:</label>
+                                    <input type="text" id="instagramId" name="instagramId" placeholder="Enter your Instagram ID" required>
+                                `;
+                                break;
+                            default:
+                                platformDetails.innerHTML = '';
+                                break;
+                        }
+                    });
+                } else {
+                    liveDeliveryOptions.innerHTML = '';
+                }
+            });
+            
+            // Item type selection
+            document.getElementById("itemType").addEventListener("change", function() {
+                const selectedItemType = this.value;
+                const additionalSections = document.getElementById("additionalSections");
+                const totalAmountDiv = document.getElementById("totalAmount");
+                
+                switch (selectedItemType) {
+                    case 'message':
+                    case 'writtenByTimeline':
+                        additionalSections.innerHTML = `
+                            <h3>Write Your Message</h3>
+                            <textarea name="message" rows="4" placeholder="Write your message here..." required></textarea>
+                            <div class="upload-section">
+                                <h3><i class="fas fa-envelope"></i> Your Message (Optional) <span class="info" onclick="showMessageInfo()">?</span></h3>
+                                <p>Upload an audio or video message to be played during delivery</p>
+                                <label class="file-input-label">
+                                    <i class="fas fa-file-audio"></i> Upload Audio (max 50MB): <input type="file" name="messageAudio" accept="audio/*">
+                                </label>
+                                <label class="file-input-label">
+                                    <i class="fas fa-file-video"></i> Upload Video (max 200MB, MP4/MKV): <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
+                                </label>
+                            </div>
+                            <div class="upload-section">
+                                <h3><i class="fas fa-clipboard-list"></i> Delivery Instructions <span class="info" onclick="showInstructionInfo()">?</span></h3>
+                                <p>Write or record instructions for the delivery person (at least one required)</p>
+                                <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
+                                <label class="file-input-label">
+                                    <i class="fas fa-microphone"></i> Or Upload Audio Instructions (max 10MB): <input type="file" name="instructionAudio" accept="audio/*">
+                                </label>
+                            </div>
+                        `;
+                        totalAmountDiv.textContent = "Total Amount: ₹249";
+                        break;
+                    case 'itemsSendByCustomer':
+                        additionalSections.innerHTML = `
+                            <h3>Send Item At</h3>
+                            <textarea rows="3" readonly>Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008</textarea>
+                            <button type="button" onclick="copyAddress()" class="animate__animated animate__fadeIn">Copy Address</button>
+                            <p class="instruction">Please write your token number on the delivery package for better identification.</p>
+                            <div class="upload-section">
+                                <h3><i class="fas fa-envelope"></i> Your Message (Optional) <span class="info" onclick="showMessageInfo()">?</span></h3>
+                                <p>Upload an audio or video message to be played during delivery</p>
+                                <label class="file-input-label">
+                                    <i class="fas fa-file-audio"></i> Upload Audio (max 50MB): <input type="file" name="messageAudio" accept="audio/*">
+                                </label>
+                                <label class="file-input-label">
+                                    <i class="fas fa-file-video"></i> Upload Video (max 200MB, MP4/MKV): <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
+                                </label>
+                            </div>
+                            <div class="upload-section">
+                                <h3><i class="fas fa-clipboard-list"></i> Delivery Instructions <span class="info" onclick="showInstructionInfo()">?</span></h3>
+                                <p>Write or record instructions for the delivery person (at least one required)</p>
+                                <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
+                                <label class="file-input-label">
+                                    <i class="fas fa-microphone"></i> Or Upload Audio Instructions (max 10MB): <input type="file" name="instructionAudio" accept="audio/*">
+                                </label>
+                            </div>
+                            <label><input type="checkbox" id="claimWarranty" name="claimWarranty"> Claim Warranty <span class="info" onclick="showWarrantyInfo()">?</span></label>
+                        `;
+                        totalAmountDiv.textContent = "Total Amount: ₹299";
+                        break;
+                    case 'itemsBuyByTimeline':
+                        additionalSections.innerHTML = `
+                            <h3>Describe Your Product</h3>
+                            <textarea name="productDescription" rows="4" placeholder="Describe your product..." required></textarea>
+                            <h3>Product Price</h3>
+                            <input type="number" id="productPrice" name="productPrice" placeholder="Enter estimated product price" required>
+                            <p class="instruction">Please enter slightly higher amount than actual price as product may be available at higher rate in our area. If we get it cheaper, we'll refund the difference within 24 hours.</p>
+                            <h3>Optional: Product Link</h3>
+                            <input type="url" name="productLink" placeholder="Paste the product link here">
+                            <div class="upload-section">
+                                <h3><i class="fas fa-envelope"></i> Your Message (Optional) <span class="info" onclick="showMessageInfo()">?</span></h3>
+                                <p>Upload an audio or video message to be played during delivery</p>
+                                <label class="file-input-label">
+                                    <i class="fas fa-file-audio"></i> Upload Audio (max 50MB): <input type="file" name="messageAudio" accept="audio/*">
+                                </label>
+                                <label class="file-input-label">
+                                    <i class="fas fa-file-video"></i> Upload Video (max 200MB, MP4/MKV): <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
+                                </label>
+                            </div>
+                            <div class="upload-section">
+                                <h3><i class="fas fa-clipboard-list"></i> Delivery Instructions <span class="info" onclick="showInstructionInfo()">?</span></h3>
+                                <p>Write or record instructions for the delivery person (at least one required)</p>
+                                <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
+                                <label class="file-input-label">
+                                    <i class="fas fa-microphone"></i> Or Upload Audio Instructions (max 10MB): <input type="file" name="instructionAudio" accept="audio/*">
+                                </label>
+                            </div>
+                        `;
+                        document.getElementById("productPrice").addEventListener("input", updateTotalAmount);
+                        updateTotalAmount();
+                        break;
+                    default:
+                        additionalSections.innerHTML = '';
+                        totalAmountDiv.textContent = "Total Amount: ₹0";
+                        break;
+                }
+            });
+            
+            // Ask Button
+            document.getElementById("askButton").addEventListener("click", function() {
+                const contactOptions = document.getElementById("contactOptions");
+                contactOptions.style.display = contactOptions.style.display === "block" ? "none" : "block";
+            });
+            
+            // Form submission
+            const form = document.getElementById("orderForm");
+            
+            form.addEventListener("submit", async function(event) {
+                event.preventDefault();
+                
+                // Validate pincode
+                const pincode = document.getElementById('pincode');
+                if (!/^\d{6}$/.test(pincode.value)) {
+                    showPopup("Pin code must be exactly 6 digits");
+                    pincode.focus();
+                    return;
+                }
+                
+                // Validate delivery instructions
+                const instructionsText = document.querySelector('textarea[name="instructions"]')?.value;
+                const instructionAudio = document.querySelector('input[name="instructionAudio"]')?.files[0];
+                if (!instructionsText && !instructionAudio) {
+                    showPopup("Please provide delivery instructions (text or audio)");
+                    return;
+                }
+                
+                // Validate live delivery options
+                const liveDeliveryChecked = document.getElementById('liveDelivery').checked;
+                if (liveDeliveryChecked) {
+                    const platform = document.getElementById('platform');
+                    if (!platform || !platform.value) {
+                        showPopup("Please select a platform for live delivery");
+                        return;
+                    }
+                    
+                    let valid = true;
+                    
+                    if (platform.value === 'whatsapp' && !document.getElementById('whatsappNumber').value) {
+                        valid = false;
+                        showPopup("Please enter your WhatsApp number for live delivery");
+                    } else if (platform.value === 'googleMeet' && !document.getElementById('email').value) {
+                        valid = false;
+                        showPopup("Please enter your email for Google Meet live delivery");
+                    } else if (platform.value === 'instagram' && !document.getElementById('instagramId').value) {
+                        valid = false;
+                        showPopup("Please enter your Instagram ID for live delivery");
+                    }
+                    
+                    if (!valid) return;
+                }
+                
+                // Validate file sizes
+                const messageAudio = document.querySelector('input[name="messageAudio"]');
+                if (messageAudio && messageAudio.files[0] && messageAudio.files[0].size > 50 * 1024 * 1024) {
+                    showPopup("Message audio file must be less than 50MB");
+                    return;
+                }
+                
+                const messageVideo = document.querySelector('input[name="messageVideo"]');
+                if (messageVideo && messageVideo.files[0]) {
+                    if (messageVideo.files[0].size > 200 * 1024 * 1024) {
+                        showPopup("Message video file must be less than 200MB");
+                        return;
+                    }
+                    const validFormats = ['video/mp4', 'video/x-matroska'];
+                    if (!validFormats.includes(messageVideo.files[0].type)) {
+                        showPopup("Video must be in MP4 or MKV format");
+                        return;
                     }
                 }
+                
+                const instructionAudioFile = document.querySelector('input[name="instructionAudio"]');
+                if (instructionAudioFile && instructionAudioFile.files[0] && instructionAudioFile.files[0].size > 10 * 1024 * 1024) {
+                    showPopup("Instruction audio file must be less than 10MB");
+                    return;
+                }
+                
+                // Check order limit
+                if (userOrders.length >= 2) {
+                    showPopup('You have reached the maximum order limit (2 orders per 24 hours). Please try again later.');
+                    return;
+                }
+                
+                // Prepare order data
+                const orderData = {
+                    customerName: document.getElementById("customerName").value,
+                    phoneNumber: document.getElementById("phoneNumber").value,
+                    recipientName: document.getElementById("recipientName").value,
+                    recipientPhoneNumber: document.getElementById("recipientPhoneNumber").value,
+                    address: document.getElementById("address").value,
+                    district: document.getElementById("district").value,
+                    state: document.getElementById("state").value,
+                    pincode: document.getElementById("pincode").value,
+                    itemType: document.getElementById("itemType").value,
+                    deliveryDate: document.getElementById("deliveryDate").value,
+                    deliveryTime: document.getElementById("deliveryTime").value,
+                    liveDelivery: document.getElementById("liveDelivery").checked,
+                    totalAmount: calculateTotalAmount()
+                };
+                
+                // Store order in Supabase
+                const success = await storeOrder(orderData);
+                if (success) {
+                    // Store order details in localStorage for payment page
+                    localStorage.setItem("orderDetails", JSON.stringify({
+                        customerName: orderData.customerName || document.getElementById("tokenDisplay").textContent,
+                        totalAmount: orderData.totalAmount
+                    }));
+                    
+                    // Redirect to payment page
+                    window.location.href = "payment.html";
+                }
+            });
+            
+            // Nav scroll effect
+            window.addEventListener('scroll', function() {
+                const nav = document.getElementById('mainNav');
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
             });
         });
-
-        // Animate timeline items when they come into view
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+        
+        // Helper functions
+        function setMinDeliveryTime() {
+            const now = new Date();
+            const deliveryDate = document.getElementById('deliveryDate');
+            const deliveryTime = document.getElementById('deliveryTime');
+            
+            // Set minimum date to today
+            const today = now.toISOString().split('T')[0];
+            deliveryDate.min = today;
+            
+            // Set minimum time to 2 hours from now
+            now.setHours(now.getHours() + 2);
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const minTime = `${hours}:${minutes}`;
+            
+            if (deliveryDate.value === today) {
+                deliveryTime.min = minTime;
+            }
+            
+            deliveryDate.addEventListener('change', function() {
+                if (this.value === today) {
+                    deliveryTime.min = minTime;
+                } else {
+                    deliveryTime.removeAttribute('min');
                 }
             });
-        }, { threshold: 0.1 });
-
-        timelineItems.forEach(item => {
-            observer.observe(item);
-        });
-
-        // Initialize stats counter animation
-        function animateValue(id, start, end, duration) {
-            const obj = document.getElementById(id);
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const value = Math.floor(progress * (end - start) + start);
-                obj.innerHTML = value.toLocaleString() + '+';
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-            };
-            window.requestAnimationFrame(step);
         }
-
-        // Start counter animations when stats section comes into view
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateValue('timelinesCount', 0, 10000, 2000);
-                    animateValue('usersCount', 0, 5000, 2000);
-                    animateValue('eventsCount', 0, 250000, 2000);
-                    animateValue('countriesCount', 0, 100, 2000);
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        const statsSection = document.querySelector('.features:nth-of-type(2)');
-        if (statsSection) {
-            statsObserver.observe(statsSection);
+        
+        function showInstructionInfo() {
+            showPopup("Delivery instructions help our team understand how you want the delivery to be performed. Please provide clear instructions for the best experience.");
         }
-
-        // Check auth state on page load
-        checkAuthState();
+        
+        function showMessageInfo() {
+            showPopup("Adding a personal message makes the delivery more special. You can record your voice or video message that will be played during delivery.");
+        }
+        
+        function showWarrantyInfo() {
+            showPopup("By claiming warranty, you authorize us to open your package upon arrival and record a video/pictures of the contents. If recipient reports any damage or missing items, we'll refund full amount (excluding ₹100 fuel charge).");
+        }
+        
+        function copyAddress() {
+            const addressText = document.querySelector('textarea[readonly]');
+            addressText.select();
+            document.execCommand('copy');
+            showPopup("Address copied to clipboard!");
+        }
+        
+        function showPopup(message) {
+            const popup = document.getElementById('popup');
+            document.getElementById('popupMessage').textContent = message;
+            popup.style.display = 'block';
+        }
+        
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+        
+        function redirectToInstagram() {
+            window.open("https://www.instagram.com/time_line.official", "_blank");
+        }
+        
+        function redirectToGmail() {
+            window.location.href = "mailto:timelinedeliveryofficial@gmail.com";
+        }
+        
+        function hideContactOptions() {
+            document.getElementById("contactOptions").style.display = "none";
+        }
+        
+        function calculateTotalAmount() {
+            const itemType = document.getElementById("itemType").value;
+            let amount = 0;
+            
+            if (itemType === "message" || itemType === "writtenByTimeline") {
+                amount = 249;
+            } else if (itemType === "itemsSendByCustomer") {
+                amount = 299;
+            } else if (itemType === "itemsBuyByTimeline") {
+                const productPrice = parseFloat(document.getElementById("productPrice").value) || 0;
+                amount = 299 + productPrice;
+            }
+            
+            document.getElementById("totalAmount").textContent = `Total Amount: ₹${amount}`;
+            return amount;
+        }
+        
+        function updateTotalAmount() {
+            calculateTotalAmount();
+        }
     </script>
 </body>
 </html>
