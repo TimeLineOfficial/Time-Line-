@@ -3,35 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIME LINE - Delivering Emotions On Time (Final)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>TIME LINE - Premium Delivery Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        /* Full CSS from integrated_website_v3.html */
+        /* Modern 3D Website Theme */
         :root {
             --primary: #FF6B6B;
             --primary-dark: #ff5252;
             --secondary: #4ECDC4;
             --secondary-dark: #3fd8d1;
-            --dark: #121212;
-            --darker: #0a0a0a;
+            --accent: #FFE66D;
+            --dark: #1a1a1a;
+            --darker: #101010;
             --light: #f8f9fa;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
+            --gray: #adb5bd;
+            --light-gray: #dee2e6;
             --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
             --gradient-hover: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
-            --shadow: 0 10px 20px rgba(0,0,0,0.1);
-            --shadow-hover: 0 15px 30px rgba(0,0,0,0.2);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --border-radius: 12px;
-            --border-radius-sm: 8px;
+            --shadow: 0 15px 30px rgba(0,0,0,0.2);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.3);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --border-radius: 15px;
+            --border-radius-sm: 10px;
+            --perspective: 1500px;
+        }
+
+        /* Light Theme Variables */
+        .light-theme {
+            --dark: #f5f5f5;
+            --darker: #e0e0e0;
+            --light: #333333;
+            --gray: #555555;
+            --light-gray: #777777;
+            --shadow: 0 15px 30px rgba(0,0,0,0.1);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
         }
 
         * {
@@ -48,168 +57,299 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--dark);
             color: var(--light);
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 10% 20%, rgba(31,31,31,0.8) 0%, rgba(18,18,18,1) 90%);
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
             position: relative;
-            transition: background-color 0.5s ease, color 0.5s ease; /* Theme transition */
+            perspective: var(--perspective);
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        /* Particle background */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
 
         /* Header styles */
         header {
-            background: var(--darker);
+            background: rgba(16, 16, 16, 0.9);
             text-align: center;
-            padding: 2rem 1rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            z-index: 10;
-            animation: fadeInDown 0.8s ease;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
+            padding: 1.2rem 1rem;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), #ff8c00, #ff6347);
-            animation: rainbow 8s linear infinite;
+            z-index: 1000;
+            transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        @keyframes rainbow {
-            0% {background-position: 0% 50%}
-            50% {background-position: 100% 50%}
-            100% {background-position: 0% 50%}
+        .light-theme header {
+            background: rgba(240, 240, 240, 0.9);
         }
 
-        header h1 {
+        header.scrolled {
+            padding: 0.8rem 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
             margin: 0;
             color: var(--primary);
-            font-size: clamp(2rem, 6vw, 3rem); /* Responsive font size */
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             text-transform: uppercase;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255,99,71,0.3);
-            animation: pulse 2s infinite alternate;
-        }
-
-        @keyframes pulse {
-            from {text-shadow: 0 0 10px rgba(255,99,71,0.3);}
-            to {text-shadow: 0 0 20px rgba(255,99,71,0.6);}
-        }
-
-        header p {
-            margin: 0.5rem 0 0;
-            color: var(--light);
-            font-size: clamp(1rem, 3vw, 1.2rem); /* Responsive font size */
-            font-weight: 300;
-            animation: fadeIn 1.5s ease;
+            cursor: pointer;
         }
 
         /* Navigation */
-        nav {
-            background-color: rgba(31, 31, 31, 0.95);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: var(--transition);
-            animation: fadeIn 1s ease;
-        }
-
-        nav.scrolled {
-            padding: 0.5rem 0;
-            background-color: rgba(10, 10, 10, 0.98);
-        }
-
         nav ul {
             list-style: none;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 0 1rem;
+            padding: 0;
             margin: 0;
-            flex-wrap: wrap;
         }
 
         nav ul li {
-            margin: 0.5rem clamp(0.5rem, 2vw, 1rem); /* Responsive margin */
+            margin: 0 clamp(0.5rem, 2vw, 1rem);
             position: relative;
-        }
-
-        nav ul li::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: var(--transition);
-        }
-
-        nav ul li:hover::after {
-            width: 100%;
         }
 
         nav ul li a {
             text-decoration: none;
             color: var(--light);
             font-weight: 500;
-            font-size: clamp(0.8rem, 2.5vw, 1rem); /* Responsive font size */
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
             padding: 0.5rem 0;
             transition: var(--transition);
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
         }
 
         nav ul li a:hover {
             color: var(--primary);
         }
 
-        /* Sections */
-        .section {
-            padding: clamp(2rem, 8vw, 4rem) clamp(1rem, 5vw, 2rem); /* Responsive padding */
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .order-now-btn {
+            background: var(--gradient);
+            color: white !important;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .order-now-btn:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+            }
+        }
+
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            padding: 8rem 2rem 4rem;
             position: relative;
             overflow: hidden;
-            animation: fadeIn 0.8s ease-out;
         }
 
-        @keyframes fadeIn {
-            from {opacity: 0; transform: translateY(20px);}
-            to {opacity: 1; transform: translateY(0);}
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: url('https://images.unsplash.com/photo-1520853504280-249b72dc947c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+            filter: brightness(0.3);
+            transform: scale(1.1);
+            transition: transform 0.5s ease;
         }
 
-        .section:nth-child(even) {
-            background-color: rgba(31, 31, 31, 0.5);
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
         }
 
-        .section h2 {
-            font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive font size */
+        .hero h2 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 3vw, 1.3rem);
             margin-bottom: 2rem;
+            color: var(--light-gray);
+        }
+
+        .hero .order-now-btn {
+            padding: 0.8rem 1.8rem;
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+        }
+
+        /* 3D Floating Elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(78, 205, 196, 0.2));
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+
+        .element-1 {
+            width: 300px;
+            height: 300px;
+            top: 20%;
+            left: 10%;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .element-2 {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 15%;
+            animation: float 12s ease-in-out infinite 2s;
+        }
+
+        .element-3 {
+            width: 150px;
+            height: 150px;
+            bottom: 10%;
+            left: 20%;
+            animation: float 10s ease-in-out infinite 1s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) rotate(0); }
+            25% { transform: translateY(-20px) translateX(10px) rotate(5deg); }
+            50% { transform: translateY(10px) translateX(-15px) rotate(-5deg); }
+            75% { transform: translateY(-15px) translateX(5px) rotate(3deg); }
+            100% { transform: translateY(0) translateX(0) rotate(0); }
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 2rem;
+            background-color: rgba(26, 26, 26, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .light-theme .about {
+            background-color: rgba(240, 240, 240, 0.7);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2rem, 6vw, 3rem);
             color: var(--primary);
+            margin-bottom: 1rem;
             position: relative;
             display: inline-block;
         }
 
-        .section h2::after {
+        .section-title h2::after {
             content: '';
             position: absolute;
             bottom: -10px;
@@ -221,424 +361,467 @@
             border-radius: 3px;
         }
 
-        .section ul {
-            list-style: none;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            text-align: left;
-            padding-left: 0; /* Remove default padding */
+        .section-title p {
+            color: var(--light-gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
         }
 
-        .section ul li {
-            padding: 0.8rem 0;
-            position: relative;
-            padding-left: 2rem;
-            animation: fadeInUp 0.5s ease;
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-        }
-
-        .section ul li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        .section ul li i {
-            margin-right: 0.5rem;
-            color: var(--primary);
-        }
-
-        /* Timeline Styles */
-        .timeline {
-            position: relative;
-            padding: 20px 0;
-            max-width: 1000px;
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .timeline::before {
+        .feature-card {
+            background-color: rgba(16, 16, 16, 0.7);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .light-theme .feature-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card::before {
             content: '';
             position: absolute;
             top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 2px;
+            left: 0;
+            width: 100%;
+            height: 5px;
             background: var(--gradient);
-            transform: translateX(-50%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
         }
 
-        .timeline-item {
-            position: relative;
-            margin-bottom: 40px;
-            width: 50%;
-            padding: clamp(1rem, 4vw, 1.5rem); /* Responsive padding */
-            box-sizing: border-box;
-            background-color: rgba(31, 31, 31, 0.8);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            animation: fadeInUp 0.8s ease;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .timeline-item:hover {
-            transform: translateY(-5px) scale(1.02);
+        .feature-card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
             box-shadow: var(--shadow-hover);
         }
 
-        .timeline-item:nth-child(odd) {
-            margin-left: 0;
-            margin-right: auto;
-            transform-origin: right center;
+        .feature-card:hover::before {
+            transform: scaleX(1);
         }
 
-        .timeline-item:nth-child(even) {
-            margin-left: auto;
-            margin-right: 0;
-            transform-origin: left center;
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
         }
 
-        .timeline-item::after {
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .feature-card p {
+            color: var(--light-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .gallery-tab {
+            padding: 0.8rem 1.5rem;
+            background: rgba(16, 16, 16, 0.7);
+            color: var(--light);
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            margin: 0 0.5rem;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .light-theme .gallery-tab {
+            background: rgba(240, 240, 240, 0.7);
+            color: var(--light);
+        }
+
+        .gallery-tab.active {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .gallery-tab:hover:not(.active) {
+            background: rgba(255, 107, 107, 0.2);
+        }
+
+        .gallery-content {
+            position: relative;
+        }
+
+        .gallery-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .gallery-grid.active {
+            display: grid;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            height: 300px;
+        }
+
+        .gallery-item::before {
             content: '';
             position: absolute;
-            top: 30px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--gradient);
-            box-shadow: 0 0 10px rgba(255,99,71,0.5);
-            animation: pulse 2s infinite alternate;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .timeline-item:nth-child(odd)::after {
-            right: -10px;
+        .gallery-item:hover::before {
+            opacity: 1;
         }
 
-        .timeline-item:nth-child(even)::after {
-            left: -10px;
+        .gallery-item img, .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
         }
 
-        .timeline-date {
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: clamp(1rem, 3vw, 1.1rem); /* Responsive font size */
+        .gallery-item:hover img, .gallery-item:hover video {
+            transform: scale(1.1);
         }
 
-        .timeline-content h3 {
-            margin-top: 0;
-            color: var(--primary);
-            font-size: clamp(1.1rem, 4vw, 1.3rem); /* Responsive font size */
-        }
-
-        .timeline-content p {
-            color: var(--light);
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-        }
-
-        /* Form styles */
-        form {
-            display: flex;
-            flex-direction: column;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: clamp(1.5rem, 5vw, 2rem); /* Responsive padding */
-            background-color: rgba(31, 31, 31, 0.8);
+        .gallery-item-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+            z-index: 2;
             transition: var(--transition);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.05);
-            animation: fadeInUp 0.8s ease;
         }
 
-        form:hover {
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-5px);
+        .gallery-item:hover .gallery-item-border {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
         }
 
-        form label {
-            margin-top: 1rem;
-            text-align: left;
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            z-index: 3;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item-overlay h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .gallery-item-overlay p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 6rem 2rem;
+            background-color: rgba(26, 26, 26, 0.7);
+            position: relative;
+        }
+
+        .light-theme .testimonials {
+            background-color: rgba(240, 240, 240, 0.7);
+        }
+
+        .testimonial-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial-slider {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .testimonial-slide {
+            min-width: 100%;
+            padding: 2rem;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-card {
+            background-color: rgba(16, 16, 16, 0.7);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .light-theme .testimonial-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-card::before {
+            content: '\201C';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 4rem;
+            color: var(--primary);
+            opacity: 0.2;
+            font-family: serif;
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1.5rem;
             color: var(--light);
-            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
             display: flex;
             align-items: center;
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
         }
 
-        form input, form textarea, form select, form button {
-            margin-top: 0.5rem;
-            padding: clamp(0.7rem, 2vw, 0.8rem) clamp(0.8rem, 3vw, 1rem); /* Responsive padding */
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+            border: 2px solid var(--primary);
+        }
+
+        .testimonial-author-info h4 {
+            color: var(--primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .testimonial-author-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .testimonial-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0 0.5rem;
+        }
+
+        .testimonial-control:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: center;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-right: 1rem;
+            margin-top: 0.2rem;
+        }
+
+        .contact-text h4 {
+            color: var(--light);
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-text p, .contact-text a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-text a:hover {
+            color: var(--primary);
+        }
+
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .contact-form h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background-color: rgba(16, 16, 16, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--border-radius-sm);
-            border: 1px solid rgba(255,255,255,0.1);
-            background-color: rgba(31, 31, 31, 0.8);
             color: var(--light);
             font-family: 'Poppins', sans-serif;
             transition: var(--transition);
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-            width: 100%; /* Ensure full width */
         }
 
-        form input:focus, form textarea:focus, form select:focus {
+        .light-theme .form-control {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+        }
+
+        .form-control:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
         }
 
-        form button {
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
             background: var(--gradient);
             color: white;
             border: none;
-            padding: clamp(0.8rem, 2.5vw, 1rem); /* Responsive padding */
-            margin-top: 1.5rem;
+            padding: 0.8rem 1.5rem;
             border-radius: var(--border-radius-sm);
-            font-size: clamp(0.9rem, 3vw, 1rem); /* Responsive font size */
             font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
             cursor: pointer;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
         }
 
-        form button:hover {
+        .submit-btn:hover {
             background: var(--gradient-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        form button i {
-            margin-left: 0.5rem;
-        }
-
-        form button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255,255,255,0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-
-        form button:focus:not(:active)::after {
-            animation: ripple 1s ease-out;
-        }
-
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(20, 20);
-                opacity: 0;
-            }
-        }
-
-        /* Info styles */
-        .info {
-            cursor: pointer;
-            color: var(--primary);
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: rgba(255, 107, 107, 0.2);
-            margin-left: 0.5rem;
-            font-size: 0.8rem;
-            transition: var(--transition);
-        }
-
-        .info:hover {
-            background: rgba(255, 107, 107, 0.3);
-            transform: scale(1.1);
-        }
-
-        /* Token styles */
-        .token {
-            color: #ffcc00;
-            font-weight: bold;
-            margin: 0.5rem 0;
-            padding: 0.5rem;
-            background: rgba(255, 204, 0, 0.1);
-            border-radius: 5px;
-            display: inline-block;
-            letter-spacing: 1px;
-            font-size: clamp(0.8rem, 2vw, 0.9rem); /* Responsive font size */
-            word-break: break-all; /* Prevent overflow */
-        }
-
-        /* Service info */
-        .service-info {
-            color: var(--primary);
-            font-weight: bold;
-            background: rgba(255,99,71,0.1);
-            padding: 8px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 10px;
-            animation: pulse 2s infinite;
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-        }
-
-        .service-info i {
-            margin-right: 0.5rem;
-        }
-
-        /* Floating animation */
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% {transform: translateY(0px);}
-            50% {transform: translateY(-10px);}
-            100% {transform: translateY(0px);}
-        }
-
-        /* Upload section */
-        .upload-section {
-            margin-top: 1.5rem;
-            padding: clamp(1rem, 4vw, 1.5rem); /* Responsive padding */
-            background-color: rgba(31, 31, 31, 0.5);
-            border-radius: var(--border-radius-sm);
-            border: 1px dashed rgba(255,255,255,0.1);
-            transition: var(--transition);
-        }
-
-        .upload-section:hover {
-            border-color: var(--primary);
-            background-color: rgba(31, 31, 31, 0.7);
             transform: translateY(-3px);
-        }
-
-        .upload-section h3 {
-            margin-top: 0;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            font-size: clamp(1rem, 3vw, 1.1rem); /* Responsive font size */
-        }
-
-        .upload-section h3 i {
-            margin-right: 0.5rem;
-        }
-
-        .upload-section p {
-             font-size: clamp(0.8rem, 2.5vw, 0.9rem); /* Responsive font size */
-        }
-
-        .file-input-label {
-            display: block;
-            margin-bottom: 1rem;
-            padding: clamp(0.8rem, 2.5vw, 1rem); /* Responsive padding */
-            background: rgba(31, 31, 31, 0.5);
-            border-radius: var(--border-radius-sm);
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1px dashed rgba(255,255,255,0.1);
-            font-size: clamp(0.8rem, 2.5vw, 0.9rem); /* Responsive font size */
-        }
-
-        .file-input-label:hover {
-            background: rgba(31, 31, 31, 0.7);
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .file-input-label input[type="file"] {
-            display: none; /* Hide default file input */
-        }
-
-        /* Total amount */
-        .total-amount {
-            background: linear-gradient(135deg, rgba(255,99,71,0.2), rgba(255,99,71,0.1));
-            padding: clamp(1rem, 4vw, 1.5rem); /* Responsive padding */
-            margin: 2rem 0;
-            border-radius: var(--border-radius-sm);
-            font-weight: bold;
-            font-size: clamp(1.1rem, 4vw, 1.3rem); /* Responsive font size */
-            color: white;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(255,99,71,0.2);
-            animation: glow 2s infinite alternate;
-        }
-
-        @keyframes glow {
-            from {box-shadow: 0 0 5px rgba(255,99,71,0.3);}
-            to {box-shadow: 0 0 15px rgba(255,99,71,0.5);}
-        }
-
-        /* Company address */
-        .company-address {
-            background-color: rgba(31, 31, 31, 0.7);
-            padding: clamp(1rem, 4vw, 1.5rem); /* Responsive padding */
-            border-radius: var(--border-radius-sm);
-            margin: 1.5rem 0;
-            text-align: left;
-            border-left: 4px solid var(--primary);
-            transition: var(--transition);
-        }
-
-        .company-address:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .company-address h3 {
-            margin-top: 0;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
-            font-size: clamp(1rem, 3vw, 1.1rem); /* Responsive font size */
-        }
-
-        .company-address h3 i {
-            margin-right: 0.5rem;
-        }
-
-        .company-address p {
-            margin: 0.5rem 0;
-            display: flex;
-            align-items: center;
-            font-size: clamp(0.8rem, 2.5vw, 0.9rem); /* Responsive font size */
-            word-break: break-word; /* Prevent overflow */
-        }
-
-        .company-address p i {
-            margin-right: 0.5rem;
-            width: 20px;
-            text-align: center;
-            flex-shrink: 0; /* Prevent icon shrinking */
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
         }
 
         /* Footer */
         footer {
             background-color: var(--darker);
-            text-align: center;
-            padding: 2rem 1rem;
-            margin-top: 3rem;
+            padding: 4rem 2rem 2rem;
             position: relative;
-            animation: fadeIn 1s ease;
         }
 
         footer::before {
@@ -647,1523 +830,1215 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
+            height: 4px;
             background: var(--gradient);
         }
 
-        footer p {
-            margin: 0;
-            color: var(--gray);
-            font-size: clamp(0.8rem, 2vw, 0.9rem); /* Responsive font size */
-        }
-
-        /* Ask button */
-        #askButton {
-            position: fixed;
-            bottom: clamp(1rem, 4vw, 2rem); /* Responsive position */
-            right: clamp(1rem, 4vw, 2rem); /* Responsive position */
-            background: var(--gradient);
-            color: white;
-            border: none;
-            width: clamp(50px, 12vw, 60px); /* Responsive size */
-            height: clamp(50px, 12vw, 60px); /* Responsive size */
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: var(--shadow);
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            transition: var(--transition);
-            animation: fadeInRight 1s ease;
-        }
-
-        #askButton:hover {
-            transform: scale(1.1) translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        #askButton i {
-            font-size: clamp(1.5rem, 5vw, 1.8rem); /* Responsive icon size */
-        }
-
-        /* Contact options */
-        .contact-options {
-            display: none;
-            position: fixed;
-            bottom: clamp(6rem, 18vw, 8rem); /* Responsive position */
-            right: clamp(1rem, 4vw, 2rem); /* Responsive position */
-            background-color: rgba(31, 31, 31, 0.95);
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            z-index: 99;
-            backdrop-filter: blur(10px);
-            animation: fadeInUp 0.3s ease;
-            width: max-content; /* Adjust width based on content */
-        }
-
-        .contact-options button {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            width: 100%;
-            margin: 0.5rem 0;
-            padding: clamp(0.6rem, 2vw, 0.8rem) clamp(1rem, 3vw, 1.5rem); /* Responsive padding */
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius-sm);
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: clamp(0.8rem, 2.5vw, 0.9rem); /* Responsive font size */
-        }
-
-        .contact-options button:hover {
-            background: var(--primary);
-            transform: translateX(-5px);
-        }
-
-        .contact-options button i {
-            margin-right: 0.5rem;
-        }
-
-        /* Popup */
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(31, 31, 31, 0.95);
-            padding: clamp(1.5rem, 5vw, 2rem); /* Responsive padding */
-            border-radius: var(--border-radius);
-            z-index: 1001;
-            box-shadow: var(--shadow-hover);
-            max-width: 90%;
-            width: clamp(300px, 80vw, 400px); /* Responsive width */
-            text-align: center;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .popup p {
-            margin-bottom: 1.5rem;
-            font-size: clamp(1rem, 3vw, 1.1rem); /* Responsive font size */
-        }
-
-        .popup button {
-            background: var(--gradient);
-            color: white;
-            border: none;
-            padding: clamp(0.7rem, 2vw, 0.8rem) clamp(1.2rem, 4vw, 1.5rem); /* Responsive padding */
-            border-radius: var(--border-radius-sm);
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-        }
-
-        .popup button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        /* Google login container */
-        #google-login-container {
-            display: flex;
-            justify-content: center;
-            margin: 1rem 0;
-            animation: fadeIn 1s ease;
-        }
-        /* Ensure Google button scales */
-        #google-login-container > div {
-            width: auto !important; /* Override fixed width */
-            max-width: 100%;
-        }
-
-        /* User info */
-        .user-info {
-            display: flex;
-            align-items: center;
+            flex-wrap: wrap;
             justify-content: space-between;
-            margin: 1rem 0;
-            padding: clamp(0.8rem, 2.5vw, 1rem); /* Responsive padding */
-            background: rgba(31, 31, 31, 0.7);
-            border-radius: var(--border-radius-sm);
-            animation: fadeIn 1s ease;
-            flex-wrap: wrap; /* Allow wrapping on small screens */
+            gap: 2rem;
         }
 
-        .user-info img {
-            width: clamp(30px, 8vw, 40px); /* Responsive size */
-            height: clamp(30px, 8vw, 40px); /* Responsive size */
-            border-radius: 50%;
-            margin-right: 1rem;
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
         }
 
-        .user-info span {
-            font-weight: 500;
-            flex-grow: 1;
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-            margin-right: 1rem; /* Space before button */
-            word-break: break-all; /* Prevent overflow */
-        }
-
-        .user-info button {
-            margin-left: auto; /* Push button to the right */
-            background: rgba(255, 107, 107, 0.2);
+        .footer-column h3 {
             color: var(--primary);
-            border: none;
-            padding: clamp(0.4rem, 1.5vw, 0.5rem) clamp(0.8rem, 2.5vw, 1rem); /* Responsive padding */
-            border-radius: var(--border-radius-sm);
-            cursor: pointer;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-column p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
             transition: var(--transition);
-            font-size: clamp(0.8rem, 2vw, 0.9rem); /* Responsive font size */
-            flex-shrink: 0; /* Prevent button shrinking */
-        }
-
-        .user-info button:hover {
-            background: rgba(255, 107, 107, 0.3);
-        }
-
-        /* Order count warning */
-        .order-count-warning {
-            color: var(--warning);
-            background: rgba(255, 193, 7, 0.1);
-            padding: clamp(0.6rem, 2vw, 0.8rem); /* Responsive padding */
-            border-radius: var(--border-radius-sm);
-            border-left: 4px solid var(--warning);
-            margin: 1rem 0;
             display: flex;
             align-items: center;
-            animation: fadeIn 1s ease;
-            font-size: clamp(0.8rem, 2.5vw, 0.9rem); /* Responsive font size */
         }
 
-        .order-count-warning i {
+        .footer-links a i {
             margin-right: 0.5rem;
+            color: var(--primary);
         }
 
-        /* Price tag */
-        .price-tag {
-            background: var(--gradient);
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            margin-right: 0.5rem;
-            font-weight: bold;
-            font-size: clamp(0.8rem, 2vw, 0.9rem); /* Responsive font size */
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
         }
 
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: clamp(150px, 40vw, 200px); /* Responsive width */
-            background-color: var(--darker);
-            color: #fff;
-            text-align: center;
-            border-radius: var(--border-radius-sm);
-            padding: 10px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            font-size: clamp(0.8rem, 2vw, 0.9rem); /* Responsive font size */
-            font-weight: normal;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Theme toggle */
-        #themeToggle {
-            position: fixed;
-            top: clamp(10px, 3vw, 20px); /* Responsive position */
-            right: clamp(10px, 3vw, 20px); /* Responsive position */
-            background: var(--gradient);
-            color: white;
-            border: none;
-            width: clamp(35px, 8vw, 40px); /* Responsive size */
-            height: clamp(35px, 8vw, 40px); /* Responsive size */
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: var(--shadow);
+        .social-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--light);
             transition: var(--transition);
         }
 
-        #themeToggle:hover {
-            transform: rotate(30deg);
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
         }
 
-        /* 3D Card Effect */
-        .card-3d {
-            transform-style: preserve-3d;
-            perspective: 1000px;
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .card-3d-inner {
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
+        .footer-bottom p {
+            color: var(--gray);
+            font-size: 0.9rem;
         }
 
-        .card-3d:hover .card-3d-inner {
-            transform: rotateY(5deg) rotateX(5deg);
-        }
-
-        /* Progress bar */
-        .progress-container {
-            width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
-            margin: 1rem 0;
+        /* Bottom CTA */
+        .bottom-cta {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            text-align: center;
+            position: relative;
             overflow: hidden;
         }
 
-        .progress-bar {
-            height: 100%;
-            width: 0;
+        .bottom-cta h2 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .bottom-cta p {
+            color: var(--light-gray);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+
+        .bottom-cta .order-now-btn {
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             background: var(--gradient);
-            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
 
-        /* Responsive styles for Timeline */
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        /* Quick Contact */
+        .quick-contact {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .quick-contact-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .quick-contact-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-contact-menu {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        .quick-contact-menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .quick-contact-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .quick-contact-item:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-contact-item.whatsapp {
+            background: #25D366;
+        }
+
+        .quick-contact-item.instagram {
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+        }
+
+        .quick-contact-item.email {
+            background: #D44638;
+        }
+
+        /* Chatbot */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 80px;
+            z-index: 100;
+        }
+
+        .chatbot-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-container {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            width: 300px;
+            background-color: var(--dark);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+            transform-origin: bottom right;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .light-theme .chatbot-container {
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-container.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .chatbot-header {
+            background: var(--gradient);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chatbot-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-messages {
+            height: 250px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .chatbot-message {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-message.bot {
+            align-items: flex-start;
+        }
+
+        .chatbot-message.user {
+            align-items: flex-end;
+        }
+
+        .chatbot-bubble {
+            padding: 0.8rem 1rem;
+            border-radius: 1rem;
+            max-width: 80%;
+            font-size: 0.9rem;
+        }
+
+        .chatbot-message.bot .chatbot-bubble {
+            background-color: rgba(78, 205, 196, 0.2);
+            color: var(--light);
+            border-bottom-left-radius: 0;
+        }
+
+        .light-theme .chatbot-message.bot .chatbot-bubble {
+            background-color: rgba(78, 205, 196, 0.2);
+            color: var(--dark);
+        }
+
+        .chatbot-message.user .chatbot-bubble {
+            background-color: rgba(255, 107, 107, 0.2);
+            color: var(--light);
+            border-bottom-right-radius: 0;
+        }
+
+        .light-theme .chatbot-message.user .chatbot-bubble {
+            background-color: rgba(255, 107, 107, 0.2);
+            color: var(--dark);
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .light-theme .chatbot-input {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            background-color: rgba(16, 16, 16, 0.7);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .light-theme .chatbot-input input {
+            background-color: rgba(240, 240, 240, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+        }
+
+        .chatbot-input input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .chatbot-send {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chatbot-send:hover {
+            background: var(--secondary-dark);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .features {
+                gap: 1.5rem;
+            }
+            .feature-card {
+                max-width: 300px;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
-            .timeline::before {
-                left: 20px;
+            .header-content {
+                padding: 0 1rem;
             }
-            
-            .timeline-item {
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
                 width: 100%;
-                padding-left: 50px;
-                padding-right: 20px;
+                background-color: rgba(16, 16, 16, 0.95);
+                flex-direction: column;
+                padding: 1rem 0;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                z-index: 1000;
             }
-            
-            .timeline-item:nth-child(odd),
-            .timeline-item:nth-child(even) {
-                margin-left: 0;
-                margin-right: 0;
+            .light-theme nav ul {
+                background-color: rgba(240, 240, 240, 0.95);
             }
-            
-            .timeline-item::after {
-                left: 10px;
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                margin: 0.8rem 0;
+                width: 100%;
+                text-align: center;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            .gallery-item {
+                height: 250px;
+            }
+            .footer-column {
+                min-width: 100%;
             }
         }
 
-        /* Dark/Light mode */
-        body.light-mode {
-            background-color: #f5f5f5;
-            color: #333;
-            background-image: radial-gradient(circle at 10% 20%, rgba(240,240,240,0.8) 0%, rgba(255,255,255,1) 90%);
+        @media (max-width: 576px) {
+            .gallery-tabs {
+                flex-wrap: wrap;
+            }
+            .gallery-tab {
+                margin-bottom: 0.5rem;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-item {
+                height: 300px;
+            }
+            .quick-contact, .chatbot {
+                bottom: 80px;
+            }
+            .theme-toggle {
+                bottom: 20px;
+                right: 20px;
+            }
         }
-
-        body.light-mode .section:nth-child(even) {
-            background-color: rgba(240, 240, 240, 0.5);
-        }
-
-        body.light-mode header,
-        body.light-mode footer,
-        body.light-mode nav {
-            background-color: #fff;
-            color: #333;
-        }
-
-        body.light-mode nav ul li a {
-            color: #333;
-        }
-
-        body.light-mode form,
-        body.light-mode .timeline-item,
-        body.light-mode .company-address,
-        body.light-mode .popup,
-        body.light-mode .contact-options {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #333;
-            border-color: rgba(0,0,0,0.1);
-        }
-
-        body.light-mode form input,
-        body.light-mode form textarea,
-        body.light-mode form select {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #333;
-            border-color: rgba(0,0,0,0.1);
-        }
-
-        body.light-mode .section h2,
-        body.light-mode .timeline-date,
-        body.light-mode .timeline-content h3,
-        body.light-mode .company-address h3 {
-            color: var(--primary-dark);
-        }
-
-        body.light-mode footer p {
-            color: #666;
-        }
-
-        body.light-mode .token {
-            color: #b38f00;
-            background: rgba(255, 204, 0, 0.2);
-        }
-
-        body.light-mode .tooltip .tooltiptext {
-            background-color: #f0f0f0;
-            color: #333;
-            border-color: rgba(0,0,0,0.1);
-        }
-
-        /* Ensure checkbox label is clickable */
-        form label input[type="checkbox"] {
-            margin-right: 0.5rem;
-            width: auto; /* Override default width */
-        }
-
-        /* Instruction text styling */
-        .instruction {
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
-            color: var(--gray);
-            margin-top: 0.5rem;
-            text-align: left;
-        }
-
-        body.light-mode .instruction {
-            color: #555;
-        }
-
     </style>
 </head>
 <body>
-    <div id="particles-js"></div>
-    
-    <button id="themeToggle" title="Toggle Dark/Light Mode">
-        <i class="fas fa-moon"></i>
-    </button>
-    
-    <header class="animate__animated animate__fadeIn">
-        <div class="logo">
-            <h1>TIME LINE</h1>
-            <p>Delivering Emotions On Time</p>
+    <header id="mainHeader">
+        <div class="header-content">
+            <div class="logo">
+                <h1>TIME LINE</h1>
+            </div>
+            <nav>
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                <ul id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="policy.html">Policy</a></li>
+                    <li><a href="order.html" class="order-now-btn">Order Now</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
-    
-    <nav id="mainNav" class="animate__animated animate__fadeIn animate__delay-1s">
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#timeline">Our Story</a></li>
-            <li><a href="#order">Order Now</a></li>
-            <li><a href="#price">Price</a></li>
-            <li><a href="#policy">Policy</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-    
-    <section id="home" class="section">
-        <h2 class="animate__animated animate__fadeInUp">Welcome to TIME LINE</h2>
-        <p class="animate__animated animate__fadeInUp animate__delay-1s">Delivering emotions, surprises, and gifts to your loved ones on time.</p>
+
+    <section class="hero">
+        <div class="floating-elements">
+            <div class="floating-element element-1"></div>
+            <div class="floating-element element-2"></div>
+            <div class="floating-element element-3"></div>
+        </div>
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
+            <h2>Delivering Emotions, Precisely On Time</h2>
+            <p>Experience the magic of perfectly timed surprises and heartfelt deliveries. We bring your feelings to life, exactly when it matters most.</p>
+            <a href="order.html" class="order-now-btn">Send a Surprise</a>
+        </div>
     </section>
-    
-    <section id="features" class="section">
-        <h2 class="animate__animated animate__fadeInUp">Why Choose Us?</h2>
-        <ul class="animate__animated animate__fadeInUp animate__delay-1s">
-            <li><i class="fas fa-calendar-check"></i> Specific date and time delivery</li>
-            <li><i class="fas fa-envelope-open-text"></i> Personalized message reading</li>
-            <li><i class="fas fa-video"></i> Live delivery viewing via video call</li>
-            <li><i class="fas fa-pen-fancy"></i> Handwritten or printed letters</li>
-            <li><i class="fas fa-shield-alt"></i> Secure and reliable service</li>
-        </ul>
-        <p class="service-info floating animate__animated animate__pulse animate__infinite">
-            <i class="fas fa-info-circle"></i> This service is currently available only in Varanasi and Chandauli.
-        </p>
+
+    <section id="about" class="about">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Why Choose Us?</h2>
+            <p>We specialize in creating memorable moments through timely and thoughtful deliveries.</p>
+        </div>
+        <div class="features">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Precise Timing</h3>
+                <p>We deliver at the exact date and time you specify, ensuring your surprise arrives at the perfect moment.</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+                <h3>Personalized Messages</h3>
+                <p>Our delivery agents can read your personalized message aloud, adding a special touch to your gift.</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3>Live Delivery</h3>
+                <p>Watch the delivery happen in real-time through video call, capturing the recipient's genuine reaction.</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <h3>Custom Gifts</h3>
+                <p>Send your own items or let us purchase and deliver gifts based on your specifications.</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure Service</h3>
+                <p>Your personal information and delivery details are kept secure and confidential.</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="feature-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Local Expertise</h3>
+                <p>Currently serving Varanasi and Chandauli with local knowledge for smooth deliveries.</p>
+            </div>
+        </div>
     </section>
-    
-    <!-- Timeline Section -->
-    <section id="timeline" class="section">
-        <h2 class="animate__animated animate__fadeInUp">Our Journey</h2>
-        <div class="timeline">
-            <div class="timeline-item card-3d animate__animated animate__fadeInLeft">
-                <div class="card-3d-inner">
-                    <div class="timeline-date">January 2023</div>
-                    <div class="timeline-content">
-                        <h3>Time Line Founded</h3>
-                        <p>Started with a vision to deliver emotions and surprises at the perfect moment.</p>
+
+    <section id="gallery" class="gallery">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Our Delivery Gallery</h2>
+            <p>Browse through our collection of successful deliveries and happy moments we've helped create.</p>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-tabs" data-aos="fade-up">
+                <button class="gallery-tab active" data-tab="photos">Photos</button>
+                <button class="gallery-tab" data-tab="videos">Videos</button>
+                <button class="gallery-tab" data-tab="all">All Deliveries</button>
+            </div>
+            <div class="gallery-content">
+                <!-- Photos Tab -->
+                <div class="gallery-grid active" id="photos-grid" data-aos="fade-up">
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                        <img src="https://images.unsplash.com/photo-1513885535751-8b9238bd345a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Birthday Surprise">
+                        <div class="gallery-item-border"></div>
+                        <div class="gallery-item-overlay">
+                            <h3>Birthday Surprise</h3>
+                            <p>Delivered a cake and sang birthday wishes at midnight.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Anniversary Gift">
+                        <div class="gallery-item-border"></div>
+                        <div class="gallery-item-overlay">
+                            <h3>Anniversary Gift</h3>
+                            <p>A heartfelt message read aloud with a special gift.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+                        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Graduation Celebration">
+                        <div class="gallery-item-border"></div>
+                        <div class="gallery-item-overlay">
+                            <h3>Graduation Celebration</h3>
+                            <p>Surprising a new graduate with flowers and congratulations.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400">
+                        <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Valentine's Day">
+                        <div class="gallery-item-border"></div>
+                        <div class="gallery-item-overlay">
+                            <h3>Valentine's Day</h3>
+                            <p>Romantic delivery of roses and chocolates.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500">
+                        <img src="https://images.unsplash.com/photo-1608484048400-c4e981c752d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Proposal Setup">
+                        <div class="gallery-item-border"></div>
+                        <div class="gallery-item-overlay">
+                            <h3>Proposal Setup</h3>
+                            <p>Helping create the perfect proposal environment.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="600">
+                        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Friendship Day">
+                        <div class="gallery-item-border"></div>
+                        <div class="gallery-item-overlay">
+                            <h3>Friendship Day</h3>
+                            <p>Delivering friendship bands and messages.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Videos Tab -->
+                <div class="gallery-grid" id="videos-grid">
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                        <video controls>
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-friends-with-colored-smoke-bombs-4556-large.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-item-border"></div>
+                        <div class="gallery-item-overlay">
+                            <h3>Surprise Party</h3>
+                            <p>Delivering party supplies and helping set up a surprise.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                        <video controls>
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-man-giving-a-gift-to-a-woman-4838-large.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-item-border"></div>
+                        <div class="gallery-item-overlay">
+                            <h3>Special Gift</h3>
+                            <p>Delivering a thoughtful gift to a loved one.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+                        <video controls>
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-receiving-a-gift-box-4033-large.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-item-border"></div>
+                        <div class="gallery-item-overlay">
+                            <h3>Birthday Gift</h3>
+                            <p>Delivering a birthday present with a personal message.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400">
+                        <video controls>
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-excited-girl-with-a-gift-4541-large.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-item-border"></div>
+                        <div class="gallery-item-overlay">
+                            <h3>Surprise Gift</h3>
+                            <p>The joy of receiving an unexpected delivery.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- All Deliveries Tab -->
+                <div class="gallery-grid" id="all-grid">
+                    <!-- This will be populated with JavaScript by combining photos and videos -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <div class="section-title" data-aos="fade-up">
+            <h2>What Our Customers Say</h2>
+            <p>Hear from people who have experienced our delivery service.</p>
+        </div>
+        <div class="testimonial-container">
+            <div class="testimonial-slider" id="testimonialSlider" data-aos="fade-up">
+                <div class="testimonial-slide">
+                    <div class="testimonial-card">
+                        <p class="testimonial-content">
+                            "I wanted to surprise my wife on our anniversary while I was away on business. TIME LINE delivered flowers and my recorded message exactly at midnight. The look on her face during the video call was priceless!"
+                        </p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rahul Sharma">
+                            <div class="testimonial-author-info">
+                                <h4>Rahul Sharma</h4>
+                                <p>Varanasi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-card">
+                        <p class="testimonial-content">
+                            "I used TIME LINE to deliver a birthday cake to my sister. Not only did they deliver on time, but they also sang a birthday song and captured her reaction on video. Highly recommended!"
+                        </p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya Patel">
+                            <div class="testimonial-author-info">
+                                <h4>Priya Patel</h4>
+                                <p>Chandauli</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-card">
+                        <p class="testimonial-content">
+                            "The team at TIME LINE helped me propose to my girlfriend by delivering a ring and setting up a romantic atmosphere. Everything was perfect, and she said yes! Thank you for making our special moment even more memorable."
+                        </p>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Vikram Singh">
+                            <div class="testimonial-author-info">
+                                <h4>Vikram Singh</h4>
+                                <p>Varanasi</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="timeline-item card-3d animate__animated animate__fadeInRight">
-                <div class="card-3d-inner">
-                    <div class="timeline-date">March 2023</div>
-                    <div class="timeline-content">
-                        <h3>First 100 Deliveries</h3>
-                        <p>Successfully completed our first 100 deliveries with 100% customer satisfaction.</p>
+            <div class="testimonial-controls">
+                <button class="testimonial-control" id="prevTestimonial"><i class="fas fa-chevron-left"></i></button>
+                <button class="testimonial-control" id="nextTestimonial"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Get In Touch</h2>
+            <p>Have questions or need assistance? We're here to help!</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info" data-aos="fade-right">
+                <h3>Contact Information</h3>
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Our Office</h4>
+                        <p>Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008</p>
                     </div>
                 </div>
-            </div>
-            
-            <div class="timeline-item card-3d animate__animated animate__fadeInLeft">
-                <div class="card-3d-inner">
-                    <div class="timeline-date">June 2023</div>
-                    <div class="timeline-content">
-                        <h3>Expanded to Chandauli</h3>
-                        <p>Extended our services to Chandauli district after success in Varanasi.</p>
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Phone</h4>
+                        <p><a href="tel:+917007677139">+91 7007677139</a> (Call/WhatsApp)</p>
                     </div>
                 </div>
-            </div>
-            
-            <div class="timeline-item card-3d animate__animated animate__fadeInRight">
-                <div class="card-3d-inner">
-                    <div class="timeline-date">December 2023</div>
-                    <div class="timeline-content">
-                        <h3>1000+ Happy Customers</h3>
-                        <p>Celebrated serving over 1000 customers with our unique delivery service.</p>
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Email</h4>
+                        <p><a href="mailto:timelinedeliveryofficial@gmail.com">timelinedeliveryofficial@gmail.com</a></p>
                     </div>
                 </div>
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Instagram</h4>
+                        <p><a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank">@time_line.official</a></p>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="https://wa.me/917007677139" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:timelinedeliveryofficial@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="contact-form" data-aos="fade-left">
+                <h3>Send Us a Message</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" class="form-control" placeholder="Your Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
             </div>
         </div>
     </section>
-    
-    <section id="order" class="section">
-        <h2 class="animate__animated animate__fadeInUp">Place Your Order</h2>
-        
-        <!-- Form Progress Bar -->
-        <div class="progress-container animate__animated animate__fadeIn">
-            <div class="progress-bar" id="formProgress"></div>
-        </div>
-        
-        <!-- Google Login Container -->
-        <div id="google-login-container"></div>
-        
-        <!-- User Info Display -->
-        <div id="user-info" class="user-info" style="display: none;">
-            <img id="user-pic" src="" alt="User picture">
-            <span id="user-name"></span>
-            <button id="sign-out-button">Sign Out</button>
-        </div>
-        
-        <!-- Order Limit Warning -->
-        <div id="order-limit-warning" class="order-count-warning" style="display: none;">
-            <i class="fas fa-exclamation-circle"></i> You've reached your limit of 2 orders in 24 hours. Please try again later.
-        </div>
-        
-        <form id="orderForm" class="animate__animated animate__fadeInUp animate__delay-1s">
-            <label for="customerName">Your Name (Optional):</label>
-            <input type="text" id="customerName" name="customerName" placeholder="Leave blank for a random token">
-            <p id="tokenDisplay" class="token"></p>
-            
-            <label for="phoneNumber">Your Phone Number:</label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your 10-digit phone number" pattern="^[0-9]{10}$" required>
-            
-            <label for="photoUpload" class="file-input-label">
-                <i class="fas fa-camera"></i> Upload Photo <span class="info tooltip">?<span class="tooltiptext">This helps us better identify the recipient during delivery</span></span>
-                <input type="file" id="photoUpload" name="photoUpload" accept="image/*">
-            </label>
-            
-            <label for="recipientName">Recipient's Name:</label>
-            <input type="text" id="recipientName" name="recipientName" required>
-            
-            <label for="recipientPhoneNumber">Recipient's Phone Number (Optional):</label>
-            <input type="tel" id="recipientPhoneNumber" name="recipientPhoneNumber" placeholder="Enter recipient's 10-digit phone number" pattern="^[0-9]{10}$">
-            
-            <label for="address">Recipient's Address:</label>
-            <textarea id="address" name="address" rows="3" required></textarea>
-            
-            <label for="district">District:</label>
-            <select id="district" name="district" required>
-                <option value="Varanasi">Varanasi</option>
-                <option value="Chandauli">Chandauli</option>
-            </select>
-            
-            <label for="state">State:</label>
-            <select id="state" name="state" required>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
-            </select>
-            
-            <label for="pincode">Pin Code:</label>
-            <input type="text" id="pincode" name="pincode" pattern="^[0-9]{6}$" required>
-            
-            <label for="itemType">Item Type:</label>
-            <select id="itemType" name="itemType" required>
-                <option value="">-- Select Item Type --</option>
-                <option value="message">Message (Speak in front of Recipient)</option>
-                <option value="writtenByTimeline">Letter written by Time Line (In Your Words)</option>
-                <option value="itemsSendByCustomer">Items (Send by Customer)</option>
-                <option value="itemsBuyByTimeline">Items (Buy by Time Line)</option>
-            </select>
-            
-            <!-- Dynamic sections will appear here -->
-            <div id="additionalSections"></div> 
-            
-            <div id="totalAmount" class="total-amount">Total Amount: ₹0</div>
-            
-            <label for="deliveryDate">Delivery Date:</label>
-            <input type="date" id="deliveryDate" name="deliveryDate" required>
-            
-            <label for="deliveryTime">Delivery Time:</label>
-            <input type="time" id="deliveryTime" name="deliveryTime" required>
-            
-            <label>
-                <input type="checkbox" id="liveDelivery" name="liveDelivery"> Check to see live/recorded delivery
-            </label>
-            <!-- Dynamic live delivery options will appear here -->
-            <div id="liveDeliveryOptions"></div> 
-            
-            <div class="company-address">
-                <h3><i class="fas fa-map-marker-alt"></i> Our Office Address (For Item Drop-off):</h3>
-                <p><i class="fas fa-building"></i> Time Line Office, Parle-G factory, Patanava</p>
-                <p><i class="fas fa-industry"></i> Ramnagar industrial area, Ramnagar</p>
-                <p><i class="fas fa-city"></i> Varanasi, Uttar Pradesh - 221008</p>
-                <p><i class="fas fa-phone"></i> Contact: 7007677139 (Call/WhatsApp)</p>
-                <p><i class="fas fa-envelope"></i> Email: timelinedeliveryofficial@gmail.com</p>
-            </div>
-            
-            <button type="submit" id="submit-button">Proceed to Payment <i class="fas fa-arrow-right"></i></button>
-        </form>
+
+    <section class="bottom-cta" data-aos="fade-up">
+        <h2>Ready to Create a Special Moment?</h2>
+        <p>Let us help you deliver your emotions and surprises exactly when they matter most.</p>
+        <a href="order.html" class="order-now-btn">Order Now</a>
     </section>
-    
-    <section id="price" class="section">
-        <h2 class="animate__animated animate__fadeInUp">Price List</h2>
-        <ul class="animate__animated animate__fadeInUp animate__delay-1s">
-            <li><span class="price-tag">₹249</span> Normal delivery (Including letters, Voice message, small gifts, etc)</li>
-            <li><span class="price-tag">₹299</span> Items Delivery (Send by customer or buy by Time Line)</li>
-        </ul>
-        <div class="service-info">
-            <p><i class="fas fa-info-circle"></i> All deliveries include specific acts like Singing, shayari, Confession, etc.</p>
-            <p><i class="fas fa-clock"></i> All services completed in less than 15 minutes</p>
-        </div>
-    </section>
-    
-    <section id="policy" class="section">
-        <h2 class="animate__animated animate__fadeInUp">Policy</h2>
-        <ul class="animate__animated animate__fadeInUp animate__delay-1s">
-            <li><i class="fas fa-undo"></i> <strong>Refund Policy:</strong> If delivery fails, the amount (excluding distance charges) will be refunded within twelve hours.</li>
-            <li><i class="fas fa-truck"></i> <strong>Return Policy:</strong> If the customer wants the parcel back, they must pay courier charges for retrieval and ₹20 extra for convenience charges.</li>
-            <li><i class="fas fa-shield-alt"></i> <strong>Warranty Policy:</strong> For warranty claims on items sent by customer, we'll record opening the package and refund full amount (excluding ₹100 fuel charge) if items are damaged/missing.</li>
-        </ul>
-    </section>
-    
-    <section id="contact" class="section">
-        <h2 class="animate__animated animate__fadeInUp">Contact Us</h2>
-        <div class="card-3d animate__animated animate__fadeInUp animate__delay-1s">
-            <div class="card-3d-inner company-address" style="border-left: none; text-align: center;">
-                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:timelinedeliveryofficial@gmail.com">timelinedeliveryofficial@gmail.com</a></p>
-                <p><i class="fab fa-instagram"></i> Instagram: <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank">@time_line.official</a></p>
-                <p><i class="fas fa-map-marker-alt"></i> Address: Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008</p>
-                <p><i class="fas fa-phone"></i> Contact no.: 7007677139 (Call/WhatsApp)</p>
-            </div>
-        </div>
-    </section>
-    
+
     <footer>
-        <p>© 2025 TIME LINE. All Rights Reserved.</p>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>TIME LINE</h3>
+                <p>Delivering emotions and surprises on time, creating memorable moments for you and your loved ones.</p>
+                <div class="social-links">
+                    <a href="https://wa.me/917007677139" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:timelinedeliveryofficial@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    <li><a href="#gallery"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="#testimonials"><i class="fas fa-star"></i> Testimonials</a></li>
+                    <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li><a href="policy.html"><i class="fas fa-shield-alt"></i> Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Our Services</h3>
+                <ul class="footer-links">
+                    <li><a href="order.html"><i class="fas fa-gift"></i> Gift Delivery</a></li>
+                    <li><a href="order.html"><i class="fas fa-envelope-open-text"></i> Message Delivery</a></li>
+                    <li><a href="order.html"><i class="fas fa-shopping-bag"></i> Item Purchase & Delivery</a></li>
+                    <li><a href="order.html"><i class="fas fa-video"></i> Live Delivery</a></li>
+                    <li><a href="order.html"><i class="fas fa-camera"></i> Recorded Delivery</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Service Areas</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Varanasi</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Chandauli</a></li>
+                </ul>
+                <p style="margin-top: 1rem;">We're currently expanding to more locations. Stay tuned!</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 TIME LINE. All Rights Reserved.</p>
+        </div>
     </footer>
-    
-    <button id="askButton"><i class="fas fa-comment-dots"></i></button>
-    
-    <div id="contactOptions" class="contact-options">
-        <button onclick="redirectToWhatsApp()">
-            <i class="fab fa-whatsapp"></i> WhatsApp
-        </button>
-        <button onclick="redirectToInstagram()">
-            <i class="fab fa-instagram"></i> Instagram
-        </button>
-        <button onclick="redirectToGmail()">
-            <i class="fas fa-envelope"></i> Gmail
-        </button>
-        <button onclick="hideContactOptions()">
-            <i class="fas fa-times"></i> Close
-        </button>
-    </div>
-    
-    <div id="popup" class="popup">
-        <p id="popupMessage"></p>
-        <button onclick="closePopup()">OK</button>
+
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
     </div>
 
-    <!-- Particles.js for background effects -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Quick Contact -->
+    <div class="quick-contact">
+        <div class="quick-contact-toggle" id="quickContactToggle">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+        <div class="quick-contact-menu" id="quickContactMenu">
+            <a href="https://wa.me/917007677139" target="_blank" class="quick-contact-item whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank" class="quick-contact-item instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="mailto:timelinedeliveryofficial@gmail.com" class="quick-contact-item email">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot">
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div class="chatbot-container" id="chatbotContainer">
+            <div class="chatbot-header">
+                <h3>TIME LINE Assistant</h3>
+                <button class="chatbot-close" id="chatbotClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chatbot-message bot">
+                    <div class="chatbot-bubble">
+                        Hello! Welcome to TIME LINE. How can I help you today?
+                    </div>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type your message...">
+                <button class="chatbot-send" id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <script>
-        // Supabase initialization
-        const supabaseUrl = 'https://hseqvitreugkqgumgffa.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzZXF2aXRyZXVna3FndW1nZmZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ1MzY5MzUsImV4cCI6MjA2MDExMjkzNX0.p3qK1ojwxbfQBWVD_KIFVNuPveY6-rFs2gkKAJQshPo';
-        
-        // Google Apps Script URL from v37
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5wtRs_ShNdA4vx8QjGXVdT_rBFcdWlvQVIGy_ypHiZtwUUWFQ71eodoJfVOP3mtav/exec';
-        
-        // Initialize Supabase client
-        let supabase = null;
-        try {
-             supabase = supabase.createClient(supabaseUrl, supabaseKey);
-        } catch (error) {
-            console.error("Supabase initialization failed:", error);
-        }
-       
-        
-        // Global variables
-        let currentUser = null;
-        let userOrders = [];
-        let formProgress = 0;
-        
-        // Generate Random Alphanumeric Token
-        function generateToken() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let token = '';
-            for (let i = 0; i < 8; i++) {
-                token += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return token;
-        }
-        
-        // Convert file to Base64
-        async function toBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve({
-                    filename: file.name,
-                    mimeType: file.type,
-                    content: reader.result.split(',')[1]
-                });
-                reader.onerror = error => reject(error);
+        // Initialize AOS Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
             });
-        }
-        
-        // Initialize Google Sign-In
-        function initializeGoogleSignIn() {
-            if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
-                console.error('Google Sign-In library not loaded.');
-                return;
-            }
-            try {
-                google.accounts.id.initialize({
-                    client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com', // Replace with your actual Client ID
-                    callback: handleCredentialResponse,
-                    auto_select: false,
-                    cancel_on_tap_outside: true
-                });
-                
-                google.accounts.id.renderButton(
-                    document.getElementById('google-login-container'),
-                    { 
-                        theme: 'filled_blue', 
-                        size: 'large',
-                        width: '300',
-                        text: 'continue_with',
-                        shape: 'pill'
+
+            // Sticky Header
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close mobile menu when a link is clicked
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
                     }
-                );
-            } catch (error) {
-                 console.error("Google Sign-In initialization failed:", error);
+                });
+            });
+
+            // Hero Background Parallax Effect
+            const heroBg = document.getElementById('heroBg');
+            if (heroBg) {
+                window.addEventListener('scroll', () => {
+                    const scrollPosition = window.scrollY;
+                    heroBg.style.transform = `scale(1.1) translateY(${scrollPosition * 0.05}px)`;
+                });
             }
-        }
-        
-        // Handle Google Sign-In Response
-        async function handleCredentialResponse(response) {
-            try {
-                const userInfo = await verifyGoogleToken(response.credential);
-                currentUser = {
-                    id: userInfo.sub,
-                    name: userInfo.name,
-                    email: userInfo.email,
-                    picture: userInfo.picture
+
+            // Gallery Tabs
+            const galleryTabs = document.querySelectorAll('.gallery-tab');
+            const galleryGrids = document.querySelectorAll('.gallery-grid');
+            
+            galleryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    galleryTabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Hide all grids
+                    galleryGrids.forEach(grid => grid.classList.remove('active'));
+                    
+                    // Show the corresponding grid
+                    const tabId = tab.getAttribute('data-tab');
+                    const activeGrid = document.getElementById(`${tabId}-grid`);
+                    if (activeGrid) {
+                        activeGrid.classList.add('active');
+                    }
+                    
+                    // If "All" tab is clicked, populate it with all items
+                    if (tabId === 'all') {
+                        const allGrid = document.getElementById('all-grid');
+                        if (allGrid) {
+                            // Clone items from photos and videos grids
+                            const photosGrid = document.getElementById('photos-grid');
+                            const videosGrid = document.getElementById('videos-grid');
+                            
+                            allGrid.innerHTML = '';
+                            
+                            if (photosGrid) {
+                                const photoItems = photosGrid.querySelectorAll('.gallery-item');
+                                photoItems.forEach(item => {
+                                    allGrid.appendChild(item.cloneNode(true));
+                                });
+                            }
+                            
+                            if (videosGrid) {
+                                const videoItems = videosGrid.querySelectorAll('.gallery-item');
+                                videoItems.forEach(item => {
+                                    allGrid.appendChild(item.cloneNode(true));
+                                });
+                            }
+                            
+                            allGrid.classList.add('active');
+                        }
+                    }
+                });
+            });
+
+            // Testimonial Slider
+            const testimonialSlider = document.getElementById('testimonialSlider');
+            const prevTestimonial = document.getElementById('prevTestimonial');
+            const nextTestimonial = document.getElementById('nextTestimonial');
+            
+            if (testimonialSlider && prevTestimonial && nextTestimonial) {
+                let currentSlide = 0;
+                const slides = testimonialSlider.querySelectorAll('.testimonial-slide');
+                const totalSlides = slides.length;
+                
+                // Function to update slider position
+                const updateSlider = () => {
+                    testimonialSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
                 };
                 
-                displayUserInfo();
-                checkOrderLimit();
-                
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                updateFormProgress(20);
-            } catch (error) {
-                showPopup('Error signing in with Google. Please try again.');
-                console.error('Google Sign-In Error:', error);
-            }
-        }
-        
-        // Verify Google Token (mock function - replace with backend verification if needed)
-        async function verifyGoogleToken(token) {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        }
-        
-        // Display User Info
-        function displayUserInfo() {
-            const userInfoDiv = document.getElementById('user-info');
-            const userPic = document.getElementById('user-pic');
-            const userName = document.getElementById('user-name');
-            
-            if (currentUser && userInfoDiv && userPic && userName) {
-                userInfoDiv.style.display = 'flex';
-                userPic.src = currentUser.picture;
-                userName.textContent = currentUser.name;
-            } else if (userInfoDiv) {
-                userInfoDiv.style.display = 'none';
-            }
-        }
-        
-        // Sign Out
-        function signOut() {
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            displayUserInfo();
-            showPopup('You have been signed out.');
-            updateFormProgress(-20);
-            // Optionally, re-render the Google Sign-In button if needed
-            const googleContainer = document.getElementById('google-login-container');
-            if (googleContainer) {
-                googleContainer.innerHTML = ''; // Clear previous button
-                initializeGoogleSignIn(); // Re-render
-            }
-        }
-        
-        // Check Order Limit
-        async function checkOrderLimit() {
-            if (!currentUser || !supabase) return;
-            
-            try {
-                const { data, error } = await supabase
-                    .from('orders')
-                    .select('*', { count: 'exact' })
-                    .eq('user_id', currentUser.id)
-                    .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
-                
-                if (error) throw error;
-                
-                userOrders = data || [];
-                
-                const orderLimitWarning = document.getElementById('order-limit-warning');
-                const submitButton = document.getElementById('submit-button');
-                
-                if (userOrders.length >= 2) {
-                    if (orderLimitWarning) orderLimitWarning.style.display = 'flex';
-                    if (submitButton) {
-                        submitButton.disabled = true;
-                        submitButton.style.opacity = '0.5';
-                        submitButton.style.cursor = 'not-allowed';
-                    }
-                } else {
-                    if (orderLimitWarning) orderLimitWarning.style.display = 'none';
-                    if (submitButton) {
-                        submitButton.disabled = false;
-                        submitButton.style.opacity = '1';
-                        submitButton.style.cursor = 'pointer';
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking order limit:', error);
-            }
-        }
-        
-        // Store Order in Supabase
-        async function storeOrderSupabase(orderData) {
-             if (!currentUser || !supabase) return false;
-            
-            try {
-                const { data, error } = await supabase
-                    .from('orders')
-                    .insert([
-                        {
-                            user_id: currentUser.id,
-                            user_email: currentUser.email,
-                            customer_name: orderData.customerName || document.getElementById('tokenDisplay')?.textContent.replace('Your Token: ', ''),
-                            phone_number: orderData.phoneNumber,
-                            recipient_name: orderData.recipientName,
-                            recipient_phone: orderData.recipientPhoneNumber,
-                            address: orderData.address,
-                            district: orderData.district,
-                            state: orderData.state,
-                            pincode: orderData.pincode,
-                            item_type: orderData.itemType,
-                            delivery_date: orderData.deliveryDate,
-                            delivery_time: orderData.deliveryTime,
-                            live_delivery: orderData.liveDelivery || false,
-                            total_amount: orderData.totalAmount,
-                            status: 'pending'
-                        }
-                    ])
-                    .select();
-                
-                if (error) throw error;
-                
-                const photoFile = document.getElementById('photoUpload')?.files[0];
-                if (photoFile && data && data[0]) {
-                    const fileExt = photoFile.name.split('.').pop();
-                    const fileName = `${currentUser.id}_${Date.now()}.${fileExt}`;
-                    const { error: uploadError } = await supabase
-                        .storage
-                        .from('customer-photos') // Ensure this bucket exists and has correct policies
-                        .upload(`orders/${fileName}`, photoFile);
-                    
-                    if (uploadError) {
-                        console.warn('Photo upload to Supabase failed:', uploadError);
-                    } else {
-                        const { data: publicUrlData, error: urlError } = supabase
-                            .storage
-                            .from('customer-photos')
-                            .getPublicUrl(`orders/${fileName}`);
-                        
-                        if (urlError) {
-                            console.warn('Failed to get public URL for photo:', urlError);
-                        } else {
-                             await supabase
-                                .from('orders')
-                                .update({ recipient_photo: publicUrlData.publicUrl })
-                                .eq('id', data[0].id);
-                        }
-                    }
-                }
-                
-                return true;
-            } catch (error) {
-                console.error('Error storing order in Supabase:', error);
-                return false;
-            }
-        }
-        
-        // Submit form data to Google Sheets
-        async function submitFormDataGoogle(formData) {
-            const tokenNumber = document.getElementById("tokenDisplay")?.textContent.replace("Your Token: ", "") || generateToken();
-            const submission = {
-                tokenNumber: tokenNumber,
-                customerName: formData.customerName,
-                phoneNumber: formData.phoneNumber,
-                recipientName: formData.recipientName,
-                recipientPhoneNumber: formData.recipientPhoneNumber,
-                address: formData.address,
-                district: formData.district,
-                state: formData.state,
-                pincode: formData.pincode,
-                itemType: formData.itemType,
-                deliveryDate: formData.deliveryDate,
-                deliveryTime: formData.deliveryTime,
-                liveDelivery: document.getElementById("liveDelivery")?.checked || false,
-                totalAmount: calculateTotalAmount()
-            };
-
-            const messageText = document.querySelector('textarea[name="message"]')?.value;
-            if (messageText) submission.messageText = messageText;
-            
-            const productDescription = document.querySelector('textarea[name="productDescription"]')?.value;
-            if (productDescription) submission.productDescription = productDescription;
-            
-            const productPrice = document.getElementById("productPrice")?.value;
-            if (productPrice) submission.productPrice = productPrice;
-            
-            const productLink = document.querySelector('input[name="productLink"]astaudio')?.value;
-            if (productLink) submission.productLink = productLink;
-            
-            const instructions = document.querySelector('textarea[name="instructions"]astaudio')?.value;
-            if (instructions) submission.instructions = instructions;
-            
-            if (document.getElementById("claimWarranty")?.checked) submission.claimWarranty = true;
-            
-            if (document.getElementById("liveDelivery")?.checked) {
-                submission.deliveryMethod = document.getElementById("deliveryMethod")?.value;
-                submission.platform = document.getElementById("platform")?.value;
-                const platformDetailsInput = document.getElementById(
-                    submission.platform === 'whatsapp' ? 'whatsappNumber' :
-                    submission.platform === 'googleMeet' ? 'email' : 'instagramId'
-                );
-                if (platformDetailsInput) submission.platformDetails = platformDetailsInput.value;
-            }
-
-            const filesToUpload = [
-                { inputId: 'photoUpload', field: 'photo' },
-                { inputId: 'messageAudio', field: 'messageAudio' },
-                { inputId: 'messageVideo', field: 'messageVideo' },
-                { inputId: 'instructionAudio', field: 'instructionAudio' }
-            ];
-
-            for (const fileInfo of filesToUpload) {
-                const fileInput = document.querySelector(`input[name="${fileInfo.inputId}"]`);
-                if (fileInput?.files[0]) {
-                    try {
-                        submission[fileInfo.field] = await toBase64(fileInput.files[0]);
-                    } catch (error) {
-                        console.error(`Error processing ${fileInfo.inputId}:`, error);
-                    }
-                }
-            }
-
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    // mode: 'no-cors', // Use this if CORS issues persist and you don't need the response
-                    body: JSON.stringify(submission),
-                    headers: { 'Content-Type': 'application/json' }
+                // Previous slide button
+                prevTestimonial.addEventListener('click', () => {
+                    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                    updateSlider();
                 });
                 
-                // If using 'no-cors', you won't get a readable response here
-                // Assume success if the request doesn't throw an error
-                // const result = await response.json(); 
-                // if (result.status === 'success') { ... }
-                
-                // For now, assume success if fetch completes without error
-                localStorage.setItem(`order_${tokenNumber}`, 'submitted_via_google_script'); // Store minimal confirmation
-                return true;
-
-            } catch (err) {
-                console.error('Submission error to Google Apps Script:', err);
-                showPopup('Error submitting form via Google Script: ' + err.message);
-                return false;
-            }
-        }
-        
-        // Calculate total amount based on selections
-        function calculateTotalAmount() {
-            const itemTypeSelect = document.getElementById("itemType");
-            const totalAmountDiv = document.getElementById("totalAmount");
-            if (!itemTypeSelect || !totalAmountDiv) return 0;
-
-            const itemType = itemTypeSelect.value;
-            let amount = 0;
-            
-            if (itemType === "message" || itemType === "writtenByTimeline") {
-                amount = 249;
-            } else if (itemType === "itemsSendByCustomer") {
-                amount = 299;
-            } else if (itemType === "itemsBuyByTimeline") {
-                const productPriceInput = document.getElementById("productPrice");
-                const productPrice = parseFloat(productPriceInput?.value) || 0;
-                amount = 299 + productPrice;
-            }
-            
-            totalAmountDiv.textContent = `Total Amount: ₹${amount}`;
-            return amount;
-        }
-        
-        // Set minimum delivery date and time
-        function setMinDeliveryTime() {
-            const dateInput = document.getElementById('deliveryDate');
-            if (!dateInput) return;
-
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            
-            const minDate = tomorrow.toISOString().split('T')[0];
-            dateInput.min = minDate;
-            // Set default value only if current value is empty or invalid
-            if (!dateInput.value || dateInput.value < minDate) {
-                 dateInput.value = minDate;
-            }
-        }
-        
-        // Update form progress bar
-        function updateFormProgress(increment) {
-            const progressBar = document.getElementById('formProgress');
-            if (!progressBar) return;
-            formProgress = Math.max(0, Math.min(100, formProgress + increment));
-            progressBar.style.width = formProgress + '%';
-        }
-        
-        // Show popup message
-        function showPopup(message) {
-            const popupMessage = document.getElementById('popupMessage');
-            const popup = document.getElementById('popup');
-            if (popupMessage && popup) {
-                popupMessage.textContent = message;
-                popup.style.display = 'block';
-            }
-        }
-        
-        // Close popup
-        function closePopup() {
-            const popup = document.getElementById('popup');
-            if (popup) popup.style.display = 'none';
-        }
-        
-        // Show contact options
-        function showContactOptions() {
-            const contactOptions = document.getElementById('contactOptions');
-            if (contactOptions) contactOptions.style.display = 'block';
-        }
-        
-        // Hide contact options
-        function hideContactOptions() {
-            const contactOptions = document.getElementById('contactOptions');
-            if (contactOptions) contactOptions.style.display = 'none';
-        }
-        
-        // Redirect to WhatsApp
-        function redirectToWhatsApp() {
-            window.open('https://wa.me/917007677139', '_blank');
-        }
-        
-        // Redirect to Instagram
-        function redirectToInstagram() {
-            window.open('https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==', '_blank');
-        }
-        
-        // Redirect to Gmail
-        function redirectToGmail() {
-            window.open('mailto:timelinedeliveryofficial@gmail.com', '_blank');
-        }
-        
-        // Copy address to clipboard
-        function copyAddress() {
-            const address = "Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008";
-            navigator.clipboard.writeText(address).then(() => {
-                showPopup('Address copied to clipboard!');
-            }).catch(err => {
-                console.error('Could not copy text: ', err);
-                showPopup('Failed to copy address.');
-            });
-        }
-
-        // Function to handle platform selection change
-        function handlePlatformChange() {
-            const platformSelect = document.getElementById("platform");
-            const platformDetails = document.getElementById("platformDetails");
-            if (!platformSelect || !platformDetails) return;
-
-            const platform = platformSelect.value;
-            console.log("Platform changed to:", platform);
-
-            switch (platform) {
-                case 'whatsapp':
-                    platformDetails.innerHTML = `
-                        <label for="whatsappNumber">Fill Your WhatsApp Number:</label>
-                        <input type="tel" id="whatsappNumber" name="whatsappNumber" placeholder="Enter your 10-digit WhatsApp number" pattern="^[0-9]{10}$" required>
-                    `;
-                    break;
-                case 'googleMeet':
-                    platformDetails.innerHTML = `
-                        <label for="email">Enter your Email:</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                    `;
-                    break;
-                case 'instagram':
-                    platformDetails.innerHTML = `
-                        <label for="instagramId">Enter your Instagram ID:</label>
-                        <input type="text" id="instagramId" name="instagramId" placeholder="Enter your Instagram ID" required>
-                    `;
-                    break;
-                default:
-                    platformDetails.innerHTML = '';
-                    break;
-            }
-        }
-
-        // Function to handle item type change
-        function handleItemTypeChange() {
-            const itemTypeSelect = document.getElementById("itemType");
-            const additionalSections = document.getElementById("additionalSections");
-            if (!itemTypeSelect || !additionalSections) return;
-
-            const selectedItemType = itemTypeSelect.value;
-            console.log("Item type changed to:", selectedItemType);
-
-            // Clear previous dynamic content and listeners
-            additionalSections.innerHTML = ''; 
-
-            switch (selectedItemType) {
-                case 'message':
-                case 'writtenByTimeline':
-                    additionalSections.innerHTML = `
-                        <h3>Write Your Message</h3>
-                        <textarea name="message" rows="4" placeholder="Write your message here..." required></textarea>
-                        <div class="upload-section">
-                            <h3><i class="fas fa-envelope"></i> Your Message (Optional) <span class="info tooltip">?<span class="tooltiptext">This will be played during delivery</span></span></h3>
-                            <p>Upload an audio or video message to be played during delivery</p>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-audio"></i> Upload Audio (max 50MB)
-                                <input type="file" name="messageAudio" accept="audio/*">
-                            </label>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-video"></i> Upload Video (max 200MB, MP4/MKV)
-                                <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
-                            </label>
-                        </div>
-                        <div class="upload-section">
-                            <h3><i class="fas fa-clipboard-list"></i> Delivery Instructions <span class="info tooltip">?<span class="tooltiptext">Instructions for our delivery person</span></span></h3>
-                            <p>Write or record instructions for the delivery person (at least one required)</p>
-                            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
-                            <label class="file-input-label">
-                                <i class="fas fa-microphone"></i> Or Upload Audio Instructions (max 10MB)
-                                <input type="file" name="instructionAudio" accept="audio/*">
-                            </label>
-                        </div>
-                    `;
-                    break;
-                case 'itemsSendByCustomer':
-                    additionalSections.innerHTML = `
-                        <h3>Send Item At</h3>
-                        <textarea rows="3" readonly>Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008</textarea>
-                        <button type="button" onclick="copyAddress()" class="animate__animated animate__pulse">Copy Address <i class="fas fa-copy"></i></button>
-                        <p class="instruction">Please write your token number on the delivery package for better identification.</p>
-                        <div class="upload-section">
-                            <h3><i class="fas fa-envelope"></i> Your Message (Optional) <span class="info tooltip">?<span class="tooltiptext">This will be played during delivery</span></span></h3>
-                            <p>Upload an audio or video message to be played during delivery</p>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-audio"></i> Upload Audio (max 50MB)
-                                <input type="file" name="messageAudio" accept="audio/*">
-                            </label>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-video"></i> Upload Video (max 200MB, MP4/MKV)
-                                <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
-                            </label>
-                        </div>
-                        <div class="upload-section">
-                            <h3><i class="fas fa-clipboard-list"></i> Delivery Instructions <span class="info tooltip">?<span class="tooltiptext">Instructions for our delivery person</span></span></h3>
-                            <p>Write or record instructions for the delivery person (at least one required)</p>
-                            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
-                            <label class="file-input-label">
-                                <i class="fas fa-microphone"></i> Or Upload Audio Instructions (max 10MB)
-                                <input type="file" name="instructionAudio" accept="audio/*">
-                            </label>
-                        </div>
-                        <label><input type="checkbox" id="claimWarranty" name="claimWarranty"> Claim Warranty <span class="info tooltip">?<span class="tooltiptext">We'll record opening the package for warranty claims</span></span></label>
-                    `;
-                    break;
-                case 'itemsBuyByTimeline':
-                    additionalSections.innerHTML = `
-                        <h3>Describe Your Product</h3>
-                        <textarea name="productDescription" rows="4" placeholder="Describe your product..." required></textarea>
-                        <h3>Product Price</h3>
-                        <input type="number" id="productPrice" name="productPrice" placeholder="Enter estimated product price" required>
-                        <p class="instruction">Please enter slightly higher amount than actual price as product may be available at higher rate in our area. If we get it cheaper, we'll refund the difference within 24 hours.</p>
-                        <h3>Optional: Product Link</h3>
-                        <input type="url" name="productLink" placeholder="Paste the product link here">
-                        <div class="upload-section">
-                            <h3><i class="fas fa-envelope"></i> Your Message (Optional) <span class="info tooltip">?<span class="tooltiptext">This will be played during delivery</span></span></h3>
-                            <p>Upload an audio or video message to be played during delivery</p>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-audio"></i> Upload Audio (max 50MB)
-                                <input type="file" name="messageAudio" accept="audio/*">
-                            </label>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-video"></i> Upload Video (max 200MB, MP4/MKV)
-                                <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
-                            </label>
-                        </div>
-                        <div class="upload-section">
-                            <h3><i class="fas fa-clipboard-list"></i> Delivery Instructions <span class="info tooltip">?<span class="tooltiptext">Instructions for our delivery person</span></span></h3>
-                            <p>Write or record instructions for the delivery person (at least one required)</p>
-                            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
-                            <label class="file-input-label">
-                                <i class="fas fa-microphone"></i> Or Upload Audio Instructions (max 10MB)
-                                <input type="file" name="instructionAudio" accept="audio/*">
-                            </label>
-                        </div>
-                    `;
-                    // Add event listener for product price *after* the element is added to the DOM
-                    const productPriceInput = document.getElementById("productPrice");
-                    if (productPriceInput) {
-                        productPriceInput.addEventListener("input", calculateTotalAmount);
-                    }
-                    break;
-                default:
-                    // Already cleared above
-                    break;
-            }
-            // Recalculate amount after changing sections
-            calculateTotalAmount(); 
-        }
-
-        // Function to handle live delivery checkbox change
-        function handleLiveDeliveryChange() {
-            const liveDeliveryCheckbox = document.getElementById("liveDelivery");
-            const liveDeliveryOptions = document.getElementById("liveDeliveryOptions");
-            if (!liveDeliveryCheckbox || !liveDeliveryOptions) return;
-
-            console.log("Live delivery checkbox changed:", liveDeliveryCheckbox.checked);
-
-            if (liveDeliveryCheckbox.checked) {
-                liveDeliveryOptions.innerHTML = `
-                    <label for="deliveryMethod">Delivery Method:</label>
-                    <select id="deliveryMethod" name="deliveryMethod" class="animate__animated animate__fadeIn">
-                        <option value="videoCall">Live delivery on video call</option>
-                        <option value="recorded">Recorded video of delivery</option>
-                    </select>
-                    <label for="platform">Choose Platform:</label>
-                    <select id="platform" name="platform" class="animate__animated animate__fadeIn">
-                        <option value="">-- Select Platform --</option>
-                        <option value="whatsapp">WhatsApp</option>
-                        <option value="googleMeet">Google Meet</option>
-                        <option value="instagram">Instagram</option>
-                    </select>
-                    <div id="platformDetails" class="animate__animated animate__fadeIn"></div>
-                `;
-                
-                // Add event listener for platform selection *after* the element is added to the DOM
-                const platformSelect = document.getElementById("platform");
-                if (platformSelect) {
-                    platformSelect.addEventListener("change", handlePlatformChange);
-                }
-                updateFormProgress(5);
-            } else {
-                liveDeliveryOptions.innerHTML = '';
-                updateFormProgress(-5);
-            }
-        }
-        
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM fully loaded - Final Site");
-            
-            // Initialize particles.js
-            if (typeof particlesJS !== 'undefined') {
-                particlesJS("particles-js", {
-                    "particles": {
-                        "number": {"value": 80, "density": {"enable": true, "value_area": 800}},
-                        "color": {"value": "#FF6B6B"},
-                        "shape": {"type": "circle"},
-                        "opacity": {"value": 0.2, "random": false},
-                        "size": {"value": 3, "random": true},
-                        "line_linked": {"enable": true, "distance": 150, "color": "#FF6B6B", "opacity": 0.2, "width": 1},
-                        "move": {"enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false}
-                    },
-                    "interactivity": {
-                        "detect_on": "canvas",
-                        "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "push"}, "resize": true},
-                        "modes": {"grab": {"distance": 140, "line_linked": {"opacity": 1}}, "push": {"particles_nb": 4}}
-                    },
-                    "retina_detect": true
+                // Next slide button
+                nextTestimonial.addEventListener('click', () => {
+                    currentSlide = (currentSlide + 1) % totalSlides;
+                    updateSlider();
                 });
-            } else {
-                console.error('particles.js library not loaded.');
+                
+                // Auto slide every 5 seconds
+                setInterval(() => {
+                    currentSlide = (currentSlide + 1) % totalSlides;
+                    updateSlider();
+                }, 5000);
             }
 
-            // Theme toggle functionality
+            // Contact Form Submission
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    // Here you would normally send the form data to your server
+                    // For now, just show a success message
+                    alert('Thank you for your message! We will get back to you soon.');
+                    contactForm.reset();
+                });
+            }
+
+            // Theme Toggle
             const themeToggle = document.getElementById('themeToggle');
-            const themeIcon = themeToggle?.querySelector('i');
-            if (themeToggle && themeIcon) {
-                themeToggle.addEventListener('click', function() {
-                    const body = document.body;
-                    body.classList.add('theme-transition');
-                    if (body.classList.contains('light-mode')) {
-                        body.classList.remove('light-mode');
-                        themeIcon.classList.remove('fa-sun');
-                        themeIcon.classList.add('fa-moon');
-                        localStorage.setItem('theme', 'dark');
-                    } else {
-                        body.classList.add('light-mode');
-                        themeIcon.classList.remove('fa-moon');
-                        themeIcon.classList.add('fa-sun');
-                        localStorage.setItem('theme', 'light');
-                    }
-                    // Remove transition class after animation completes
-                    setTimeout(() => { body.classList.remove('theme-transition'); }, 500);
-                });
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Check if user has a saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
                 
-                // Apply saved theme on load
-                const savedTheme = localStorage.getItem('theme');
-                if (savedTheme === 'light') {
-                    document.body.classList.add('light-mode');
+                if (document.body.classList.contains('light-theme')) {
                     themeIcon.classList.remove('fa-moon');
                     themeIcon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'dark');
                 }
-            }
+            });
 
-            // Initialize Google Sign-In
-            initializeGoogleSignIn();
+            // Quick Contact Toggle
+            const quickContactToggle = document.getElementById('quickContactToggle');
+            const quickContactMenu = document.getElementById('quickContactMenu');
             
-            // Check for saved user
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                try {
-                    currentUser = JSON.parse(savedUser);
-                    displayUserInfo();
-                    checkOrderLimit();
-                    updateFormProgress(20);
-                } catch (e) {
-                    console.error("Error parsing saved user data:", e);
-                    localStorage.removeItem('currentUser');
-                }
-            }
-            
-            // Token generation
-            const customerNameInput = document.getElementById('customerName');
-            const tokenDisplay = document.getElementById('tokenDisplay');
-            if (customerNameInput && tokenDisplay) {
-                customerNameInput.addEventListener('blur', function() {
-                    if (this.value === "") {
-                        tokenDisplay.textContent = "Your Token: " + generateToken();
-                    } else {
-                        tokenDisplay.textContent = "";
-                    }
-                });
-                // Initial token generation if name is empty
-                if (customerNameInput.value === "") {
-                    tokenDisplay.textContent = "Your Token: " + generateToken();
-                }
-            }
-            
-            // Set minimum delivery date and time
-            setMinDeliveryTime();
-            
-            // Ask button event
-            const askButton = document.getElementById('askButton');
-            if (askButton) askButton.addEventListener('click', showContactOptions);
+            quickContactToggle.addEventListener('click', () => {
+                quickContactMenu.classList.toggle('active');
+            });
 
-            // Sign out button event
-            const signOutButton = document.getElementById('sign-out-button');
-            if (signOutButton) signOutButton.addEventListener('click', signOut);
+            // Chatbot Functionality
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotContainer = document.getElementById('chatbotContainer');
+            const chatbotClose = document.getElementById('chatbotClose');
+            const chatbotMessages = document.getElementById('chatbotMessages');
+            const chatbotInput = document.getElementById('chatbotInput');
+            const chatbotSend = document.getElementById('chatbotSend');
             
-            // Form input events for progress tracking
-            const formInputs = document.querySelectorAll('#orderForm input, #orderForm textarea, #orderForm select');
-            formInputs.forEach(input => {
-                input.addEventListener('change', function() {
-                    // Update progress only for required fields or fields with value
-                    if ((this.required || this.value) && !this.dataset.counted) {
-                        updateFormProgress(5);
-                        this.dataset.counted = 'true';
-                    } else if (!this.value && this.dataset.counted && !this.required) {
-                        updateFormProgress(-5);
-                        this.dataset.counted = '';
-                    }
-                });
+            // Predefined responses
+            const botResponses = {
+                'hello': 'Hello! How can I help you today?',
+                'hi': 'Hi there! How can I assist you?',
+                'order': 'You can place an order by clicking the "Order Now" button at the top of the page or by visiting our order form directly.',
+                'delivery': 'We currently deliver in Varanasi and Chandauli. We\'re planning to expand to more locations soon!',
+                'price': 'Our delivery prices start at ₹249 for normal deliveries and ₹299 for item deliveries. For more details, please check our pricing section.',
+                'contact': 'You can reach us at +91 7007677139 (Call/WhatsApp) or email us at timelinedeliveryofficial@gmail.com.',
+                'address': 'Our office is located at: Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008.',
+                'refund': 'If delivery fails, the amount (excluding distance charges) will be refunded within twelve hours. For more details, please check our policy page.',
+                'thanks': 'You\'re welcome! Is there anything else I can help you with?',
+                'thank you': 'You\'re welcome! Is there anything else I can help you with?',
+                'bye': 'Thank you for chatting with us! Have a great day!',
+                'default': 'I\'m not sure I understand. Could you please rephrase or ask about our services, delivery areas, pricing, or contact information?'
+            };
+            
+            // Toggle chatbot visibility
+            chatbotToggle.addEventListener('click', () => {
+                chatbotContainer.classList.toggle('active');
             });
             
-            // --- Attach Core Dynamic Event Listeners --- 
-            const itemTypeSelect = document.getElementById("itemType");
-            if (itemTypeSelect) {
-                itemTypeSelect.addEventListener("change", handleItemTypeChange);
-                console.log("Attached listener to itemType select");
-            }
+            // Close chatbot
+            chatbotClose.addEventListener('click', () => {
+                chatbotContainer.classList.remove('active');
+            });
             
-            const liveDeliveryCheckbox = document.getElementById("liveDelivery");
-            if (liveDeliveryCheckbox) {
-                liveDeliveryCheckbox.addEventListener("change", handleLiveDeliveryChange);
-                 console.log("Attached listener to liveDelivery checkbox");
-            }
+            // Send message function
+            const sendMessage = () => {
+                const message = chatbotInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message to chat
+                const userMessageDiv = document.createElement('div');
+                userMessageDiv.className = 'chatbot-message user';
+                userMessageDiv.innerHTML = `<div class="chatbot-bubble">${message}</div>`;
+                chatbotMessages.appendChild(userMessageDiv);
+                
+                // Clear input
+                chatbotInput.value = '';
+                
+                // Scroll to bottom
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                
+                // Process message and get response
+                setTimeout(() => {
+                    let response = botResponses.default;
+                    
+                    // Check for matching keywords
+                    const messageLower = message.toLowerCase();
+                    for (const [keyword, reply] of Object.entries(botResponses)) {
+                        if (messageLower.includes(keyword)) {
+                            response = reply;
+                            break;
+                        }
+                    }
+                    
+                    // Add bot response
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'chatbot-message bot';
+                    botMessageDiv.innerHTML = `<div class="chatbot-bubble">${response}</div>`;
+                    chatbotMessages.appendChild(botMessageDiv);
+                    
+                    // Scroll to bottom
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                }, 500);
+            };
             
-            // Form submission
-            const orderForm = document.getElementById('orderForm');
-            if (orderForm) {
-                orderForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    if (!this.checkValidity()) {
-                        showPopup('Please fill all required fields correctly.');
-                        // Optionally, highlight invalid fields
-                        this.reportValidity(); 
-                        return;
-                    }
-                    
-                    const formData = new FormData(this);
-                    const orderData = {};
-                    for (const [key, value] of formData.entries()) {
-                        // Handle checkboxes explicitly as FormData only includes them if checked
-                        if (key === 'liveDelivery') {
-                            orderData[key] = document.getElementById('liveDelivery')?.checked || false;
-                        } else if (key === 'claimWarranty') {
-                             orderData[key] = document.getElementById('claimWarranty')?.checked || false;
-                        } else {
-                            orderData[key] = value;
-                        }
-                    }
-                    // Ensure totalAmount is calculated and added
-                    orderData.totalAmount = calculateTotalAmount();
-                    
-                    const submitButton = document.getElementById('submit-button');
-                    const originalText = submitButton?.innerHTML || 'Proceed to Payment <i class="fas fa-arrow-right"></i>';
-                    if (submitButton) {
-                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                        submitButton.disabled = true;
-                    }
-                    
-                    try {
-                        let success = false;
-                        // Try Supabase first if user is logged in
-                        if (currentUser && supabase) {
-                            console.log("Attempting Supabase submission...");
-                            success = await storeOrderSupabase(orderData);
-                            console.log("Supabase submission result:", success);
-                        }
-                        // Fallback to Google Apps Script if Supabase fails or user not logged in
-                        if (!success) {
-                            console.log("Attempting Google Apps Script submission...");
-                            success = await submitFormDataGoogle(orderData);
-                             console.log("Google Apps Script submission result:", success);
-                        }
-                        
-                        if (success) {
-                            showPopup('Your order has been submitted successfully! We will contact you shortly.');
-                            this.reset(); // Reset the form
-                            // Manually clear dynamic sections and reset token/amount
-                            document.getElementById('additionalSections').innerHTML = '';
-                            document.getElementById('liveDeliveryOptions').innerHTML = '';
-                            document.getElementById('totalAmount').textContent = 'Total Amount: ₹0';
-                            if (tokenDisplay && customerNameInput?.value === "") {
-                                tokenDisplay.textContent = "Your Token: " + generateToken();
-                            }
-                            updateFormProgress(100); // Show completion
-                            setTimeout(() => updateFormProgress(-100), 1000); // Reset progress
-                            checkOrderLimit(); // Re-check limit after successful order
-                        } else {
-                            showPopup('There was an error submitting your order. Please try again or contact support.');
-                        }
-                    } catch (error) {
-                        console.error('Order submission error:', error);
-                        showPopup('There was an error submitting your order. Please try again.');
-                    } finally {
-                        if (submitButton) {
-                            submitButton.innerHTML = originalText;
-                            // Re-enable button only if order limit not reached
-                            checkOrderLimit(); 
-                        }
-                    }
-                });
-            }
+            // Send message on button click
+            chatbotSend.addEventListener('click', sendMessage);
             
-            // Sticky navigation
-            window.addEventListener('scroll', function() {
-                const nav = document.getElementById('mainNav');
-                if (nav) {
-                    if (window.scrollY > 100) {
-                        nav.classList.add('scrolled');
-                    } else {
-                        nav.classList.remove('scrolled');
-                    }
+            // Send message on Enter key
+            chatbotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
                 }
             });
-            
-            // Initialize 3D card effect
-            const cards = document.querySelectorAll('.card-3d');
-            cards.forEach(card => {
-                card.addEventListener('mousemove', function(e) {
-                    const cardInner = card.querySelector('.card-3d-inner');
-                    if (!cardInner) return;
-                    const cardRect = card.getBoundingClientRect();
-                    const cardCenterX = cardRect.left + cardRect.width / 2;
-                    const cardCenterY = cardRect.top + cardRect.height / 2;
-                    const mouseX = e.clientX - cardCenterX;
-                    const mouseY = e.clientY - cardCenterY;
-                    const rotateY = mouseX / 15; // Reduced rotation intensity
-                    const rotateX = -mouseY / 15; // Reduced rotation intensity
-                    cardInner.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+
+            // 3D hover effect for gallery items
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                item.addEventListener('mousemove', (e) => {
+                    const rect = item.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    const rotateX = -y / 20; // Adjust sensitivity
+                    const rotateY = x / 20;  // Adjust sensitivity
+                    
+                    item.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+                    
+                    // Move border with mouse
+                    const border = item.querySelector('.gallery-item-border');
+                    if (border) {
+                        border.style.transform = `translateX(${x/30}px) translateY(${y/30}px)`;
+                    }
                 });
-                card.addEventListener('mouseleave', function() {
-                     const cardInner = card.querySelector('.card-3d-inner');
-                     if (cardInner) cardInner.style.transform = 'rotateY(0deg) rotateX(0deg)';
+                
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+                    
+                    const border = item.querySelector('.gallery-item-border');
+                    if (border) {
+                        border.style.transform = 'translateX(0) translateY(0)';
+                    }
                 });
             });
-            
-            console.log("All initializations and event listeners attached - Final Site");
+
+            // Feature card 3D effect
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    const rotateX = -y / 20; // Adjust sensitivity
+                    const rotateY = x / 20;  // Adjust sensitivity
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+                });
+            });
         });
     </script>
 </body>
