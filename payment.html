@@ -1,52 +1,704 @@
 <!doctype html>
-<html lang="en"> 
- <head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
-  <title>Payment - TIME LINE</title>  
- </head> 
- <body> 
-  <header> 
-   <div class="logo"> 
-    <h1>TIME LINE</h1> 
-    <p>Delivering Emotions On Time</p> 
-   </div> 
-  </header> 
-  <nav> 
-   <ul> 
-    <li><a href="index.html#home">Home</a></li> 
-    <li><a href="index.html#features">Features</a></li> 
-    <li><a href="index.html#order">Order Now</a></li> 
-    <li><a href="index.html#price">Price</a></li> 
-    <li><a href="index.html#policy">Policy</a></li> 
-    <li><a href="index.html#contact">Contact</a></li> 
-   </ul> 
-  </nav> 
-  <section id="payment" class="section"> 
-   <h2>Complete Your Payment</h2> 
-   <div class="payment-container"> 
-    <div class="payment-info"> 
-     <p>Order for: <span id="customerNameDisplay"></span></p> 
-     <div class="payment-amount" id="paymentAmount">
-      Total: ₹0
-     </div> 
-    </div> 
-    <p class="instruction">Please pay the exact amount shown above</p> 
-    <div class="qr-code"> 
-     <img src="1000027407.png" alt="PhonePe QR Code"> 
-     <p>Scan QR code to pay</p> 
-    </div> 
-    <p>OR</p> <button class="upi-button" onclick="payWithUPI()"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" alt="UPI Logo"> Pay with UPI Apps </button> 
-    <div class="receipt-upload"> 
-     <p class="instruction">After payment, upload your receipt</p> <label for="receiptUpload">Payment Receipt (Max 4MB):</label> 
-     <input type="file" id="receiptUpload" name="receiptUpload" accept="image/*" required> <button class="upi-button" onclick="submitPayment()">Submit Payment</button> 
-    </div> 
-    <div id="paymentStatus"></div> 
-   </div> 
-  </section> 
-  <footer> 
-   <p>© 2025 TIME LINE. All Rights Reserved.</p> 
-  </footer>  
- </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment - TIME LINE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Matching the main website theme */
+    :root {
+      --primary: #FF6B6B;
+      --primary-dark: #ff5252;
+      --secondary: #4ECDC4;
+      --secondary-dark: #3fd8d1;
+      --dark: #121212;
+      --darker: #0a0a0a;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --light-gray: #e9ecef;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+      --gradient-hover: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+      --shadow: 0 10px 20px rgba(0,0,0,0.1);
+      --shadow-hover: 0 15px 30px rgba(0,0,0,0.2);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --border-radius: 12px;
+      --border-radius-sm: 8px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--dark);
+      color: var(--light);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: radial-gradient(circle at 10% 20%, rgba(31,31,31,0.8) 0%, rgba(18,18,18,1) 90%);
+      position: relative;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    /* Particle background */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    /* Header styles */
+    header {
+      background: var(--darker);
+      text-align: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      z-index: 10;
+      animation: fadeInDown 0.8s ease;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), #ff8c00, #ff6347);
+      animation: rainbow 8s linear infinite;
+    }
+
+    @keyframes rainbow {
+      0% {background-position: 0% 50%}
+      50% {background-position: 100% 50%}
+      100% {background-position: 0% 50%}
+    }
+
+    header h1 {
+      margin: 0;
+      color: var(--primary);
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(255,99,71,0.3);
+      animation: pulse 2s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from {text-shadow: 0 0 10px rgba(255,99,71,0.3);}
+      to {text-shadow: 0 0 20px rgba(255,99,71,0.6);}
+    }
+
+    header p {
+      margin: 0.5rem 0 0;
+      color: var(--light);
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      font-weight: 300;
+      animation: fadeIn 1.5s ease;
+    }
+
+    /* Navigation */
+    nav {
+      background-color: rgba(31, 31, 31, 0.95);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: var(--transition);
+      animation: fadeIn 1s ease;
+    }
+
+    nav.scrolled {
+      padding: 0.5rem 0;
+      background-color: rgba(10, 10, 10, 0.98);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 1rem;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+
+    nav ul li {
+      margin: 0.5rem clamp(0.5rem, 2vw, 1rem);
+      position: relative;
+    }
+
+    nav ul li::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: var(--transition);
+    }
+
+    nav ul li:hover::after {
+      width: 100%;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--light);
+      font-weight: 500;
+      font-size: clamp(0.8rem, 2.5vw, 1rem);
+      padding: 0.5rem 0;
+      transition: var(--transition);
+    }
+
+    nav ul li a:hover {
+      color: var(--primary);
+    }
+
+    /* Sections */
+    .section {
+      padding: clamp(2rem, 8vw, 4rem) clamp(1rem, 5vw, 2rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .section:nth-child(even) {
+      background-color: rgba(31, 31, 31, 0.5);
+    }
+
+    .section h2 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: 2rem;
+      color: var(--primary);
+      position: relative;
+      display: inline-block;
+    }
+
+    .section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: var(--gradient);
+      border-radius: 3px;
+    }
+
+    /* Payment container styles */
+    .payment-container {
+      display: flex;
+      flex-direction: column;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: clamp(1.5rem, 5vw, 2rem);
+      background-color: rgba(31, 31, 31, 0.8);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.05);
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .payment-container:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-5px);
+    }
+
+    @keyframes fadeInUp {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .payment-info {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .payment-info p {
+      margin: 5px 0;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+    }
+
+    .payment-amount {
+      background: linear-gradient(135deg, rgba(255,99,71,0.2), rgba(255,99,71,0.1));
+      padding: clamp(1rem, 4vw, 1.5rem);
+      margin: 1.5rem 0;
+      border-radius: var(--border-radius-sm);
+      font-weight: bold;
+      font-size: clamp(1.3rem, 4vw, 1.5rem);
+      color: white;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,99,71,0.2);
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {box-shadow: 0 0 5px rgba(255,99,71,0.3);}
+      to {box-shadow: 0 0 15px rgba(255,99,71,0.5);}
+    }
+
+    .instruction {
+      color: var(--primary);
+      font-weight: bold;
+      margin: 15px 0;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+    }
+
+    .qr-code {
+      text-align: center;
+      margin: 20px 0;
+      animation: fadeIn 1s ease;
+    }
+
+    .qr-code img {
+      width: clamp(150px, 50vw, 200px);
+      height: auto;
+      border: 2px solid var(--primary);
+      border-radius: var(--border-radius-sm);
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .qr-code img:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .qr-code p {
+      margin-top: 10px;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      color: var(--light);
+    }
+
+    .upi-button {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: clamp(0.8rem, 2.5vw, 1rem);
+      margin: 15px 0;
+      border-radius: var(--border-radius-sm);
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .upi-button:hover {
+      background: var(--gradient-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .upi-button img {
+      width: clamp(20px, 6vw, 30px);
+      margin-right: 10px;
+    }
+
+    .receipt-upload {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .receipt-upload label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      font-weight: 500;
+      color: var(--light);
+    }
+
+    .receipt-upload input[type="file"] {
+      width: 100%;
+      padding: clamp(0.7rem, 2vw, 0.8rem);
+      margin-bottom: 15px;
+      background-color: rgba(31, 31, 31, 0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--border-radius-sm);
+      color: var(--light);
+      font-family: 'Poppins', sans-serif;
+      transition: var(--transition);
+    }
+
+    .receipt-upload input[type="file"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+    }
+
+    .success-message {
+      color: var(--success);
+      font-weight: bold;
+      margin-top: 20px;
+      padding: 15px;
+      background-color: rgba(40, 167, 69, 0.1);
+      border-radius: var(--border-radius-sm);
+      border-left: 4px solid var(--success);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .error-message {
+      color: var(--danger);
+      font-weight: bold;
+      margin-top: 20px;
+      padding: 15px;
+      background-color: rgba(220, 53, 69, 0.1);
+      border-radius: var(--border-radius-sm);
+      border-left: 4px solid var(--danger);
+      animation: fadeIn 0.5s ease;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--darker);
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+      position: relative;
+      animation: fadeIn 1s ease;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--gradient);
+    }
+
+    footer p {
+      margin: 0;
+      color: var(--gray);
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
+    }
+
+    /* Theme toggle */
+    #themeToggle {
+      position: fixed;
+      top: clamp(10px, 3vw, 20px);
+      right: clamp(10px, 3vw, 20px);
+      background: var(--gradient);
+      color: white;
+      border: none;
+      width: clamp(35px, 8vw, 40px);
+      height: clamp(35px, 8vw, 40px);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+
+    #themeToggle:hover {
+      transform: rotate(30deg);
+    }
+
+    /* Dark/Light mode */
+    body.light-mode {
+      background-color: #f5f5f5;
+      color: #333;
+      background-image: radial-gradient(circle at 10% 20%, rgba(240,240,240,0.8) 0%, rgba(255,255,255,1) 90%);
+    }
+
+    body.light-mode .section:nth-child(even) {
+      background-color: rgba(240, 240, 240, 0.5);
+    }
+
+    body.light-mode header,
+    body.light-mode footer,
+    body.light-mode nav {
+      background-color: #fff;
+      color: #333;
+    }
+
+    body.light-mode nav ul li a {
+      color: #333;
+    }
+
+    body.light-mode .payment-container {
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #333;
+      border-color: rgba(0,0,0,0.1);
+    }
+
+    body.light-mode .payment-amount {
+      color: #333;
+    }
+
+    body.light-mode .instruction {
+      color: var(--primary-dark);
+    }
+
+    body.light-mode .section h2 {
+      color: var(--primary-dark);
+    }
+
+    body.light-mode footer p {
+      color: #666;
+    }
+
+    /* Animation for theme transition */
+    .theme-transition {
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .payment-container {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  
+  <button id="themeToggle" title="Toggle Dark/Light Mode">
+    <i class="fas fa-moon"></i>
+  </button>
+  
+  <header class="animate__animated animate__fadeIn">
+    <div class="logo">
+      <h1>TIME LINE</h1>
+      <p>Delivering Emotions On Time</p>
+    </div>
+  </header>
+  
+  <nav id="mainNav" class="animate__animated animate__fadeIn animate__delay-1s">
+    <ul>
+      <li><a href="index.html#home">Home</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#timeline">Our Story</a></li>
+      <li><a href="index.html#order">Order Now</a></li>
+      <li><a href="index.html#price">Price</a></li>
+      <li><a href="index.html#policy">Policy</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+  
+  <section id="payment" class="section">
+    <h2 class="animate__animated animate__fadeInUp">Complete Your Payment</h2>
+    <div class="payment-container animate__animated animate__fadeInUp animate__delay-1s">
+      <div class="payment-info">
+        <p>Order for: <span id="customerNameDisplay"></span></p>
+        <div class="payment-amount" id="paymentAmount">Total: ₹0</div>
+      </div>
+      
+      <p class="instruction">Please pay the exact amount shown above</p>
+      
+      <div class="qr-code">
+        <img src="1000027407.png" alt="PhonePe QR Code" class="animate__animated animate__pulse animate__infinite animate__slow">
+        <p>Scan QR code to pay</p>
+      </div>
+      
+      <p>OR</p>
+      
+      <button class="upi-button" onclick="payWithUPI()">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" alt="UPI Logo">
+        Pay with UPI Apps
+      </button>
+      
+      <div class="receipt-upload">
+        <p class="instruction">After payment, upload your receipt</p>
+        <label for="receiptUpload">Payment Receipt (Max 4MB):</label>
+        <input type="file" id="receiptUpload" name="receiptUpload" accept="image/*" required>
+        <button class="upi-button" onclick="submitPayment()">
+          <i class="fas fa-check-circle"></i> Submit Payment
+        </button>
+      </div>
+      
+      <div id="paymentStatus"></div>
+    </div>
+  </section>
+  
+  <footer>
+    <p>© 2025 TIME LINE. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Particles.js for background effects -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  
+  <script>
+    // Initialize particles.js
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof particlesJS !== 'undefined') {
+        particlesJS("particles-js", {
+          "particles": {
+            "number": {"value": 80, "density": {"enable": true, "value_area": 800}},
+            "color": {"value": "#FF6B6B"},
+            "shape": {"type": "circle"},
+            "opacity": {"value": 0.2, "random": false},
+            "size": {"value": 3, "random": true},
+            "line_linked": {"enable": true, "distance": 150, "color": "#FF6B6B", "opacity": 0.2, "width": 1},
+            "move": {"enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false}
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "push"}, "resize": true},
+            "modes": {"grab": {"distance": 140, "line_linked": {"opacity": 1}}, "push": {"particles_nb": 4}}
+          },
+          "retina_detect": true
+        });
+      }
+    });
+
+    // Theme toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = themeToggle?.querySelector('i');
+      
+      if (themeToggle && themeIcon) {
+        themeToggle.addEventListener('click', function() {
+          const body = document.body;
+          body.classList.add('theme-transition');
+          
+          if (body.classList.contains('light-mode')) {
+            body.classList.remove('light-mode');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'dark');
+          } else {
+            body.classList.add('light-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'light');
+          }
+          
+          // Remove transition class after animation completes
+          setTimeout(() => { body.classList.remove('theme-transition'); }, 500);
+        });
+        
+        // Apply saved theme on load
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+          document.body.classList.add('light-mode');
+          themeIcon.classList.remove('fa-moon');
+          themeIcon.classList.add('fa-sun');
+        }
+      }
+    });
+
+    // Load order details from localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+      const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
+      if (orderDetails) {
+        document.getElementById('customerNameDisplay').textContent = orderDetails.customerName || 'Guest';
+        document.getElementById('paymentAmount').textContent = `Total: ₹${orderDetails.totalAmount}`;
+      } else {
+        // If no order details found, redirect back to order page
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Pay with UPI function
+    function payWithUPI() {
+      const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
+      const amount = orderDetails ? orderDetails.totalAmount : 0;
+      
+      // UPI deep link - replace with your actual UPI ID
+      const upiId = '7007677139@ybl'; // Example UPI ID
+      const upiLink = `upi://pay?pa=${upiId}&pn=TIME%20LINE&am=${amount}&cu=INR`;
+      
+      // Try to open UPI app
+      window.location.href = upiLink;
+      
+      // Fallback in case UPI app not installed
+      setTimeout(function() {
+        alert('Could not open UPI app. Please scan the QR code or use any UPI app to send payment to 7007677139@ybl');
+      }, 500);
+    }
+
+    // Submit payment with receipt
+    function submitPayment() {
+      const receiptUpload = document.getElementById('receiptUpload');
+      const paymentStatus = document.getElementById('paymentStatus');
+      
+      if (receiptUpload.files.length === 0) {
+        paymentStatus.innerHTML = '<p class="error-message">Please upload your payment receipt</p>';
+        return;
+      }
+      
+      if (receiptUpload.files[0].size > 4 * 1024 * 1024) {
+        paymentStatus.innerHTML = '<p class="error-message">Receipt must be less than 4MB</p>';
+        return;
+      }
+      
+      // Here you would normally send the receipt to your server
+      // For this example, we'll just show a success message
+      
+      paymentStatus.innerHTML = `
+        <div class="success-message">
+          <p>Payment successful! Your order has been confirmed.</p>
+          <p>We will contact you shortly with delivery details.</p>
+        </div>
+      `;
+      
+      // Clear the order from localStorage
+      localStorage.removeItem('orderDetails');
+      
+      // Scroll to show the success message
+      paymentStatus.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Sticky navigation
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('mainNav');
+      if (nav) {
+        if (window.scrollY > 100) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+      }
+    });
+  </script>
+</body>
 </html>
