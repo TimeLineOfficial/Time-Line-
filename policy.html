@@ -1,0 +1,1353 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIME LINE - Policy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        /* Modern 3D Website Theme */
+        :root {
+            --primary: #FF6B6B;
+            --primary-dark: #ff5252;
+            --secondary: #4ECDC4;
+            --secondary-dark: #3fd8d1;
+            --accent: #FFE66D;
+            --dark: #1a1a1a;
+            --darker: #101010;
+            --light: #f8f9fa;
+            --gray: #adb5bd;
+            --light-gray: #dee2e6;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-hover: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            --shadow: 0 15px 30px rgba(0,0,0,0.2);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.3);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --border-radius: 15px;
+            --border-radius-sm: 10px;
+            --perspective: 1500px;
+        }
+
+        /* Light Theme Variables */
+        .light-theme {
+            --dark: #f5f5f5;
+            --darker: #e0e0e0;
+            --light: #333333;
+            --gray: #555555;
+            --light-gray: #777777;
+            --shadow: 0 15px 30px rgba(0,0,0,0.1);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.7;
+            overflow-x: hidden;
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+            position: relative;
+            perspective: var(--perspective);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Header styles */
+        header {
+            background: rgba(16, 16, 16, 0.9);
+            text-align: center;
+            padding: 1.2rem 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .light-theme header {
+            background: rgba(240, 240, 240, 0.9);
+        }
+
+        header.scrolled {
+            padding: 0.8rem 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+
+        /* Navigation */
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 0 clamp(0.5rem, 2vw, 1rem);
+            position: relative;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--light);
+            font-weight: 500;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            padding: 0.5rem 0;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .order-now-btn {
+            background: var(--gradient);
+            color: white !important;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .order-now-btn:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+            }
+        }
+
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 6rem;
+            min-height: 100vh;
+        }
+
+        /* Policy Section */
+        .policy-section {
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            color: var(--primary);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
+        }
+
+        .section-title p {
+            color: var(--light-gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+
+        /* Policy Card */
+        .policy-card {
+            background-color: rgba(16, 16, 16, 0.7);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .light-theme .policy-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .policy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Policy Navigation */
+        .policy-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .policy-nav-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .light-theme .policy-nav-item {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .policy-nav-item:hover {
+            background: rgba(255, 107, 107, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .policy-nav-item.active {
+            background: var(--gradient);
+            color: white;
+            border: none;
+        }
+
+        /* Policy Content */
+        .policy-content {
+            margin-top: 2rem;
+        }
+
+        .policy-section-title {
+            color: var(--primary);
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .policy-section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .policy-text {
+            margin-bottom: 2rem;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .policy-text p {
+            margin-bottom: 1rem;
+        }
+
+        .policy-text ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .policy-text ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .policy-text strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .policy-tab {
+            display: none;
+        }
+
+        .policy-tab.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255, 107, 107, 0.05);
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            z-index: -1;
+        }
+
+        .cta-title {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .cta-text {
+            margin-bottom: 2rem;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-btn {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .cta-btn:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--darker);
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            margin-top: 4rem;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-column h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-column p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--light);
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        /* Quick Contact */
+        .quick-contact {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .quick-contact-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .quick-contact-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-contact-menu {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        .quick-contact-menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .quick-contact-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .quick-contact-item:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-contact-item.whatsapp {
+            background: #25D366;
+        }
+
+        .quick-contact-item.instagram {
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+        }
+
+        .quick-contact-item.email {
+            background: #D44638;
+        }
+
+        /* Chatbot */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 80px;
+            z-index: 100;
+        }
+
+        .chatbot-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-container {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            width: 300px;
+            background-color: var(--dark);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+            transform-origin: bottom right;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .light-theme .chatbot-container {
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-container.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .chatbot-header {
+            background: var(--gradient);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chatbot-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-messages {
+            height: 250px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .chatbot-message {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-message.bot {
+            align-items: flex-start;
+        }
+
+        .chatbot-message.user {
+            align-items: flex-end;
+        }
+
+        .chatbot-bubble {
+            padding: 0.8rem 1rem;
+            border-radius: 1rem;
+            max-width: 80%;
+            font-size: 0.9rem;
+        }
+
+        .chatbot-message.bot .chatbot-bubble {
+            background-color: rgba(78, 205, 196, 0.2);
+            color: var(--light);
+            border-bottom-left-radius: 0;
+        }
+
+        .light-theme .chatbot-message.bot .chatbot-bubble {
+            background-color: rgba(78, 205, 196, 0.2);
+            color: var(--dark);
+        }
+
+        .chatbot-message.user .chatbot-bubble {
+            background-color: rgba(255, 107, 107, 0.2);
+            color: var(--light);
+            border-bottom-right-radius: 0;
+        }
+
+        .light-theme .chatbot-message.user .chatbot-bubble {
+            background-color: rgba(255, 107, 107, 0.2);
+            color: var(--dark);
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .light-theme .chatbot-input {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            background-color: rgba(16, 16, 16, 0.7);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .light-theme .chatbot-input input {
+            background-color: rgba(240, 240, 240, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+        }
+
+        .chatbot-input input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .chatbot-send {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chatbot-send:hover {
+            background: var(--secondary-dark);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .policy-section {
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(16, 16, 16, 0.95);
+                flex-direction: column;
+                padding: 1rem 0;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                z-index: 1000;
+            }
+            .light-theme nav ul {
+                background-color: rgba(240, 240, 240, 0.95);
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                margin: 0.8rem 0;
+                width: 100%;
+                text-align: center;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .policy-card {
+                padding: 1.5rem 1rem;
+            }
+            .footer-column {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .quick-contact, .chatbot {
+                bottom: 80px;
+            }
+            .theme-toggle {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="mainHeader">
+        <div class="header-content">
+            <div class="logo">
+                <h1>TIME LINE</h1>
+            </div>
+            <nav>
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                <ul id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#gallery">Gallery</a></li>
+                    <li><a href="index.html#testimonials">Testimonials</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="policy.html">Policy</a></li>
+                    <li><a href="order.html" class="order-now-btn">Order Now</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <section class="policy-section">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Our Policies</h2>
+                <p>Please read our policies carefully to understand how we operate and what to expect from our services.</p>
+            </div>
+
+            <div class="policy-nav" data-aos="fade-up">
+                <div class="policy-nav-item active" data-tab="general">General Policy</div>
+                <div class="policy-nav-item" data-tab="delivery">Delivery Policy</div>
+                <div class="policy-nav-item" data-tab="payment">Payment & Refund</div>
+                <div class="policy-nav-item" data-tab="privacy">Privacy Policy</div>
+            </div>
+
+            <div class="policy-card" data-aos="fade-up">
+                <div class="policy-content">
+                    <!-- General Policy Tab -->
+                    <div class="policy-tab active" id="general-tab">
+                        <h3 class="policy-section-title">General Policy</h3>
+                        <div class="policy-text">
+                            <p>Welcome to TIME LINE, your trusted delivery service for special moments. Our general policies are designed to ensure a smooth and satisfactory experience for all our customers.</p>
+                            
+                            <p><strong>Service Areas:</strong> We currently operate in Varanasi and Chandauli. We're continuously expanding our service areas to reach more locations.</p>
+                            
+                            <p><strong>Operating Hours:</strong> Our standard delivery hours are from 9:00 AM to 9:00 PM, seven days a week. Special arrangements can be made for deliveries outside these hours with additional charges.</p>
+                            
+                            <p><strong>Booking Process:</strong> Orders should be placed at least 3 hours in advance for same-day deliveries. For special occasions like Valentine's Day, we recommend booking at least 24 hours in advance.</p>
+                            
+                            <p><strong>Customer Responsibilities:</strong></p>
+                            <ul>
+                                <li>Provide accurate delivery information including address, contact details, and delivery instructions</li>
+                                <li>Ensure the recipient is available to receive the delivery</li>
+                                <li>Inform us of any special handling requirements for items</li>
+                                <li>Notify us of any changes to the order at least 2 hours before the scheduled delivery time</li>
+                            </ul>
+                            
+                            <p><strong>Service Limitations:</strong> We do not deliver prohibited or illegal items. We reserve the right to refuse delivery of items that may pose safety risks or violate local regulations.</p>
+                            
+                            <p><strong>Communication:</strong> We will keep you updated about your delivery status through WhatsApp or SMS. You can also contact our customer service for any queries or concerns.</p>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Policy Tab -->
+                    <div class="policy-tab" id="delivery-tab">
+                        <h3 class="policy-section-title">Delivery Policy</h3>
+                        <div class="policy-text">
+                            <p>At TIME LINE, we strive to deliver your items safely and on time. Our delivery policy outlines the procedures and expectations for our delivery services.</p>
+                            
+                            <p><strong>Delivery Timeframes:</strong></p>
+                            <ul>
+                                <li>Standard Delivery: Items will be delivered within the specified time slot selected during order placement</li>
+                                <li>Express Delivery: Available for urgent deliveries with additional charges</li>
+                                <li>Scheduled Delivery: You can schedule deliveries up to 30 days in advance</li>
+                            </ul>
+                            
+                            <p><strong>Delivery Confirmation:</strong> Our delivery agent will confirm the delivery through photos or videos as proof of delivery. For live deliveries, you can watch the delivery in real-time through your selected platform.</p>
+                            
+                            <p><strong>Failed Deliveries:</strong> If the recipient is not available at the time of delivery, our delivery agent will:</p>
+                            <ul>
+                                <li>Call the recipient to coordinate an alternative delivery time</li>
+                                <li>Wait for up to 15 minutes at the delivery location</li>
+                                <li>If delivery still cannot be completed, the item will be returned to our facility</li>
+                                <li>A second delivery attempt will be scheduled at an additional charge</li>
+                            </ul>
+                            
+                            <p><strong>Item Handling:</strong> We take utmost care in handling your items during delivery. However, we recommend not sending extremely fragile items or items of high monetary value without proper packaging.</p>
+                            
+                            <p><strong>Live/Recorded Delivery:</strong> For customers who opt for live or recorded delivery:</p>
+                            <ul>
+                                <li>Live delivery allows you to watch the delivery in real-time through WhatsApp, Google Meet, or Instagram</li>
+                                <li>Recorded delivery provides a video recording of the delivery which will be shared with you after completion</li>
+                                <li>Technical issues may occasionally affect live streaming quality</li>
+                            </ul>
+                            
+                            <p><strong>Delivery Restrictions:</strong> We reserve the right to refuse delivery in areas that are deemed unsafe or inaccessible. In such cases, we will coordinate with you for an alternative delivery location.</p>
+                        </div>
+                    </div>
+
+                    <!-- Payment & Refund Tab -->
+                    <div class="policy-tab" id="payment-tab">
+                        <h3 class="policy-section-title">Payment & Refund Policy</h3>
+                        <div class="policy-text">
+                            <p>Our payment and refund policies are designed to provide transparency and fairness in all financial transactions.</p>
+                            
+                            <p><strong>Payment Methods:</strong> We accept payments through:</p>
+                            <ul>
+                                <li>UPI (Google Pay, PhonePe, Paytm, etc.)</li>
+                                <li>Net Banking</li>
+                                <li>Credit/Debit Cards</li>
+                                <li>Cash on Delivery (for select orders)</li>
+                            </ul>
+                            
+                            <p><strong>Pricing Structure:</strong></p>
+                            <ul>
+                                <li>Base delivery charge: ₹249 for standard deliveries</li>
+                                <li>Item purchase service: ₹299 plus the cost of items</li>
+                                <li>Live/Recorded delivery: Additional ₹50</li>
+                                <li>Distance charges may apply for locations beyond 5km from our service center</li>
+                                <li>Special occasion surcharges may apply on Valentine's Day, Mother's Day, etc.</li>
+                            </ul>
+                            
+                            <p><strong>Refund Policy:</strong></p>
+                            <ul>
+                                <li>Full refund (excluding distance charges) if delivery fails due to our fault</li>
+                                <li>Refunds will be processed within 12 hours of the failed delivery</li>
+                                <li>No refund for cancellations made less than 3 hours before the scheduled delivery time</li>
+                                <li>50% refund for cancellations made 3-12 hours before the scheduled delivery time</li>
+                                <li>Full refund for cancellations made more than 12 hours before the scheduled delivery time</li>
+                            </ul>
+                            
+                            <p><strong>Refund Process:</strong> Refunds will be processed to the original payment method used for the order. In case of any issues with the refund, please contact our customer service.</p>
+                            
+                            <p><strong>Additional Charges:</strong> Any additional services requested after order placement will be charged separately and must be paid before the service is provided.</p>
+                        </div>
+                    </div>
+
+                    <!-- Privacy Policy Tab -->
+                    <div class="policy-tab" id="privacy-tab">
+                        <h3 class="policy-section-title">Privacy Policy</h3>
+                        <div class="policy-text">
+                            <p>At TIME LINE, we value your privacy and are committed to protecting your personal information. This privacy policy explains how we collect, use, and safeguard your data.</p>
+                            
+                            <p><strong>Information We Collect:</strong></p>
+                            <ul>
+                                <li>Contact information (name, phone number, email address)</li>
+                                <li>Delivery addresses</li>
+                                <li>Payment information</li>
+                                <li>Order details and preferences</li>
+                                <li>Feedback and communication records</li>
+                            </ul>
+                            
+                            <p><strong>How We Use Your Information:</strong></p>
+                            <ul>
+                                <li>To process and fulfill your orders</li>
+                                <li>To communicate with you about your deliveries</li>
+                                <li>To improve our services and customer experience</li>
+                                <li>To send promotional offers and updates (with your consent)</li>
+                                <li>To comply with legal obligations</li>
+                            </ul>
+                            
+                            <p><strong>Data Security:</strong> We implement appropriate security measures to protect your personal information from unauthorized access, alteration, disclosure, or destruction.</p>
+                            
+                            <p><strong>Data Sharing:</strong> We do not sell or rent your personal information to third parties. We may share your information with:</p>
+                            <ul>
+                                <li>Delivery partners who help us complete your orders</li>
+                                <li>Payment processors to facilitate transactions</li>
+                                <li>Legal authorities when required by law</li>
+                            </ul>
+                            
+                            <p><strong>Your Rights:</strong> You have the right to:</p>
+                            <ul>
+                                <li>Access the personal information we hold about you</li>
+                                <li>Request correction of inaccurate information</li>
+                                <li>Request deletion of your information (subject to legal requirements)</li>
+                                <li>Opt out of marketing communications</li>
+                            </ul>
+                            
+                            <p><strong>Cookies and Tracking:</strong> Our website may use cookies and similar technologies to enhance your browsing experience. You can adjust your browser settings to refuse cookies, but this may limit some functionality.</p>
+                            
+                            <p><strong>Contact Us:</strong> If you have any questions or concerns about our privacy practices, please contact us at timelinedeliveryofficial@gmail.com.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section" data-aos="fade-up">
+                <h3 class="cta-title">Ready to Experience Our Service?</h3>
+                <p class="cta-text">Now that you're familiar with our policies, place your order and let us create a memorable delivery experience for you or your loved ones.</p>
+                <a href="order.html" class="cta-btn">Place Your Order Now</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>TIME LINE</h3>
+                <p>Delivering emotions and surprises on time, creating memorable moments for you and your loved ones.</p>
+                <div class="social-links">
+                    <a href="https://wa.me/917007677139" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:timelinedeliveryofficial@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="index.html#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    <li><a href="index.html#gallery"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="index.html#testimonials"><i class="fas fa-star"></i> Testimonials</a></li>
+                    <li><a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li><a href="policy.html"><i class="fas fa-shield-alt"></i> Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Our Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-gift"></i> Gift Delivery</a></li>
+                    <li><a href="#"><i class="fas fa-envelope-open-text"></i> Message Delivery</a></li>
+                    <li><a href="#"><i class="fas fa-shopping-bag"></i> Item Purchase & Delivery</a></li>
+                    <li><a href="#"><i class="fas fa-video"></i> Live Delivery</a></li>
+                    <li><a href="#"><i class="fas fa-camera"></i> Recorded Delivery</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Service Areas</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Varanasi</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Chandauli</a></li>
+                </ul>
+                <p style="margin-top: 1rem;">We're currently expanding to more locations. Stay tuned!</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 TIME LINE. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- Quick Contact -->
+    <div class="quick-contact">
+        <div class="quick-contact-toggle" id="quickContactToggle">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+        <div class="quick-contact-menu" id="quickContactMenu">
+            <a href="https://wa.me/917007677139" target="_blank" class="quick-contact-item whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank" class="quick-contact-item instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="mailto:timelinedeliveryofficial@gmail.com" class="quick-contact-item email">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot">
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div class="chatbot-container" id="chatbotContainer">
+            <div class="chatbot-header">
+                <h3>TIME LINE Assistant</h3>
+                <button class="chatbot-close" id="chatbotClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chatbot-message bot">
+                    <div class="chatbot-bubble">
+                        Hello! Welcome to TIME LINE. How can I help you understand our policies today?
+                    </div>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type your message...">
+                <button class="chatbot-send" id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+
+            // Sticky Header
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close mobile menu when a link is clicked
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+
+            // Policy Tab Navigation
+            const policyNavItems = document.querySelectorAll('.policy-nav-item');
+            const policyTabs = document.querySelectorAll('.policy-tab');
+            
+            policyNavItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Remove active class from all nav items
+                    policyNavItems.forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked nav item
+                    item.classList.add('active');
+                    
+                    // Hide all tabs
+                    policyTabs.forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    
+                    // Show the corresponding tab
+                    const tabId = `${item.dataset.tab}-tab`;
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Check if user has a saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                
+                if (document.body.classList.contains('light-theme')) {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // Quick Contact Toggle
+            const quickContactToggle = document.getElementById('quickContactToggle');
+            const quickContactMenu = document.getElementById('quickContactMenu');
+            
+            quickContactToggle.addEventListener('click', () => {
+                quickContactMenu.classList.toggle('active');
+            });
+
+            // Chatbot Functionality
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotContainer = document.getElementById('chatbotContainer');
+            const chatbotClose = document.getElementById('chatbotClose');
+            const chatbotMessages = document.getElementById('chatbotMessages');
+            const chatbotInput = document.getElementById('chatbotInput');
+            const chatbotSend = document.getElementById('chatbotSend');
+            
+            // Predefined responses for policy-related questions
+            const botResponses = {
+                'hello': 'Hello! How can I help you understand our policies today?',
+                'hi': 'Hi there! Do you have any questions about our policies?',
+                'refund': 'Our refund policy offers a full refund (excluding distance charges) if delivery fails due to our fault. Refunds are processed within 12 hours. For cancellations, the refund amount depends on how early you cancel.',
+                'cancel': 'For cancellations made more than 12 hours before delivery, you get a full refund. For 3-12 hours before, you get a 50% refund. Less than 3 hours before, no refund is provided.',
+                'delivery': 'We deliver in Varanasi and Chandauli from 9:00 AM to 9:00 PM, seven days a week. Orders should be placed at least 3 hours in advance for same-day deliveries.',
+                'payment': 'We accept payments through UPI (Google Pay, PhonePe, Paytm), Net Banking, Credit/Debit Cards, and Cash on Delivery for select orders.',
+                'privacy': 'We collect your contact information, delivery addresses, payment information, and order details. We use this information to process orders, communicate with you, and improve our services. We do not sell your data to third parties.',
+                'live delivery': 'Live delivery allows you to watch the delivery in real-time through WhatsApp, Google Meet, or Instagram. Recorded delivery provides a video recording of the delivery which will be shared with you after completion.',
+                'contact': 'You can reach us at +91 7007677139 (Call/WhatsApp) or email us at timelinedeliveryofficial@gmail.com.',
+                'thanks': 'You\'re welcome! Is there anything else you\'d like to know about our policies?',
+                'thank you': 'You\'re welcome! Is there anything else you\'d like to know about our policies?',
+                'bye': 'Thank you for chatting with us! Have a great day!',
+                'default': 'I\'m not sure I understand. Could you please ask about our delivery, payment, refund, or privacy policies?'
+            };
+            
+            // Toggle chatbot visibility
+            chatbotToggle.addEventListener('click', () => {
+                chatbotContainer.classList.toggle('active');
+            });
+            
+            // Close chatbot
+            chatbotClose.addEventListener('click', () => {
+                chatbotContainer.classList.remove('active');
+            });
+            
+            // Send message function
+            const sendMessage = () => {
+                const message = chatbotInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message to chat
+                const userMessageDiv = document.createElement('div');
+                userMessageDiv.className = 'chatbot-message user';
+                userMessageDiv.innerHTML = `<div class="chatbot-bubble">${message}</div>`;
+                chatbotMessages.appendChild(userMessageDiv);
+                
+                // Clear input
+                chatbotInput.value = '';
+                
+                // Scroll to bottom
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                
+                // Process message and get response
+                setTimeout(() => {
+                    let response = botResponses.default;
+                    
+                    // Check for matching keywords
+                    const messageLower = message.toLowerCase();
+                    for (const [keyword, reply] of Object.entries(botResponses)) {
+                        if (messageLower.includes(keyword)) {
+                            response = reply;
+                            break;
+                        }
+                    }
+                    
+                    // Add bot response
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'chatbot-message bot';
+                    botMessageDiv.innerHTML = `<div class="chatbot-bubble">${response}</div>`;
+                    chatbotMessages.appendChild(botMessageDiv);
+                    
+                    // Scroll to bottom
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                }, 500);
+            };
+            
+            // Send message on button click
+            chatbotSend.addEventListener('click', sendMessage);
+            
+            // Send message on Enter key
+            chatbotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
