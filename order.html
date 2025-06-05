@@ -1,0 +1,2028 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIME LINE - Order Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        /* Modern 3D Website Theme */
+        :root {
+            --primary: #FF6B6B;
+            --primary-dark: #ff5252;
+            --secondary: #4ECDC4;
+            --secondary-dark: #3fd8d1;
+            --accent: #FFE66D;
+            --dark: #1a1a1a;
+            --darker: #101010;
+            --light: #f8f9fa;
+            --gray: #adb5bd;
+            --light-gray: #dee2e6;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-hover: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            --shadow: 0 15px 30px rgba(0,0,0,0.2);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.3);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --border-radius: 15px;
+            --border-radius-sm: 10px;
+            --perspective: 1500px;
+        }
+
+        /* Light Theme Variables */
+        .light-theme {
+            --dark: #f5f5f5;
+            --darker: #e0e0e0;
+            --light: #333333;
+            --gray: #555555;
+            --light-gray: #777777;
+            --shadow: 0 15px 30px rgba(0,0,0,0.1);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.7;
+            overflow-x: hidden;
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+            position: relative;
+            perspective: var(--perspective);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Header styles */
+        header {
+            background: rgba(16, 16, 16, 0.9);
+            text-align: center;
+            padding: 1.2rem 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .light-theme header {
+            background: rgba(240, 240, 240, 0.9);
+        }
+
+        header.scrolled {
+            padding: 0.8rem 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+
+        /* Navigation */
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 0 clamp(0.5rem, 2vw, 1rem);
+            position: relative;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--light);
+            font-weight: 500;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            padding: 0.5rem 0;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .order-now-btn {
+            background: var(--gradient);
+            color: white !important;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .order-now-btn:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+            }
+        }
+
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 6rem;
+            min-height: 100vh;
+        }
+
+        /* Order Form Section */
+        .order-section {
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            color: var(--primary);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
+        }
+
+        .section-title p {
+            color: var(--light-gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+        }
+
+        /* Form Card */
+        .form-card {
+            background-color: rgba(16, 16, 16, 0.7);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .light-theme .form-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Form Progress */
+        .form-progress {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--light);
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label .required {
+            color: var(--primary);
+            margin-left: 0.25rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background-color: rgba(16, 16, 16, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .light-theme .form-control {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Checkbox and Radio Styles */
+        .checkbox-group, .radio-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"],
+        .radio-group input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkbox-label, .radio-label {
+            position: relative;
+            padding-left: 35px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: rgba(16, 16, 16, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .light-theme .checkmark {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .checkbox-group .checkmark {
+            border-radius: 4px;
+        }
+
+        .radio-group .checkmark {
+            border-radius: 50%;
+        }
+
+        .checkbox-group input:checked ~ .checkmark,
+        .radio-group input:checked ~ .checkmark {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-group input:checked ~ .checkmark:after,
+        .radio-group input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .checkbox-group .checkmark:after {
+            left: 7px;
+            top: 3px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .radio-group .checkmark:after {
+            top: 6px;
+            left: 6px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1rem;
+            background-color: rgba(16, 16, 16, 0.7);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            border-radius: var(--border-radius-sm);
+            color: var(--light);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .light-theme .file-upload-label {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px dashed rgba(0, 0, 0, 0.3);
+            color: var(--dark);
+        }
+
+        .file-upload-label:hover {
+            background-color: rgba(255, 107, 107, 0.1);
+            border-color: var(--primary);
+        }
+
+        .file-upload-label i {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+            word-break: break-all;
+        }
+
+        /* Info Tooltip */
+        .info-tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 0.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .info-tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: rgba(16, 16, 16, 0.9);
+            color: var(--light);
+            text-align: center;
+            border-radius: var(--border-radius-sm);
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            box-shadow: var(--shadow);
+            pointer-events: none;
+        }
+
+        .light-theme .info-tooltip .tooltip-text {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
+        }
+
+        .info-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Dynamic Sections */
+        .dynamic-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius-sm);
+            border-left: 3px solid var(--primary);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .light-theme .dynamic-section {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Total Amount */
+        .total-amount {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-align: right;
+            margin: 1rem 0;
+            padding: 1rem;
+            background-color: rgba(255, 107, 107, 0.1);
+            border-radius: var(--border-radius-sm);
+            animation: pulse 2s infinite alternate;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .submit-btn i {
+            margin-left: 0.5rem;
+        }
+
+        /* Token Display */
+        .token-display {
+            text-align: center;
+            margin: 1rem 0;
+            padding: 1rem;
+            background-color: rgba(255, 204, 0, 0.1);
+            border-radius: var(--border-radius-sm);
+            color: #FFE66D;
+            font-weight: 600;
+            letter-spacing: 1px;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {box-shadow: 0 0 5px rgba(255, 230, 109, 0.3);}
+            to {box-shadow: 0 0 15px rgba(255, 230, 109, 0.5);}
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--darker);
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            margin-top: 4rem;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-column h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-column p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--light);
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        /* Quick Contact */
+        .quick-contact {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .quick-contact-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .quick-contact-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-contact-menu {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        .quick-contact-menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .quick-contact-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .quick-contact-item:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-contact-item.whatsapp {
+            background: #25D366;
+        }
+
+        .quick-contact-item.instagram {
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+        }
+
+        .quick-contact-item.email {
+            background: #D44638;
+        }
+
+        /* Chatbot */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 80px;
+            z-index: 100;
+        }
+
+        .chatbot-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-container {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            width: 300px;
+            background-color: var(--dark);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+            transform-origin: bottom right;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .light-theme .chatbot-container {
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-container.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .chatbot-header {
+            background: var(--gradient);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chatbot-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-messages {
+            height: 250px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .chatbot-message {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-message.bot {
+            align-items: flex-start;
+        }
+
+        .chatbot-message.user {
+            align-items: flex-end;
+        }
+
+        .chatbot-bubble {
+            padding: 0.8rem 1rem;
+            border-radius: 1rem;
+            max-width: 80%;
+            font-size: 0.9rem;
+        }
+
+        .chatbot-message.bot .chatbot-bubble {
+            background-color: rgba(78, 205, 196, 0.2);
+            color: var(--light);
+            border-bottom-left-radius: 0;
+        }
+
+        .light-theme .chatbot-message.bot .chatbot-bubble {
+            background-color: rgba(78, 205, 196, 0.2);
+            color: var(--dark);
+        }
+
+        .chatbot-message.user .chatbot-bubble {
+            background-color: rgba(255, 107, 107, 0.2);
+            color: var(--light);
+            border-bottom-right-radius: 0;
+        }
+
+        .light-theme .chatbot-message.user .chatbot-bubble {
+            background-color: rgba(255, 107, 107, 0.2);
+            color: var(--dark);
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .light-theme .chatbot-input {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            background-color: rgba(16, 16, 16, 0.7);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .light-theme .chatbot-input input {
+            background-color: rgba(240, 240, 240, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+        }
+
+        .chatbot-input input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .chatbot-send {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chatbot-send:hover {
+            background: var(--secondary-dark);
+        }
+
+        /* Popup */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content {
+            background-color: var(--dark);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            text-align: center;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .light-theme .popup-content {
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .popup.active .popup-content {
+            transform: scale(1);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .light-theme .popup-close {
+            color: var(--dark);
+        }
+
+        .popup-title {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .popup-message {
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+
+        .light-theme .popup-message {
+            color: var(--dark);
+        }
+
+        .popup-button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .popup-button:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .order-section {
+                padding: 2rem 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(16, 16, 16, 0.95);
+                flex-direction: column;
+                padding: 1rem 0;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                z-index: 1000;
+            }
+            .light-theme nav ul {
+                background-color: rgba(240, 240, 240, 0.95);
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                margin: 0.8rem 0;
+                width: 100%;
+                text-align: center;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .form-card {
+                padding: 1.5rem 1rem;
+            }
+            .footer-column {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .quick-contact, .chatbot {
+                bottom: 80px;
+            }
+            .theme-toggle {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        @keyframes fadeInUp {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        @keyframes fadeInDown {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+<body>
+    <header id="mainHeader">
+        <div class="header-content">
+            <div class="logo">
+                <h1>TIME LINE</h1>
+            </div>
+            <nav>
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                <ul id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#gallery">Gallery</a></li>
+                    <li><a href="index.html#testimonials">Testimonials</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="policy.html">Policy</a></li>
+                    <li><a href="order.html" class="order-now-btn">Order Now</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <section class="order-section">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Place Your Order</h2>
+                <p>Fill out the form below to create your perfect delivery experience.</p>
+            </div>
+
+            <div class="form-progress" data-aos="fade-up">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="formProgress"></div>
+                </div>
+                <div class="progress-text">
+                    <span>Start</span>
+                    <span>Complete</span>
+                </div>
+            </div>
+
+            <div class="form-card" data-aos="fade-up">
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label class="form-label">
+                            Customer Name <span class="required">*</span>
+                            <div class="info-tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Enter your full name as it appears on your ID.</span>
+                            </div>
+                        </label>
+                        <input type="text" class="form-control" id="customerName" name="customerName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Customer Phone Number <span class="required">*</span>
+                            <div class="info-tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Enter a valid phone number where we can reach you.</span>
+                            </div>
+                        </label>
+                        <input type="tel" class="form-control" id="customerPhone" name="customerPhone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Recipient Name <span class="required">*</span>
+                            <div class="info-tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Enter the full name of the person receiving the delivery.</span>
+                            </div>
+                        </label>
+                        <input type="text" class="form-control" id="recipientName" name="recipientName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Recipient Phone Number <span class="required">*</span>
+                            <div class="info-tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Enter a valid phone number for the recipient.</span>
+                            </div>
+                        </label>
+                        <input type="tel" class="form-control" id="recipientPhone" name="recipientPhone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Delivery Address <span class="required">*</span>
+                            <div class="info-tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Enter the complete delivery address including landmarks.</span>
+                            </div>
+                        </label>
+                        <textarea class="form-control" id="deliveryAddress" name="deliveryAddress" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Delivery Date <span class="required">*</span>
+                            <div class="info-tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Select the date for delivery. Must be at least today or later.</span>
+                            </div>
+                        </label>
+                        <input type="date" class="form-control" id="deliveryDate" name="deliveryDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Delivery Time <span class="required">*</span>
+                            <div class="info-tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Select the time for delivery. For same-day delivery, must be at least 3 hours from now.</span>
+                            </div>
+                        </label>
+                        <input type="time" class="form-control" id="deliveryTime" name="deliveryTime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Item Type <span class="required">*</span>
+                            <div class="info-tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Select the type of item you want to deliver.</span>
+                            </div>
+                        </label>
+                        <select class="form-control" id="itemType" name="itemType" required>
+                            <option value="">-- Select Item Type --</option>
+                            <option value="itemsSendByCustomer">Items (Send by Customer)</option>
+                            <option value="itemsBuyByTimeLine">Items (Buy by TIME LINE)</option>
+                            <option value="messageDelivery">Message Delivery</option>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic sections will be added here -->
+                    <div id="additionalSections"></div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="liveDelivery" name="liveDelivery">
+                            <label class="checkbox-label" for="liveDelivery">
+                                Check to see live/recorded delivery
+                                <div class="info-tooltip">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span class="tooltip-text">Select this option to watch the delivery live or receive a recording.</span>
+                                </div>
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Live delivery options will be added here -->
+                    <div id="liveDeliveryOptions"></div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Special Instructions (Optional)
+                            <div class="info-tooltip">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="tooltip-text">Any special instructions for the delivery.</span>
+                            </div>
+                        </label>
+                        <textarea class="form-control" id="specialInstructions" name="specialInstructions"></textarea>
+                    </div>
+
+                    <div class="token-display" id="tokenDisplay"></div>
+
+                    <div class="total-amount" id="totalAmount">Total Amount: ₹0</div>
+
+                    <button type="submit" class="submit-btn" id="submit-button">
+                        Proceed to Payment <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>TIME LINE</h3>
+                <p>Delivering emotions and surprises on time, creating memorable moments for you and your loved ones.</p>
+                <div class="social-links">
+                    <a href="https://wa.me/917007677139" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:timelinedeliveryofficial@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="index.html#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    <li><a href="index.html#gallery"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="index.html#testimonials"><i class="fas fa-star"></i> Testimonials</a></li>
+                    <li><a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li><a href="policy.html"><i class="fas fa-shield-alt"></i> Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Our Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-gift"></i> Gift Delivery</a></li>
+                    <li><a href="#"><i class="fas fa-envelope-open-text"></i> Message Delivery</a></li>
+                    <li><a href="#"><i class="fas fa-shopping-bag"></i> Item Purchase & Delivery</a></li>
+                    <li><a href="#"><i class="fas fa-video"></i> Live Delivery</a></li>
+                    <li><a href="#"><i class="fas fa-camera"></i> Recorded Delivery</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Service Areas</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Varanasi</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Chandauli</a></li>
+                </ul>
+                <p style="margin-top: 1rem;">We're currently expanding to more locations. Stay tuned!</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 TIME LINE. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- Quick Contact -->
+    <div class="quick-contact">
+        <div class="quick-contact-toggle" id="quickContactToggle">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+        <div class="quick-contact-menu" id="quickContactMenu">
+            <a href="https://wa.me/917007677139" target="_blank" class="quick-contact-item whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank" class="quick-contact-item instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="mailto:timelinedeliveryofficial@gmail.com" class="quick-contact-item email">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot">
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div class="chatbot-container" id="chatbotContainer">
+            <div class="chatbot-header">
+                <h3>TIME LINE Assistant</h3>
+                <button class="chatbot-close" id="chatbotClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chatbot-message bot">
+                    <div class="chatbot-bubble">
+                        Hello! Welcome to TIME LINE. How can I help you with your order today?
+                    </div>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type your message...">
+                <button class="chatbot-send" id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <button class="popup-close" id="popupClose"><i class="fas fa-times"></i></button>
+            <h3 class="popup-title">Notification</h3>
+            <p class="popup-message" id="popupMessage"></p>
+            <button class="popup-button" id="popupButton">OK</button>
+        </div>
+    </div>
+
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+
+            // Sticky Header
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close mobile menu when a link is clicked
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Check if user has a saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                
+                if (document.body.classList.contains('light-theme')) {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // Quick Contact Toggle
+            const quickContactToggle = document.getElementById('quickContactToggle');
+            const quickContactMenu = document.getElementById('quickContactMenu');
+            
+            quickContactToggle.addEventListener('click', () => {
+                quickContactMenu.classList.toggle('active');
+            });
+
+            // Chatbot Functionality
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotContainer = document.getElementById('chatbotContainer');
+            const chatbotClose = document.getElementById('chatbotClose');
+            const chatbotMessages = document.getElementById('chatbotMessages');
+            const chatbotInput = document.getElementById('chatbotInput');
+            const chatbotSend = document.getElementById('chatbotSend');
+            
+            // Predefined responses
+            const botResponses = {
+                'hello': 'Hello! How can I help you with your order today?',
+                'hi': 'Hi there! How can I assist you with your delivery order?',
+                'order': 'You can place an order by filling out the form on this page. If you need help with any field, just ask!',
+                'delivery': 'We currently deliver in Varanasi and Chandauli. We\'re planning to expand to more locations soon!',
+                'price': 'Our delivery prices start at ₹249 for normal deliveries and ₹299 for item deliveries. The total will be calculated based on your selections.',
+                'contact': 'You can reach us at +91 7007677139 (Call/WhatsApp) or email us at timelinedeliveryofficial@gmail.com.',
+                'live delivery': 'Yes, we offer live delivery options! Just check the "live/recorded delivery" box in the form to see those options.',
+                'payment': 'We accept payments through UPI, PhonePe, Google Pay, and other digital payment methods. You\'ll be redirected to the payment page after submitting your order.',
+                'refund': 'If delivery fails, the amount (excluding distance charges) will be refunded within twelve hours. For more details, please check our policy page.',
+                'thanks': 'You\'re welcome! Is there anything else I can help you with?',
+                'thank you': 'You\'re welcome! Is there anything else I can help you with?',
+                'bye': 'Thank you for chatting with us! Have a great day!',
+                'default': 'I\'m not sure I understand. Could you please ask about our order process, delivery areas, pricing, or contact information?'
+            };
+            
+            // Toggle chatbot visibility
+            chatbotToggle.addEventListener('click', () => {
+                chatbotContainer.classList.toggle('active');
+            });
+            
+            // Close chatbot
+            chatbotClose.addEventListener('click', () => {
+                chatbotContainer.classList.remove('active');
+            });
+            
+            // Send message function
+            const sendMessage = () => {
+                const message = chatbotInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message to chat
+                const userMessageDiv = document.createElement('div');
+                userMessageDiv.className = 'chatbot-message user';
+                userMessageDiv.innerHTML = `<div class="chatbot-bubble">${message}</div>`;
+                chatbotMessages.appendChild(userMessageDiv);
+                
+                // Clear input
+                chatbotInput.value = '';
+                
+                // Scroll to bottom
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                
+                // Process message and get response
+                setTimeout(() => {
+                    let response = botResponses.default;
+                    
+                    // Check for matching keywords
+                    const messageLower = message.toLowerCase();
+                    for (const [keyword, reply] of Object.entries(botResponses)) {
+                        if (messageLower.includes(keyword)) {
+                            response = reply;
+                            break;
+                        }
+                    }
+                    
+                    // Add bot response
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'chatbot-message bot';
+                    botMessageDiv.innerHTML = `<div class="chatbot-bubble">${response}</div>`;
+                    chatbotMessages.appendChild(botMessageDiv);
+                    
+                    // Scroll to bottom
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                }, 500);
+            };
+            
+            // Send message on button click
+            chatbotSend.addEventListener('click', sendMessage);
+            
+            // Send message on Enter key
+            chatbotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Popup functionality
+            const popup = document.getElementById('popup');
+            const popupClose = document.getElementById('popupClose');
+            const popupMessage = document.getElementById('popupMessage');
+            const popupButton = document.getElementById('popupButton');
+            
+            // Show popup function
+            window.showPopup = (message) => {
+                popupMessage.textContent = message;
+                popup.classList.add('active');
+            };
+            
+            // Close popup
+            const closePopup = () => {
+                popup.classList.remove('active');
+            };
+            
+            popupClose.addEventListener('click', closePopup);
+            popupButton.addEventListener('click', closePopup);
+
+            // Form Progress
+            const formProgress = document.getElementById('formProgress');
+            let progress = 0;
+            
+            window.updateFormProgress = (amount) => {
+                progress += amount;
+                progress = Math.max(0, Math.min(100, progress));
+                formProgress.style.width = `${progress}%`;
+            };
+
+            // Set initial progress
+            updateFormProgress(5);
+
+            // Token Generation
+            const generateToken = () => {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let token = '';
+                for (let i = 0; i < 8; i++) {
+                    token += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                return token;
+            };
+
+            // Set minimum delivery date and time
+            const setMinDeliveryTime = () => {
+                const now = new Date();
+                const dateInput = document.getElementById('deliveryDate');
+                const timeInput = document.getElementById('deliveryTime');
+                
+                // Set min date to today
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                dateInput.min = `${year}-${month}-${day}`;
+                
+                // Set default date to today
+                dateInput.value = `${year}-${month}-${day}`;
+                
+                // Set min time to 3 hours from now for same-day delivery
+                dateInput.addEventListener('change', () => {
+                    if (dateInput.value === `${year}-${month}-${day}`) {
+                        const hours = String(now.getHours() + 3).padStart(2, '0');
+                        const minutes = String(now.getMinutes()).padStart(2, '0');
+                        timeInput.min = `${hours}:${minutes}`;
+                    } else {
+                        timeInput.min = '00:00';
+                    }
+                });
+                
+                // Trigger the change event to set initial min time
+                const event = new Event('change');
+                dateInput.dispatchEvent(event);
+            };
+
+            // Handle Item Type Change
+            const handleItemTypeChange = () => {
+                const itemType = document.getElementById('itemType').value;
+                const additionalSections = document.getElementById('additionalSections');
+                
+                // Clear previous sections
+                additionalSections.innerHTML = '';
+                
+                // Update based on selection
+                if (itemType === 'itemsSendByCustomer') {
+                    additionalSections.innerHTML = `
+                        <div class="dynamic-section">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Item Description <span class="required">*</span>
+                                    <div class="info-tooltip">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span class="tooltip-text">Describe the items you want to send.</span>
+                                    </div>
+                                </label>
+                                <textarea class="form-control" name="itemDescription" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Item Pickup Address <span class="required">*</span>
+                                    <div class="info-tooltip">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span class="tooltip-text">Enter the address where we should pick up the items.</span>
+                                    </div>
+                                </label>
+                                <textarea class="form-control" name="pickupAddress" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Pickup Date <span class="required">*</span>
+                                </label>
+                                <input type="date" class="form-control" name="pickupDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Pickup Time <span class="required">*</span>
+                                </label>
+                                <input type="time" class="form-control" name="pickupTime" required>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Set min date for pickup
+                    const now = new Date();
+                    const year = now.getFullYear();
+                    const month = String(now.getMonth() + 1).padStart(2, '0');
+                    const day = String(now.getDate()).padStart(2, '0');
+                    const pickupDateInput = document.querySelector('input[name="pickupDate"]');
+                    pickupDateInput.min = `${year}-${month}-${day}`;
+                    pickupDateInput.value = `${year}-${month}-${day}`;
+                    
+                } else if (itemType === 'itemsBuyByTimeLine') {
+                    additionalSections.innerHTML = `
+                        <div class="dynamic-section">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Items to Purchase <span class="required">*</span>
+                                    <div class="info-tooltip">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span class="tooltip-text">Describe the items you want us to purchase and deliver.</span>
+                                    </div>
+                                </label>
+                                <textarea class="form-control" name="itemsToPurchase" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Estimated Item Cost <span class="required">*</span>
+                                    <div class="info-tooltip">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span class="tooltip-text">Enter the estimated cost of the items to be purchased.</span>
+                                    </div>
+                                </label>
+                                <input type="number" class="form-control" name="estimatedItemCost" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Preferred Shop/Location (Optional)
+                                </label>
+                                <input type="text" class="form-control" name="preferredShop">
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add event listener for cost calculation
+                    const costInput = document.querySelector('input[name="estimatedItemCost"]');
+                    costInput.addEventListener('input', calculateTotalAmount);
+                    
+                } else if (itemType === 'messageDelivery') {
+                    additionalSections.innerHTML = `
+                        <div class="dynamic-section">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Your Message <span class="required">*</span>
+                                    <div class="info-tooltip">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span class="tooltip-text">Enter the message you want delivered.</span>
+                                    </div>
+                                </label>
+                                <textarea class="form-control" name="messageContent" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Special Delivery Instructions (Optional)
+                                </label>
+                                <textarea class="form-control" name="messageDeliveryInstructions"></textarea>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Calculate total amount
+                calculateTotalAmount();
+            };
+
+            // Handle Live Delivery Change
+            const handleLiveDeliveryChange = () => {
+                const liveDelivery = document.getElementById('liveDelivery').checked;
+                const liveDeliveryOptions = document.getElementById('liveDeliveryOptions');
+                
+                if (liveDelivery) {
+                    liveDeliveryOptions.innerHTML = `
+                        <div class="dynamic-section">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Delivery Method <span class="required">*</span>
+                                </label>
+                                <div class="radio-group">
+                                    <input type="radio" id="liveMethod" name="deliveryMethod" value="live" required>
+                                    <label class="radio-label" for="liveMethod">
+                                        Live Delivery
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="radio-group">
+                                    <input type="radio" id="recordedMethod" name="deliveryMethod" value="recorded">
+                                    <label class="radio-label" for="recordedMethod">
+                                        Recorded Delivery
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Preferred Platform <span class="required">*</span>
+                                </label>
+                                <select class="form-control" id="platform" name="platform" required>
+                                    <option value="">-- Select Platform --</option>
+                                    <option value="whatsapp">WhatsApp</option>
+                                    <option value="googlemeet">Google Meet</option>
+                                    <option value="instagram">Instagram</option>
+                                </select>
+                            </div>
+                            <div id="platformContact"></div>
+                        </div>
+                    `;
+                    
+                    // Add event listener for platform selection
+                    const platformSelect = document.getElementById('platform');
+                    platformSelect.addEventListener('change', () => {
+                        const platform = platformSelect.value;
+                        const platformContact = document.getElementById('platformContact');
+                        
+                        if (platform === 'whatsapp') {
+                            platformContact.innerHTML = `
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        WhatsApp Number <span class="required">*</span>
+                                    </label>
+                                    <input type="tel" class="form-control" name="whatsappNumber" required>
+                                </div>
+                            `;
+                        } else if (platform === 'googlemeet') {
+                            platformContact.innerHTML = `
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Email for Google Meet <span class="required">*</span>
+                                    </label>
+                                    <input type="email" class="form-control" name="googleMeetEmail" required>
+                                </div>
+                            `;
+                        } else if (platform === 'instagram') {
+                            platformContact.innerHTML = `
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Instagram Username <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" name="instagramUsername" required>
+                                </div>
+                            `;
+                        } else {
+                            platformContact.innerHTML = '';
+                        }
+                    });
+                    
+                } else {
+                    liveDeliveryOptions.innerHTML = '';
+                }
+                
+                // Calculate total amount
+                calculateTotalAmount();
+            };
+
+            // Calculate Total Amount
+            const calculateTotalAmount = () => {
+                const itemType = document.getElementById('itemType').value;
+                const liveDelivery = document.getElementById('liveDelivery').checked;
+                let totalAmount = 0;
+                
+                // Base price based on item type
+                if (itemType === 'itemsSendByCustomer') {
+                    totalAmount += 249; // Base price for customer items
+                } else if (itemType === 'itemsBuyByTimeLine') {
+                    totalAmount += 299; // Base price for TIME LINE purchases
+                    
+                    // Add estimated item cost if available
+                    const estimatedCostInput = document.querySelector('input[name="estimatedItemCost"]');
+                    if (estimatedCostInput && estimatedCostInput.value) {
+                        totalAmount += parseInt(estimatedCostInput.value);
+                    }
+                } else if (itemType === 'messageDelivery') {
+                    totalAmount += 249; // Base price for message delivery
+                }
+                
+                // Additional cost for live delivery
+                if (liveDelivery) {
+                    totalAmount += 50; // Additional cost for live/recorded delivery
+                }
+                
+                // Update total amount display
+                const totalAmountElement = document.getElementById('totalAmount');
+                totalAmountElement.textContent = `Total Amount: ₹${totalAmount}`;
+                
+                return totalAmount;
+            };
+
+            // Initialize form elements
+            const customerNameInput = document.getElementById('customerName');
+            const tokenDisplay = document.getElementById('tokenDisplay');
+            
+            if (customerNameInput && tokenDisplay) {
+                customerNameInput.addEventListener('blur', function() {
+                    if (this.value === "") {
+                        tokenDisplay.textContent = "Your Token: " + generateToken();
+                    } else {
+                        tokenDisplay.textContent = "";
+                    }
+                });
+                // Initial token generation if name is empty
+                if (customerNameInput.value === "") {
+                    tokenDisplay.textContent = "Your Token: " + generateToken();
+                }
+            }
+            
+            // Set minimum delivery date and time
+            setMinDeliveryTime();
+            
+            // Form input events for progress tracking
+            const formInputs = document.querySelectorAll('#orderForm input, #orderForm textarea, #orderForm select');
+            formInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    // Update progress only for required fields or fields with value
+                    if ((this.required || this.value) && !this.dataset.counted) {
+                        updateFormProgress(5);
+                        this.dataset.counted = 'true';
+                    } else if (!this.value && this.dataset.counted && !this.required) {
+                        updateFormProgress(-5);
+                        this.dataset.counted = '';
+                    }
+                });
+            });
+            
+            // --- Attach Core Dynamic Event Listeners --- 
+            const itemTypeSelect = document.getElementById("itemType");
+            if (itemTypeSelect) {
+                itemTypeSelect.addEventListener("change", handleItemTypeChange);
+                console.log("Attached listener to itemType select");
+            }
+            
+            const liveDeliveryCheckbox = document.getElementById("liveDelivery");
+            if (liveDeliveryCheckbox) {
+                liveDeliveryCheckbox.addEventListener("change", handleLiveDeliveryChange);
+                console.log("Attached listener to liveDelivery checkbox");
+            }
+            
+            // Form submission
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                orderForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    if (!this.checkValidity()) {
+                        showPopup('Please fill all required fields correctly.');
+                        // Optionally, highlight invalid fields
+                        this.reportValidity(); 
+                        return;
+                    }
+                    
+                    const formData = new FormData(this);
+                    const orderData = {};
+                    for (const [key, value] of formData.entries()) {
+                        // Handle checkboxes explicitly as FormData only includes them if checked
+                        if (key === 'liveDelivery') {
+                            orderData[key] = document.getElementById('liveDelivery')?.checked || false;
+                        } else {
+                            orderData[key] = value;
+                        }
+                    }
+                    // Ensure totalAmount is calculated and added
+                    orderData.totalAmount = calculateTotalAmount();
+                    
+                    const submitButton = document.getElementById('submit-button');
+                    const originalText = submitButton?.innerHTML || 'Proceed to Payment <i class="fas fa-arrow-right"></i>';
+                    if (submitButton) {
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                        submitButton.disabled = true;
+                    }
+                    
+                    try {
+                        // Store order details in localStorage for payment page
+                        localStorage.setItem('orderDetails', JSON.stringify({
+                            customerName: orderData.customerName || document.getElementById('tokenDisplay')?.textContent.replace('Your Token: ', ''),
+                            totalAmount: orderData.totalAmount,
+                            timestamp: new Date().toISOString()
+                        }));
+                        
+                        // Redirect to payment page
+                        window.location.href = 'payment_page.html';
+                    } catch (error) {
+                        console.error('Order submission error:', error);
+                        showPopup('There was an error submitting your order. Please try again.');
+                        if (submitButton) {
+                            submitButton.innerHTML = originalText;
+                            submitButton.disabled = false;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
