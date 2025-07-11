@@ -1,37 +1,47 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment - TIME LINE Delivery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <title>TIME LINE - Payment</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        /* Full CSS from v50man2allgoodworkingwithbestv47animation.html */
+        /* Global styles and theme variables */
         :root {
             --primary: #FF6B6B;
             --primary-dark: #ff5252;
             --secondary: #4ECDC4;
             --secondary-dark: #3fd8d1;
-            --dark: #121212;
-            --darker: #0a0a0a;
+            --accent: #FFE66D;
+            --dark: #1a1a1a;
+            --darker: #101010;
             --light: #f8f9fa;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
+            --gray: #adb5bd;
+            --light-gray: #dee2e6;
             --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
             --gradient-hover: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
-            --shadow: 0 10px 20px rgba(0,0,0,0.1);
-            --shadow-hover: 0 15px 30px rgba(0,0,0,0.2);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --border-radius: 12px;
-            --border-radius-sm: 8px;
+            --shadow: 0 15px 30px rgba(0,0,0,0.2);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.3);
+            --transition: all 0.3s ease-in-out;
+            --border-radius: 15px;
+            --border-radius-sm: 10px;
+            --perspective: 1500px;
+            --header-height: 70px;
+        }
+
+        .light-theme {
+            --dark: #f5f5f5;
+            --darker: #e0e0e0;
+            --light: #333333;
+            --gray: #555555;
+            --light-gray: #777777;
+            --shadow: 0 15px 30px rgba(0,0,0,0.1);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
         }
 
         * {
@@ -48,30 +58,37 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--dark);
             color: var(--light);
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 10% 20%, rgba(31,31,31,0.8) 0%, rgba(18,18,18,1) 90%);
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
             position: relative;
-            transition: background-color 0.5s ease, color 0.5s ease; /* Theme transition */
+            perspective: var(--perspective);
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        /* Particle background */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        /* Header styles */
-        header {
+        ::-webkit-scrollbar-track {
             background: var(--darker);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Header with logo and slogan */
+        header {
+            background: rgba(16, 16, 16, 0.95);
             text-align: center;
             padding: 2rem 1rem;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             box-shadow: var(--shadow);
             z-index: 10;
             animation: fadeInDown 0.8s ease;
@@ -97,7 +114,7 @@
         header h1 {
             margin: 0;
             color: var(--primary);
-            font-size: clamp(2rem, 6vw, 3rem); /* Responsive font size */
+            font-size: clamp(2rem, 6vw, 3rem);
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -116,80 +133,834 @@
         header p {
             margin: 0.5rem 0 0;
             color: var(--light);
-            font-size: clamp(1rem, 3vw, 1.2rem); /* Responsive font size */
+            font-size: clamp(1rem, 3vw, 1.2rem);
             font-weight: 300;
             animation: fadeIn 1.5s ease;
         }
 
-        /* Navigation */
+        /* Navigation from index page */
         nav {
-            background-color: rgba(31, 31, 31, 0.95);
-            padding: 1rem 0;
+            background-color: rgba(16, 16, 16, 0.95);
+            padding: 1.5rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: var(--transition);
-            animation: fadeIn 1s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
-        nav.scrolled {
-            padding: 0.5rem 0;
-            background-color: rgba(10, 10, 10, 0.98);
-        }
-
-        nav ul {
-            list-style: none;
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0 1rem;
-            margin: 0;
-            flex-wrap: wrap;
-        }
-
-        nav ul li {
-            margin: 0.5rem clamp(0.5rem, 2vw, 1rem); /* Responsive margin */
+            padding: 0 2rem;
             position: relative;
         }
 
-        nav ul li::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: var(--transition);
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
         }
 
-        nav ul li:hover::after {
-            width: 100%;
-        }
-
-        nav ul li a {
+        .nav-links li a {
             text-decoration: none;
             color: var(--light);
             font-weight: 500;
-            font-size: clamp(0.8rem, 2.5vw, 1rem); /* Responsive font size */
-            padding: 0.5rem 0;
+            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links li a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Special Order Now Button */
+        .order-now-btn {
+            background: var(--gradient) !important;
+            color: white !important;
+            border-radius: 25px !important;
+            padding: 1rem 2rem !important;
+            font-weight: 600 !important;
+            box-shadow: var(--shadow);
+            border: none;
+            cursor: pointer;
+        }
+
+        .order-now-btn:hover {
+            background: var(--gradient-hover) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Theme Toggle Button - Top Right */
+        #themeToggle {
+            position: fixed;
+            top: clamp(10px, 3vw, 20px);
+            right: clamp(10px, 3vw, 20px);
+            background: var(--gradient);
+            color: white;
+            border: none;
+            width: clamp(35px, 8vw, 40px);
+            height: clamp(35px, 8vw, 40px);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
             transition: var(--transition);
         }
 
-        nav ul li a:hover {
-            color: var(--primary);
+        #themeToggle:hover {
+            transform: rotate(30deg);
         }
 
-        /* Sections */
-        .section {
-            padding: clamp(2rem, 8vw, 4rem) clamp(1rem, 5vw, 2rem); /* Responsive padding */
+        /* Floating Contact Button - Bottom Left */
+        .floating-contact {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 1001;
+        }
+
+        .contact-toggle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: var(--transition);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .contact-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+        }
+
+        .contact-toggle i {
+            font-size: 1.8rem;
+        }
+
+        .contact-menu {
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        .contact-menu.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .contact-item {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transition: var(--transition);
+            text-decoration: none;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .contact-item:hover {
+            transform: scale(1.1);
+        }
+
+        .contact-item.whatsapp {
+            background: #25D366;
+        }
+
+        .contact-item.instagram {
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+        }
+
+        .contact-item.email {
+            background: #D44638;
+        }
+
+        /* Floating Chatbot Button - Bottom Right */
+        .floating-chatbot {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1001;
+        }
+
+        .chatbot-toggle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: var(--transition);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+        }
+
+        .chatbot-toggle i {
+            font-size: 1.8rem;
+        }
+
+        /* Chatbot Container */
+        .chatbot-container {
+            position: fixed;
+            bottom: 110px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background-color: rgba(31, 31, 31, 0.95);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-hover);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+            transform-origin: bottom right;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .light-theme .chatbot-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-container.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .chatbot-header {
+            background: var(--gradient);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chatbot-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.3rem;
+            padding: 0.2rem;
+        }
+
+        .chatbot-messages {
+            height: 350px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(18, 18, 18, 0.8);
+        }
+
+        .light-theme .chatbot-messages {
+            background: rgba(240, 240, 240, 0.8);
+        }
+
+        .chatbot-message {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-message.bot {
+            align-items: flex-start;
+        }
+
+        .chatbot-message.user {
+            align-items: flex-end;
+        }
+
+        .chatbot-bubble {
+            padding: 0.8rem 1rem;
+            border-radius: 1rem;
+            max-width: 80%;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .chatbot-message.bot .chatbot-bubble {
+            background-color: rgba(78, 205, 196, 0.2);
+            color: var(--light);
+            border-bottom-left-radius: 0.3rem;
+        }
+
+        .light-theme .chatbot-message.bot .chatbot-bubble {
+            background-color: rgba(78, 205, 196, 0.2);
+            color: var(--dark);
+        }
+
+        .chatbot-message.user .chatbot-bubble {
+            background-color: rgba(255, 107, 107, 0.2);
+            color: var(--light);
+            border-bottom-right-radius: 0.3rem;
+        }
+
+        .light-theme .chatbot-message.user .chatbot-bubble {
+            background-color: rgba(255, 107, 107, 0.2);
+            color: var(--dark);
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(31, 31, 31, 0.9);
+        }
+
+        .light-theme .chatbot-input {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            background-color: rgba(16, 16, 16, 0.7);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .light-theme .chatbot-input input {
+            background-color: rgba(240, 240, 240, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+        }
+
+        .chatbot-input input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .chatbot-send {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chatbot-send:hover {
+            background: var(--secondary-dark);
+        }
+
+        /* Main content area */
+        .main-content {
+            padding-top: 2rem;
+        }
+
+        /* Payment Container */
+        .payment-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .payment-title {
             text-align: center;
+            font-size: clamp(2rem, 6vw, 3rem);
+            color: var(--primary);
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .payment-card {
+            background-color: rgba(31, 31, 31, 0.8);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .light-theme .payment-card {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .upi-section {
+            margin-bottom: 3rem;
+        }
+
+        .upi-section h3 {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .qr-code-container {
+            background-color: white;
+            border-radius: var(--border-radius-sm);
+            padding: 2rem;
+            margin: 2rem auto;
+            display: inline-block;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .qr-code-container img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+        }
+
+        .upi-id {
+            background-color: rgba(78, 205, 196, 0.1);
+            border: 2px solid var(--secondary);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--secondary);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .upi-id i {
+            margin-right: 0.5rem;
+        }
+
+        .copy-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-left: 1rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+
+        .payment-instructions {
+            text-align: left;
+            margin: 2rem 0;
+        }
+
+        .payment-instructions h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .payment-instructions ol {
+            color: var(--light);
+            line-height: 1.8;
+            padding-left: 1.5rem;
+        }
+
+        .payment-instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .company-address {
+            background-color: rgba(255, 107, 107, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .company-address h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .company-address p {
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--light);
+            font-size: 0.95rem;
+        }
+
+        .light-theme .form-label {
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .light-theme .form-control {
+            background-color: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+
+        .file-upload-container {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color var(--transition);
+        }
+
+        .light-theme .file-upload-container {
+            border: 2px dashed rgba(0, 0, 0, 0.2);
+        }
+
+        .file-upload-container:hover {
+            border-color: var(--primary);
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-upload-text {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        .file-upload-input {
+            display: none;
+        }
+
+        .file-preview-container {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .file-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .file-preview-item img, .file-preview-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
             position: relative;
             overflow: hidden;
-            animation: fadeIn 0.8s ease-out;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: left 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .success-message, .error-message {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            display: none;
+            text-align: center;
+        }
+
+        .success-message {
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            color: #28a745;
+        }
+
+        .error-message {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            color: #dc3545;
+        }
+
+        .success-message i, .error-message i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-message h4, .error-message h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .success-message p, .error-message p {
+            font-size: 0.95rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links li a {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+
+            .order-now-btn {
+                padding: 0.8rem 1.5rem !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .floating-contact, .floating-chatbot {
+                bottom: 20px;
+            }
+
+            .floating-contact {
+                left: 20px;
+            }
+
+            .floating-chatbot {
+                right: 20px;
+            }
+
+            .contact-toggle, .chatbot-toggle {
+                width: 60px;
+                height: 60px;
+            }
+
+            .contact-toggle i, .chatbot-toggle i {
+                font-size: 1.5rem;
+            }
+
+            .chatbot-container {
+                width: calc(100vw - 40px);
+                right: 20px;
+                bottom: 90px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .nav-links li a {
+                font-size: 0.8rem;
+                padding: 0.5rem 0.8rem;
+            }
+
+            .payment-card {
+                padding: 2rem;
+            }
+
+            .qr-code-container img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #themeToggle {
+                width: 50px;
+                height: 50px;
+                top: 15px;
+                right: 15px;
+            }
+
+            .payment-card {
+                padding: 1.5rem;
+            }
+
+            .upi-id {
+                font-size: 1rem;
+            }
+
+            .copy-btn {
+                margin-top: 0.5rem;
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        /* Dark/Light mode */
+        body.light-mode {
+            background-color: #f5f5f5;
+            color: #333;
+            background: linear-gradient(180deg, #e0e0e0 0%, #f5f5f5 100%);
+        }
+
+        body.light-mode header,
+        body.light-mode nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #333;
+        }
+
+        body.light-mode .nav-links li a {
+            color: #333;
+        }
+
+        body.light-mode .payment-card {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            border-color: rgba(0,0,0,0.1);
+        }
+
+        body.light-mode .company-address h4,
+        body.light-mode .payment-instructions h4 {
+            color: var(--primary-dark);
+        }
+
+        body.light-mode .payment-instructions ol,
+        body.light-mode .company-address p {
+            color: #333;
         }
 
         @keyframes fadeIn {
@@ -197,1099 +968,367 @@
             to {opacity: 1; transform: translateY(0);}
         }
 
-        .section:nth-child(even) {
-            background-color: rgba(31, 31, 31, 0.5);
+        @keyframes fadeInDown {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
         }
-
-        .section h2 {
-            font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive font size */
-            margin-bottom: 2rem;
-            color: var(--primary);
-            position: relative;
-            display: inline-block;
-        }
-
-        .section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--gradient);
-            border-radius: 3px;
-        }
-
-        .section ul {
-            list-style: none;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            text-align: left;
-            padding-left: 0; /* Remove default padding */
-        }
-
-        .section ul li {
-            padding: 0.8rem 0;
-            position: relative;
-            padding-left: 2rem;
-            animation: fadeInUp 0.5s ease;
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-        }
-
-        .section ul li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        .section ul li i {
-            margin-right: 0.5rem;
-            color: var(--primary);
-        }
-
-        /* Form styles */
-        form {
-            display: flex;
-            flex-direction: column;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: clamp(1.5rem, 5vw, 2rem); /* Responsive padding */
-            background-color: rgba(31, 31, 31, 0.8);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.05);
-            animation: fadeInUp 0.8s ease;
-        }
-
-        form:hover {
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-5px);
-        }
-
-        form label {
-            margin-top: 1rem;
-            text-align: left;
-            color: var(--light);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-        }
-
-        form input, form textarea, form select, form button {
-            margin-top: 0.5rem;
-            padding: clamp(0.7rem, 2vw, 0.8rem) clamp(0.8rem, 3vw, 1rem); /* Responsive padding */
-            border-radius: var(--border-radius-sm);
-            border: 1px solid rgba(255,255,255,0.1);
-            background-color: rgba(31, 31, 31, 0.8);
-            color: var(--light);
-            font-family: 'Poppins', sans-serif;
-            transition: var(--transition);
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-            width: 100%; /* Ensure full width */
-        }
-
-        form input:focus, form textarea:focus, form select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
-        }
-
-        form button {
-            background: var(--gradient);
-            color: white;
-            border: none;
-            padding: clamp(0.8rem, 2.5vw, 1rem); /* Responsive padding */
-            margin-top: 1.5rem;
-            border-radius: var(--border-radius-sm);
-            font-size: clamp(0.9rem, 3vw, 1rem); /* Responsive font size */
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        form button:hover {
-            background: var(--gradient-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        form button i {
-            margin-left: 0.5rem;
-        }
-
-        form button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255,255,255,0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-
-        form button:focus:not(:active)::after {
-            animation: ripple 1s ease-out;
-        }
-
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(20, 20);
-                opacity: 0;
-            }
-        }
-
-        /* Info styles */
-        .info {
-            cursor: pointer;
-            color: var(--primary);
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: rgba(255, 107, 107, 0.2);
-            margin-left: 0.5rem;
-            font-size: 0.8rem;
-            transition: var(--transition);
-        }
-
-        .info:hover {
-            background: rgba(255, 107, 107, 0.3);
-            transform: scale(1.1);
-        }
-
-        /* Token styles */
-        .token {
-            color: #ffcc00;
-            font-weight: bold;
-            margin: 0.5rem 0;
-            padding: 0.5rem;
-            background: rgba(255, 204, 0, 0.1);
-            border-radius: 5px;
-            display: inline-block;
-            letter-spacing: 1px;
-            font-size: clamp(0.8rem, 2vw, 0.9rem); /* Responsive font size */
-            word-break: break-all; /* Prevent overflow */
-        }
-
-        /* Service info */
-        .service-info {
-            color: var(--primary);
-            font-weight: bold;
-            background: rgba(255,99,71,0.1);
-            padding: 8px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 10px;
-            animation: pulse 2s infinite;
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-        }
-
-        .service-info i {
-            margin-right: 0.5rem;
-        }
-
-        /* Floating animation */
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% {transform: translateY(0px);}
-            50% {transform: translateY(-10px);}
-            100% {transform: translateY(0px);}
-        }
-
-        /* Upload section */
-        .upload-section {
-            margin-top: 1.5rem;
-            padding: clamp(1rem, 4vw, 1.5rem); /* Responsive padding */
-            background-color: rgba(31, 31, 31, 0.5);
-            border-radius: var(--border-radius-sm);
-            border: 1px dashed rgba(255,255,255,0.1);
-            transition: var(--transition);
-        }
-
-        .upload-section:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
-        }
-
-        .upload-section label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--light);
-            font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-        }
-
-        .upload-section label i {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-        }
-
-        .upload-section input[type="file"] {
-            display: none;
-        }
-
-        .file-list {
-            margin-top: 1rem;
-            text-align: left;
-            font-size: clamp(0.8rem, 2vw, 0.9rem); /* Responsive font size */
-        }
-
-        .file-list div {
-            background-color: rgba(255,255,255,0.05);
-            padding: 0.5rem;
-            border-radius: 5px;
-            margin-bottom: 0.3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .file-list div i {
-            cursor: pointer;
-            color: var(--danger);
-            margin-left: 0.5rem;
-        }
-
-        /* Chatbot styles */
-        .chatbot-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .chatbot-button {
-            background: var(--gradient);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-
-        .chatbot-button:hover {
-            transform: scale(1.1);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .chatbot-popup {
-            background-color: rgba(31, 31, 31, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            width: 350px;
-            height: 450px;
-            position: absolute;
-            bottom: 80px;
-            right: 0;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            animation: fadeInUp 0.3s ease;
-        }
-
-        .chatbot-header {
-            background: var(--gradient);
-            color: white;
-            padding: 1rem;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chatbot-header .close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .chatbot-messages {
-            flex-grow: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chatbot-message {
-            background-color: rgba(255,255,255,0.1);
-            padding: 0.7rem;
-            border-radius: var(--border-radius-sm);
-            margin-bottom: 0.5rem;
-            max-width: 80%;
-            text-align: left;
-            font-size: 0.9rem;
-        }
-
-        .chatbot-message.user {
-            align-self: flex-end;
-            background-color: var(--primary);
-        }
-
-        .chatbot-input-container {
-            display: flex;
-            padding: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .chatbot-input-container input {
-            flex-grow: 1;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: var(--border-radius-sm);
-            padding: 0.5rem;
-            background-color: rgba(255,255,255,0.05);
-            color: var(--light);
-        }
-
-        .chatbot-input-container button {
-            background: var(--primary);
-            border: none;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius-sm);
-            margin-left: 0.5rem;
-            cursor: pointer;
-        }
-
-        /* Theme toggle */
-        .theme-toggle-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--darker);
-            color: var(--light);
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            z-index: 1001;
-        }
-
-        .theme-toggle-button:hover {
-            transform: scale(1.1);
-            box-shadow: var(--shadow-hover);
-        }
-
-        /* Contact buttons */
-        .contact-buttons {
-            position: fixed;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 1000;
-        }
-
-        .contact-button {
-            background: var(--gradient);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-
-        .contact-button.whatsapp {
-            background: #25D366;
-        }
-
-        .contact-button.instagram {
-            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-        }
-
-        .contact-button.gmail {
-            background: #EA4335;
-        }
-
-        .contact-button:hover {
-            transform: scale(1.1);
-            box-shadow: var(--shadow-hover);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--darker);
-            color: var(--gray);
-            text-align: center;
-            padding: 2rem 1rem;
-            font-size: 0.9rem;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            animation: fadeInUp 1s ease;
-        }
-
-        footer h3 {
-            color: var(--light);
-            margin-bottom: 1rem;
-            font-size: clamp(1.2rem, 4vw, 1.5rem); /* Responsive font size */
-        }
-
-        footer .social-links a {
-            color: var(--light);
-            margin: 0 10px;
-            font-size: 1.5rem;
-            transition: var(--transition);
-        }
-
-        footer .social-links a:hover {
-            color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            nav ul {
-                flex-direction: column;
-            }
-
-            nav ul li {
-                margin: 0.5rem 0;
-            }
-
-            .timeline::before {
-                left: 20px;
-            }
-
-            .timeline-item {
-                width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-                padding-left: 40px; /* Space for line */
-            }
-
-            .timeline-item:nth-child(odd)::after,
-            .timeline-item:nth-child(even)::after {
-                left: 10px;
-                right: auto;
-            }
-
-            .contact-buttons {
-                flex-direction: row;
-                bottom: 20px;
-                top: auto;
-                left: 50%;
-                transform: translateX(-50%);
-                right: auto;
-                gap: 10px;
-            }
-
-            .theme-toggle-button {
-                top: auto;
-                bottom: 20px;
-                left: 20px;
-            }
-
-            .chatbot-container {
-                bottom: 80px;
-            }
-
-            .chatbot-popup {
-                width: calc(100% - 40px);
-                right: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
-
-            header p {
-                font-size: 0.9rem;
-            }
-
-            nav ul li a {
-                font-size: 0.9rem;
-            }
-
-            .section h2 {
-                font-size: 1.5rem;
-            }
-
-            form {
-                padding: 1rem;
-            }
-
-            form input, form textarea, form select, form button {
-                padding: 0.6rem;
-                font-size: 0.85rem;
-            }
-
-            .chatbot-button {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
-            }
-
-            .theme-toggle-button {
-                width: 45px;
-                height: 45px;
-                font-size: 1.2rem;
-            }
-
-            .contact-button {
-                width: 45px;
-                height: 45px;
-                font-size: 1.2rem;
-            }
-        }
-
-        /* Payment specific styles */
-        .payment-container {
-            max-width: 700px;
-            margin: 4rem auto;
-            padding: clamp(1.5rem, 5vw, 2.5rem);
-            background-color: rgba(31, 31, 31, 0.8);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.05);
-            animation: fadeInUp 0.8s ease;
-        }
-
-        .payment-container h2 {
-            color: var(--primary);
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .order-summary {
-            background-color: rgba(255,255,255,0.05);
-            padding: 1.5rem;
-            border-radius: var(--border-radius-sm);
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--secondary);
-        }
-
-        .order-summary h3 {
-            color: var(--secondary);
-            margin-bottom: 1rem;
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed rgba(255,255,255,0.1);
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-        }
-
-        .summary-item:last-child {
-            border-bottom: none;
-        }
-
-        .summary-total {
-            font-size: clamp(1.1rem, 3vw, 1.4rem);
-            font-weight: 700;
-            color: var(--primary);
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 2px solid rgba(255,255,255,0.1);
-        }
-
-        .qr-section {
-            text-align: center;
-            margin: 2rem 0;
-        }
-
-        .qr-code-box {
-            width: clamp(200px, 50vw, 300px);
-            height: clamp(200px, 50vw, 300px);
-            background-color: var(--light);
-            margin: 0 auto 1rem;
-            border-radius: var(--border-radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--dark);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .qr-code-box:hover {
-            transform: scale(1.05);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .qr-code-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent);
-            background-size: 20px 20px;
-            animation: qr-pattern 10s linear infinite;
-        }
-
-        @keyframes qr-pattern {
-            from {background-position: 0 0;}
-            to {background-position: 200px 200px;}
-        }
-
-        .payment-methods-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .payment-method-item {
-            background-color: rgba(255,255,255,0.05);
-            padding: 1rem;
-            border-radius: var(--border-radius-sm);
-            text-align: center;
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
-            font-weight: 500;
-            transition: var(--transition);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .payment-method-item:hover {
-            background-color: rgba(255,255,255,0.1);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .note-box {
-            background-color: rgba(255, 107, 107, 0.1);
-            border-left: 4px solid var(--primary);
-            padding: 1rem;
-            border-radius: var(--border-radius-sm);
-            margin-top: 2rem;
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-            text-align: left;
-        }
-
-        .note-box strong {
-            color: var(--primary);
-        }
-
-        .btn-confirm-payment {
-            background: var(--success);
-            margin-top: 2rem;
-            animation: shine 2s infinite;
-        }
-
-        .btn-confirm-payment:hover {
-            background: #218838;
-        }
-
-        .btn-cancel-payment {
-            background: var(--danger);
-            margin-top: 1rem;
-        }
-
-        .btn-cancel-payment:hover {
-            background: #c82333;
-        }
-
-        @keyframes shine {
-            0% { box-shadow: 0 0 5px rgba(255,255,255,0.2); }
-            50% { box-shadow: 0 0 20px rgba(255,255,255,0.8); }
-            100% { box-shadow: 0 0 5px rgba(255,255,255,0.2); }
-        }
-
-        /* Dark theme specific overrides for payment page */
-        body.dark-theme .qr-code-box {
-            background-color: var(--darker);
-            color: var(--light);
-        }
-
-        body.dark-theme .payment-method-item {
-            background-color: rgba(0,0,0,0.1);
-        }
-
-        body.dark-theme .payment-method-item:hover {
-            background-color: rgba(0,0,0,0.2);
-        }
-
-        body.dark-theme .note-box {
-            background-color: rgba(255, 107, 107, 0.05);
-        }
-
     </style>
 </head>
 <body>
-    <div id="particles-js"></div>
-
     <!-- Theme Toggle Button -->
-    <button class="theme-toggle-button" onclick="toggleTheme()">
+    <button id="themeToggle" title="Toggle Dark/Light Mode">
         <i class="fas fa-moon"></i>
     </button>
 
-    <!-- Contact Buttons -->
-    <div class="contact-buttons">
-        <a href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank" class="contact-button whatsapp" title="WhatsApp">
-            <i class="fab fa-whatsapp"></i>
-        </a>
-        <a href="https://instagram.com/YOUR_INSTAGRAM_HANDLE" target="_blank" class="contact-button instagram" title="Instagram">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="mailto:your-email@example.com" class="contact-button gmail" title="Email">
-            <i class="fas fa-envelope"></i>
-        </a>
-    </div>
-
-    <!-- Header -->
-    <header>
-        <h1>TIME LINE</h1>
-        <p>Delivering Emotions On Time</p>
+    <!-- Header with logo and slogan -->
+    <header class="animate__animated animate__fadeIn">
+        <div class="logo">
+            <h1>TIME LINE</h1>
+            <p>Delivering Emotions On Time</p>
+        </div>
     </header>
-
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><a href="index_final.html">Home</a></li>
-            <li><a href="gallery_final.html">Gallery</a></li>
-            <li><a href="order_final.html">Order Now</a></li>
-            <li><a href="policy_final.html">Policy</a></li>
-            <li><a href="#about">About</a></li>
-        </ul>
+    
+    <!-- Navigation from index page -->
+    <nav id="mainNav" class="animate__animated animate__fadeIn animate__delay-1s">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="order.html" class="order-now-btn">Order Now</a></li>
+                <li><a href="testimonials.html">Testimonials</a></li>
+                <li><a href="policy.html">Policy</a></li>
+            </ul>
+        </div>
     </nav>
 
-    <!-- Main Content - Payment Section -->
-    <main class="section">
+    <!-- Main content area -->
+    <div class="main-content">
         <div class="payment-container">
-            <h2>Complete Your Payment</h2>
+            <h2 class="payment-title" data-aos="fade-up">Complete Your Payment</h2>
+            
+            <div class="payment-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="upi-section">
+                    <h3><i class="fas fa-mobile-alt"></i> UPI Payment Only</h3>
+                    <p style="color: var(--gray); margin-bottom: 2rem;">We accept payments through UPI only for secure and instant transactions.</p>
+                    
+                    <div class="qr-code-container">
+                        <img id="upiQrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=7007677139@ybl&pn=TIME%20LINE&am=1.00&cu=INR" alt="UPI QR Code">
+                    </div>
 
-            <div class="order-summary">
-                <h3>Order Summary</h3>
-                <div class="summary-item">
-                    <span>Order ID:</span>
-                    <span id="orderId">#TL-XXXXX</span>
+                    <div class="upi-id">
+                        <i class="fas fa-at"></i> UPI ID: 7007677139@ybl
+                        <button class="copy-btn" onclick="copyUpiId()">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+
+                    <div class="payment-instructions">
+                        <h4><i class="fas fa-list-ol"></i> Payment Instructions:</h4>
+                        <ol>
+                            <li>Scan the QR code above using any UPI app (PhonePe, Google Pay, Paytm, etc.)</li>
+                            <li>Or manually enter the UPI ID: <strong>7007677139@ybl</strong></li>
+                            <li>Enter the exact amount for your order</li>
+                            <li>Complete the payment and take a screenshot</li>
+                        </ol>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentScreenshot" class="form-label">Upload Payment Screenshot:</label>
+                        <div class="file-upload-container" id="paymentScreenshotUpload">
+                            <input type="file" id="paymentScreenshotInput" name="paymentScreenshot" class="file-upload-input" accept="image/*" required>
+                            <div class="file-upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <p class="file-upload-text">Click or drag to upload screenshot</p>
+                        </div>
+                        <div class="file-preview-container" id="paymentScreenshotPreview"></div>
+                    </div>
+
+                    <button class="btn btn-primary" id="submitPaymentBtn">
+                        <i class="fas fa-check"></i> Submit Payment
+                    </button>
+
+                    <div class="success-message" id="successMessage">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>Payment Submitted!</h4>
+                        <p>Your payment screenshot has been received. We will verify it shortly and confirm your order.</p>
+                        <p>Thank you for your order!</p>
+                    </div>
+                    
+                    <div class="error-message" id="errorMessage">
+                        <i class="fas fa-times-circle"></i>
+                        <h4>Payment Submission Failed</h4>
+                        <p>There was an error submitting your payment. Please ensure you have uploaded a screenshot and try again.</p>
+                    </div>
                 </div>
-                <div class="summary-item">
-                    <span>Customer Name:</span>
-                    <span id="customerName">Guest</span>
+
+                <div class="company-address">
+                    <h4><i class="fas fa-map-marker-alt"></i> Company Address for Item Delivery</h4>
+                    <p>Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008</p>
+                    <p style="margin-top: 0.5rem; color: var(--primary);">For any payment-related queries, contact us at +91 7007677139</p>
                 </div>
-                <div class="summary-item">
-                    <span>Item Type:</span>
-                    <span id="itemType">N/A</span>
-                </div>
-                <div class="summary-item">
-                    <span>Delivery Charge:</span>
-                    <span>₹50</span>
-                </div>
-                <div class="summary-item">
-                    <span>Live Delivery Fee:</span>
-                    <span>₹20</span>
-                </div>
-                <div class="summary-total">
-                    <span>Total Amount:</span>
-                    <span id="totalAmount">₹70</span>
-                </div>
+
+                <a href="order.html" class="btn btn-primary" style="margin-top: 2rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Order Form
+                </a>
             </div>
-
-            <div class="qr-section">
-                <h3>Scan to Pay</h3>
-                <div class="qr-code-box" id="qrCodeBox">
-                    <!-- QR Code will be generated here -->
-                    <i class="fas fa-qrcode"></i>
-                    <p>Loading QR Code...</p>
-                </div>
-                <p>Amount: <span style="color: var(--primary); font-weight: bold;">₹<span id="qrAmount">70</span></span></p>
-            </div>
-
-            <h3>Accepted Payment Methods</h3>
-            <div class="payment-methods-grid">
-                <div class="payment-method-item">Google Pay</div>
-                <div class="payment-method-item">PhonePe</div>
-                <div class="payment-method-item">Paytm</div>
-                <div class="payment-method-item">UPI</div>
-                <div class="payment-method-item">Bank Transfer</div>
-            </div>
-
-            <div class="note-box">
-                <p><strong>Important Note:</strong> Please write your <span id="parcelNote"></span> on the parcel you send to us for easy identification and tracking.</p>
-            </div>
-
-            <button class="btn-confirm-payment" onclick="confirmPayment()">
-                I have completed the payment <i class="fas fa-check-circle"></i>
-            </button>
-            <button class="btn-cancel-payment" onclick="cancelPayment()">
-                Cancel Payment <i class="fas fa-times-circle"></i>
-            </button>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer -->
-    <footer>
-        <h3>TIME LINE</h3>
-        <p>&copy; 2024 TIME LINE. All rights reserved.</p>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+    <!-- Floating Contact Button -->
+    <div class="floating-contact">
+        <div class="contact-toggle" id="contactToggle">
+            <i class="fas fa-comment-dots"></i>
         </div>
-    </footer>
+        <div class="contact-menu" id="contactMenu">
+            <a href="https://wa.me/917007677139" target="_blank" class="contact-item whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank" class="contact-item instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="mailto:timelinedeliveryofficial@gmail.com" class="contact-item email">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Floating Chatbot Button -->
+    <div class="floating-chatbot">
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot"></i>
+        </div>
+    </div>
+
+    <!-- Chatbot Container -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            <h3>TIME LINE Assistant</h3>
+            <button class="chatbot-close" id="chatbotClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chatbot-message bot"><div class="chatbot-bubble">Hello! How can I help you with your payment?</div></div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Type your message...">
+            <button class="chatbot-send" id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
-        // Particles.js initialization
-        particlesJS('particles-js', {
-            "particles": {
-                "number": {
-                    "value": 80,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#ffffff"
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    },
-                    "polygon": {
-                        "nb_sides": 5
-                    },
-                    "image": {
-                        "src": "img/github.svg",
-                        "width": 100,
-                        "height": 100
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": false,
-                    "anim": {
-                        "enable": false,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#ffffff",
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 6,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "repulse"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 400,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
-            },
-            "retina_detect": true
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out-quad',
+            once: true,
+            offset: 80
         });
 
         // Theme toggle functionality
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-            const isDark = document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            updateThemeIcon(isDark);
-        }
-
-        function updateThemeIcon(isDark) {
-            const themeButton = document.querySelector('.theme-toggle-button i');
-            if (isDark) {
-                themeButton.classList.remove('fa-moon');
-                themeButton.classList.add('fa-sun');
-            } else {
-                themeButton.classList.remove('fa-sun');
-                themeButton.classList.add('fa-moon');
-            }
-        }
-
-        // Load saved theme
-        document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle?.querySelector('i');
+        if (themeToggle && themeIcon) {
+            themeToggle.addEventListener('click', function() {
+                const body = document.body;
+                body.classList.add('theme-transition');
+                if (body.classList.contains('light-mode')) {
+                    body.classList.remove('light-mode');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    body.classList.add('light-mode');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'light');
+                }
+                // Remove transition class after animation completes
+                setTimeout(() => { body.classList.remove('theme-transition'); }, 500);
+            });
+            
+            // Apply saved theme on load
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-                updateThemeIcon(true);
-            } else {
-                updateThemeIcon(false);
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
             }
+        }
 
-            // Load order data from localStorage
-            loadOrderData();
-            generateQRCode();
+        // Contact Toggle
+        const contactToggle = document.getElementById('contactToggle');
+        const contactMenu = document.getElementById('contactMenu');
+        
+        contactToggle.addEventListener('click', () => {
+            contactMenu.classList.toggle('active');
         });
 
-        // Load order data from localStorage
-        function loadOrderData() {
-            const orderData = JSON.parse(localStorage.getItem('currentOrder'));
+        // Chatbot Toggle
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        const chatbotContainer = document.getElementById('chatbotContainer');
+        const chatbotClose = document.getElementById('chatbotClose');
+        
+        chatbotToggle.addEventListener('click', () => {
+            chatbotContainer.classList.toggle('active');
+        });
+        
+        chatbotClose.addEventListener('click', () => {
+            chatbotContainer.classList.remove('active');
+        });
 
-            if (orderData) {
-                document.getElementById('orderId').textContent = orderData.orderId || '#TL-XXXXX';
-                document.getElementById('customerName').textContent = orderData.customerName || 'Guest';
-                document.getElementById('itemType').textContent = orderData.itemType || 'N/A';
-                document.getElementById('totalAmount').textContent = '₹' + orderData.totalAmount;
-                document.getElementById('qrAmount').textContent = orderData.totalAmount;
+        // Chatbot functionality
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const chatbotInput = document.getElementById('chatbotInput');
+        const chatbotSend = document.getElementById('chatbotSend');
 
-                const parcelNote = document.getElementById('parcelNote');
-                if (orderData.itemType === 'itemsSendByCustomer') {
-                    if (orderData.customerName && orderData.customerName.trim() !== '') {
-                        parcelNote.innerHTML = `your <strong>Name (${orderData.customerName})</strong>`;
-                    } else {
-                        parcelNote.innerHTML = `your <strong>Token Number (${orderData.orderId || '#TL-XXXXX'})</strong>`;
+        const botResponses = {
+            'hello': 'Hi there! How can I help you with your payment today?',
+            'hi': 'Hello! I\'m here to assist you with any payment-related questions.',
+            'payment': 'You can pay using any UPI app by scanning the QR code or using our UPI ID: 7007677139@ybl',
+            'upi': 'Our UPI ID is 7007677139@ybl. You can use any UPI app like PhonePe, Google Pay, or Paytm.',
+            'screenshot': 'After making the payment, please take a screenshot and upload it using the upload button above.',
+            'help': 'I can help you with payment instructions, UPI details, or any other payment-related queries.',
+            'contact': 'For payment queries, you can contact us at 7007677139 (WhatsApp/Call) or email timelinedeliveryofficial@gmail.com',
+            'address': 'Our office address is: Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, UP 221008',
+            'order': 'If you need to modify your order, please go back to the order page or contact us directly.',
+            'default': 'I\'m here to help with your payment! You can ask me about UPI payment, uploading screenshots, or contact information.'
+        };
+
+        function addMessageToChat(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chatbot-message ${sender}`;
+            messageDiv.innerHTML = `<div class="chatbot-bubble">${message}</div>`;
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function handleChatbotInput() {
+            const userMessage = chatbotInput.value.trim();
+            if (userMessage === '') return;
+
+            addMessageToChat(userMessage, 'user');
+            chatbotInput.value = '';
+
+            // Simple keyword matching for bot response
+            setTimeout(() => {
+                let botResponse = botResponses.default;
+                const lowerMessage = userMessage.toLowerCase();
+                
+                for (const keyword in botResponses) {
+                    if (lowerMessage.includes(keyword)) {
+                        botResponse = botResponses[keyword];
+                        break;
                     }
-                } else {
-                    parcelNote.innerHTML = `your <strong>Order ID (${orderData.orderId || '#TL-XXXXX'})</strong>`;
                 }
+                
+                addMessageToChat(botResponse, 'bot');
+            }, 500);
+        }
+
+        chatbotSend.addEventListener('click', handleChatbotInput);
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleChatbotInput();
+            }
+        });
+
+        // Copy UPI ID function
+        function copyUpiId() {
+            const upiId = '7007677139@ybl';
+            navigator.clipboard.writeText(upiId).then(() => {
+                alert('UPI ID copied to clipboard!');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = upiId;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('UPI ID copied to clipboard!');
+            });
+        }
+
+        // File Upload Preview
+        function setupFileUpload(inputId, previewId) {
+            const fileInput = document.getElementById(inputId);
+            const previewContainer = document.getElementById(previewId);
+            const uploadContainer = document.getElementById('paymentScreenshotUpload');
+            
+            if (!fileInput || !previewContainer) return;
+
+            // Click to upload
+            uploadContainer.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', function(event) {
+                previewContainer.innerHTML = ''; // Clear previous previews
+                const files = event.target.files;
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'file-preview-item';
+
+                    reader.onload = function(e) {
+                        if (file.type.startsWith('image/')) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            previewItem.appendChild(img);
+                        }
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = 'file-remove-btn';
+                        removeBtn.innerHTML = '&times;';
+                        removeBtn.onclick = function() {
+                            previewItem.remove();
+                            fileInput.value = ''; // Clear the input
+                        };
+                        previewItem.appendChild(removeBtn);
+                        previewContainer.appendChild(previewItem);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        setupFileUpload('paymentScreenshotInput', 'paymentScreenshotPreview');
+
+        // Submit Payment Logic
+        document.getElementById('submitPaymentBtn').addEventListener('click', function() {
+            const screenshotInput = document.getElementById('paymentScreenshotInput');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (screenshotInput.files.length > 0) {
+                // Simulate successful submission
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                // In a real application, you would send the screenshot to a server here
+                // For now, we just clear the input and preview
+                screenshotInput.value = '';
+                document.getElementById('paymentScreenshotPreview').innerHTML = '';
+                
+                // Scroll to success message
+                successMessage.scrollIntoView({ behavior: 'smooth' });
             } else {
-                // Redirect to order page if no order data found
-                alert('No order data found. Please place an order first.');
-                window.location.href = 'order_final.html';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                
+                // Scroll to error message
+                errorMessage.scrollIntoView({ behavior: 'smooth' });
             }
-        }
+        });
 
-        // Generate QR code (placeholder)
-        function generateQRCode() {
-            const qrCodeBox = document.getElementById('qrCodeBox');
-            const amount = document.getElementById('qrAmount').textContent;
-            const orderId = document.getElementById('orderId').textContent;
-
-            // In a real application, you would use a QR code generation library
-            // For demonstration, we'll just display text
-            qrCodeBox.innerHTML = `
-                <i class="fas fa-qrcode" style="font-size: 3rem; color: var(--dark);"></i>
-                <p style="color: var(--dark);">Scan to Pay</p>
-                <p style="color: var(--dark); font-weight: bold;">₹${amount}</p>
-                <p style="color: var(--dark); font-size: 0.8rem;">${orderId}</p>
-            `;
-        }
-
-        // Confirm payment
-        function confirmPayment() {
-            alert('Payment confirmed! Thank you for your order.');
-            localStorage.removeItem('currentOrder'); // Clear order data after payment
-            window.location.href = 'index_final.html'; // Redirect to home page
-        }
-
-        // Cancel payment
-        function cancelPayment() {
-            if (confirm('Are you sure you want to cancel this payment?')) {
-                localStorage.removeItem('currentOrder');
-                window.location.href = 'order_final.html'; // Redirect to order page
+        // Close menus when clicking outside
+        document.addEventListener('click', (e) => {
+            if (contactMenu && !contactToggle.contains(e.target) && !contactMenu.contains(e.target)) {
+                contactMenu.classList.remove('active');
             }
-        }
+            if (chatbotContainer && !chatbotToggle.contains(e.target) && !chatbotContainer.contains(e.target)) {
+                chatbotContainer.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
