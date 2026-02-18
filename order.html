@@ -1,37 +1,43 @@
 <!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIME LINE - Order Now</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <style>
-        /* Full CSS from v50 with navigation from index */
+<html lang="en"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>TIME LINE - Order Now</title> 
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> 
+  <style>
         :root {
             --primary: #FF6B6B;
             --primary-dark: #ff5252;
             --secondary: #4ECDC4;
             --secondary-dark: #3fd8d1;
-            --dark: #121212;
-            --darker: #0a0a0a;
+            --accent: #FFE66D;
+            --dark: #1a1a1a;
+            --darker: #101010;
             --light: #f8f9fa;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
+            --gray: #adb5bd;
+            --light-gray: #dee2e6;
             --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
             --gradient-hover: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
-            --shadow: 0 10px 20px rgba(0,0,0,0.1);
-            --shadow-hover: 0 15px 30px rgba(0,0,0,0.2);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --border-radius: 12px;
-            --border-radius-sm: 8px;
+            --shadow: 0 15px 30px rgba(0,0,0,0.2);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.3);
+            --transition: all 0.3s ease-in-out;
+            --border-radius: 15px;
+            --border-radius-sm: 10px;
+            --perspective: 1500px;
+            --header-height: 140px;
+        }
+
+        .light-theme {
+            --dark: #f5f5f5;
+            --darker: #e0e0e0;
+            --light: #1a1a1a;
+            --gray: #333333;
+            --light-gray: #555555;
+            --shadow: 0 15px 30px rgba(0,0,0,0.1);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
         }
 
         * {
@@ -48,299 +54,556 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--dark);
             color: var(--light);
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 10% 20%, rgba(31,31,31,0.8) 0%, rgba(18,18,18,1) 90%);
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
             position: relative;
+            perspective: var(--perspective);
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        /* Header styles - Updated with logo and slogan */
-        header {
-            background: rgba(16, 16, 16, 0.95);
-            text-align: center;
-            padding: 2rem 1rem;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: var(--shadow);
-            z-index: 10;
-            animation: fadeInDown 0.8s ease;
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
 
-        header::before {
-            content: '';
-            position: absolute;
+        header {
+            background: rgba(16, 16, 16, 0.9);
+            padding: 1rem 0;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), #ff8c00, #ff6347);
-            animation: rainbow 8s linear infinite;
+            z-index: 1000;
+            transition: background-color var(--transition), box-shadow var(--transition);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            height: auto;
+            min-height: var(--header-height);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        @keyframes rainbow {
-            0% {background-position: 0% 50%}
-            50% {background-position: 100% 50%}
-            100% {background-position: 0% 50%}
+        .light-theme header {
+            background: rgba(240, 240, 240, 0.9);
         }
 
-        header h1 {
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo h1 {
             margin: 0;
             color: var(--primary);
-            font-size: clamp(2rem, 6vw, 3rem);
+            font-size: 2.2rem;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255,99,71,0.3);
-            animation: pulse 2s infinite alternate;
+            cursor: pointer;
         }
 
-        @keyframes pulse {
-            from {text-shadow: 0 0 10px rgba(255,99,71,0.3);}
-            to {text-shadow: 0 0 20px rgba(255,99,71,0.6);}
-        }
-
-        header p {
-            margin: 0.5rem 0 0;
+        .logo p {
+            margin: 0;
             color: var(--light);
-            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-size: 0.9rem;
             font-weight: 300;
-            animation: fadeIn 1.5s ease;
+            font-style: italic;
+            margin-top: 2px;
         }
 
-        /* Navigation from index page */
         nav {
-            background-color: rgba(16, 16, 16, 0.95);
-            padding: 1.5rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
             display: flex;
             justify-content: center;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
             align-items: center;
-            padding: 0 2rem;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            gap: 2rem;
+        }
+
+        nav ul li {
             position: relative;
         }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links li a {
+        nav ul li a {
             text-decoration: none;
             color: var(--light);
             font-weight: 500;
-            font-size: 1.1rem;
-            padding: 0.8rem 1.5rem;
-            border-radius: var(--border-radius-sm);
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
             transition: var(--transition);
             position: relative;
+            white-space: nowrap;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .nav-links li a:hover {
-            color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        /* Special Order Now Button */
-        .order-now-btn {
-            background: var(--gradient) !important;
-            color: white !important;
-            border-radius: 25px !important;
-            padding: 1rem 2rem !important;
-            font-weight: 600 !important;
-            box-shadow: var(--shadow);
-            border: none;
-            cursor: pointer;
-        }
-
-        .order-now-btn:hover {
-            background: var(--gradient-hover) !important;
-            transform: translateY(-3px) !important;
-            box-shadow: var(--shadow-hover);
-        }
-
-        /* Theme Toggle Button - Top Right */
-        #themeToggle {
-            position: fixed;
-            top: clamp(10px, 3vw, 20px);
-            right: clamp(10px, 3vw, 20px);
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
             background: var(--gradient);
-            color: white;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .order-now-nav-btn {
+            background: var(--gradient);
+            color: white !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            transition: var(--transition);
             border: none;
-            width: clamp(35px, 8vw, 40px);
-            height: clamp(35px, 8vw, 40px);
-            border-radius: 50%;
             cursor: pointer;
-            box-shadow: var(--shadow);
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order-now-nav-btn:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        .header-utils {
+            position: absolute;
+            right: 2rem;
+            top: 1.5rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            z-index: 1000;
+            gap: 1rem;
+        }
+        .header-util-btn {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.5rem;
+        }
+        .header-util-btn:hover {
+            color: var(--primary);
+        }
+
+        .main-content {
+             padding-top: calc(var(--header-height) + 2rem);
+        }
+
+        .order-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .order-title {
+            text-align: center;
+            font-size: clamp(2rem, 6vw, 3rem);
+            color: var(--primary);
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .order-form {
+            background-color: rgba(31, 31, 31, 0.8);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .light-theme .order-form {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--light);
+        }
+
+        .form-control, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
             transition: var(--transition);
         }
 
-        #themeToggle:hover {
-            transform: rotate(30deg);
+        .light-theme .form-control, .light-theme select {
+            background-color: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--dark);
         }
 
-        /* Floating Contact Button - Bottom Left */
-        .floating-contact {
+        .form-control:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .light-theme .form-control:focus, .light-theme select:focus {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Service Selection Box */
+        .service-selection {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(78, 205, 196, 0.15));
+            border: 2px solid var(--primary);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .service-selection h3 {
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .service-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .service-option {
+            padding: 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .service-option:hover {
+            border-color: var(--primary);
+            background: rgba(255, 107, 107, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .service-option input[type="radio"] {
+            margin-right: 0.5rem;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .service-option label {
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .hidden-section {
+            display: none;
+        }
+
+        .notification {
+            background: rgba(255, 107, 107, 0.15);
+            border: 2px solid var(--primary);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            color: var(--primary);
+            font-weight: 600;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .instruction-box {
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.15), rgba(255, 107, 107, 0.1));
+            border: 2px solid var(--secondary);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .instruction-box h4 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .instruction-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instruction-box li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--light);
+        }
+
+        .instruction-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .price-note {
+            background: rgba(255, 204, 0, 0.1);
+            border-left: 4px solid #ffcc00;
+            padding: 0.8rem 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--light);
+            border-radius: 4px;
+        }
+
+        .total-amount {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius-sm);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .company-address {
+            background-color: rgba(255, 107, 107, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .company-address h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .company-address p {
+            color: var(--light);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 0.5rem;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            color: var(--light);
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        /* Fixed utility buttons */
+        .fixed-utils {
             position: fixed;
             bottom: 30px;
             left: 30px;
-            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 2000;
         }
 
-        .contact-toggle {
-            width: 70px;
-            height: 70px;
+        .util-button {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: var(--gradient);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             transition: var(--transition);
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            border: none;
+            font-size: 1.5rem;
         }
 
-        .contact-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+        .util-button:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
         }
 
-        .contact-toggle i {
-            font-size: 1.8rem;
+        .chatbot-toggle {
+            background: var(--secondary);
         }
 
-        .contact-menu {
-            position: absolute;
-            bottom: 80px;
-            left: 0;
+        .quick-contact-toggle {
+            background: var(--gradient);
+        }
+
+        .quick-contact-menu {
+            position: fixed;
+            bottom: 100px;
+            left: 30px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.3s ease, transform 0.3s ease;
             pointer-events: none;
+            z-index: 1999;
         }
 
-        .contact-menu.active {
+        .quick-contact-menu.active {
             opacity: 1;
             transform: translateY(0);
             pointer-events: all;
         }
 
-        .contact-item {
-            width: 55px;
-            height: 55px;
+        .quick-contact-item {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow);
             transition: var(--transition);
-            text-decoration: none;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            font-size: 1.3rem;
         }
 
-        .contact-item:hover {
+        .quick-contact-item:hover {
             transform: scale(1.1);
         }
 
-        .contact-item.whatsapp {
-            background: #25D366;
-        }
+        .quick-contact-item.whatsapp { background: #25D366; }
+        .quick-contact-item.instagram { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
+        .quick-contact-item.email { background: #D44638; }
 
-        .contact-item.instagram {
-            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-        }
-
-        .contact-item.email {
-            background: #D44638;
-        }
-
-        /* Floating Chatbot Button - Bottom Right */
-        .floating-chatbot {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1001;
-        }
-
-        .chatbot-toggle {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: var(--secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            transition: var(--transition);
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .chatbot-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
-        }
-
-        .chatbot-toggle i {
-            font-size: 1.8rem;
-        }
-
-        /* Chatbot Container */
         .chatbot-container {
             position: fixed;
-            bottom: 110px;
-            right: 30px;
+            bottom: 100px;
+            left: 30px;
             width: 350px;
-            height: 500px;
-            background-color: rgba(31, 31, 31, 0.95);
+            background-color: var(--dark);
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow-hover);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             overflow: hidden;
             opacity: 0;
             transform: translateY(20px) scale(0.9);
-            transform-origin: bottom right;
+            transform-origin: bottom left;
             transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 2001;
             pointer-events: none;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
         }
 
         .chatbot-container.active {
@@ -351,14 +614,14 @@
 
         .chatbot-header {
             background: var(--gradient);
-            padding: 1rem;
+            padding: 1.2rem;
+            color: white;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
         .chatbot-header h3 {
-            color: white;
             margin: 0;
             font-size: 1.1rem;
         }
@@ -367,1617 +630,838 @@
             background: none;
             border: none;
             color: white;
+            font-size: 1.5rem;
             cursor: pointer;
-            font-size: 1.3rem;
-            padding: 0.2rem;
         }
 
         .chatbot-messages {
             height: 350px;
+            padding: 1.5rem;
             overflow-y: auto;
-            padding: 1rem;
-            background: rgba(18, 18, 18, 0.8);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: rgba(0,0,0,0.05);
+        }
+
+        .light-theme .chatbot-messages {
+            background: rgba(255,255,255,0.05);
         }
 
         .chatbot-message {
-            margin-bottom: 1rem;
             display: flex;
-            flex-direction: column;
-        }
-
-        .chatbot-message.bot {
-            align-items: flex-start;
-        }
-
-        .chatbot-message.user {
-            align-items: flex-end;
+            margin-bottom: 0.5rem;
         }
 
         .chatbot-bubble {
-            padding: 0.8rem 1rem;
-            border-radius: 1rem;
-            max-width: 80%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 15px;
+            max-width: 85%;
             font-size: 0.9rem;
             line-height: 1.4;
         }
 
         .chatbot-message.bot .chatbot-bubble {
-            background-color: rgba(78, 205, 196, 0.2);
+            background-color: var(--darker);
             color: var(--light);
-            border-bottom-left-radius: 0.3rem;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
         }
 
         .chatbot-message.user .chatbot-bubble {
-            background-color: rgba(255, 107, 107, 0.2);
-            color: var(--light);
-            border-bottom-right-radius: 0.3rem;
+            background: var(--gradient);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
         }
 
         .chatbot-input {
-            display: flex;
             padding: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(31, 31, 31, 0.9);
+            display: flex;
+            gap: 0.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         .chatbot-input input {
-            flex: 1;
-            padding: 0.6rem 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--border-radius-sm);
-            background-color: rgba(16, 16, 16, 0.7);
+            flex-grow: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 0.6rem 1.2rem;
             color: var(--light);
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-        }
-
-        .chatbot-input input:focus {
             outline: none;
-            border-color: var(--secondary);
         }
 
         .chatbot-send {
-            background: var(--secondary);
+            background: var(--gradient);
             color: white;
             border: none;
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 0.5rem;
-            cursor: pointer;
-            transition: var(--transition);
         }
 
-        .chatbot-send:hover {
-            background: var(--secondary-dark);
-        }
-
-        /* Sections */
-        .section {
-            padding: clamp(2rem, 8vw, 4rem) clamp(1rem, 5vw, 2rem);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 0.8s ease-out;
+        .dynamic-section {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn {
-            from {opacity: 0; transform: translateY(20px);}
-            to {opacity: 1; transform: translateY(0);}
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .section:nth-child(even) {
-            background-color: rgba(31, 31, 31, 0.5);
+        .option-disabled {
+            opacity: 0.4;
+            pointer-events: none;
         }
 
-        .section h2 {
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
-            margin-bottom: 2rem;
-            color: var(--primary);
-            position: relative;
-            display: inline-block;
-        }
-
-        .section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--gradient);
-            border-radius: 3px;
-        }
-
-        /* Form styles from v50 */
-        form {
-            display: flex;
-            flex-direction: column;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: clamp(1.5rem, 5vw, 2rem);
-            background-color: rgba(31, 31, 31, 0.8);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.05);
-            animation: fadeInUp 0.8s ease;
-        }
-
-        form:hover {
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-5px);
-        }
-
-        form label {
-            margin-top: 1rem;
-            text-align: left;
-            color: var(--light);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-        }
-
-        form input, form textarea, form select, form button {
-            margin-top: 0.5rem;
-            padding: clamp(0.7rem, 2vw, 0.8rem) clamp(0.8rem, 3vw, 1rem);
-            border-radius: var(--border-radius-sm);
-            border: 1px solid rgba(255,255,255,0.1);
-            background-color: rgba(31, 31, 31, 0.8);
-            color: var(--light);
-            font-family: 'Poppins', sans-serif;
-            transition: var(--transition);
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-            width: 100%;
-        }
-
-        form input:focus, form textarea:focus, form select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
-        }
-
-        form button {
-            background: var(--gradient);
-            color: white;
-            border: none;
-            padding: clamp(0.8rem, 2.5vw, 1rem);
-            margin-top: 1.5rem;
-            border-radius: var(--border-radius-sm);
-            font-size: clamp(0.9rem, 3vw, 1rem);
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        form button:hover {
-            background: var(--gradient-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        form button i {
-            margin-left: 0.5rem;
-        }
-
-        /* Info styles */
-        .info {
-            cursor: pointer;
-            color: var(--primary);
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: rgba(255, 107, 107, 0.2);
-            margin-left: 0.5rem;
+        .option-disabled-text {
             font-size: 0.8rem;
-            transition: var(--transition);
+            color: rgba(255, 255, 255, 0.4);
         }
 
-        .info:hover {
-            background: rgba(255, 107, 107, 0.3);
-            transform: scale(1.1);
-        }
-
-        /* Token styles */
-        .token {
-            color: #ffcc00;
-            font-weight: bold;
-            margin: 0.5rem 0;
-            padding: 0.5rem;
-            background: rgba(255, 204, 0, 0.1);
-            border-radius: 5px;
-            display: inline-block;
-            letter-spacing: 1px;
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
-            word-break: break-all;
-        }
-
-        /* Service info */
-        .service-info {
-            color: var(--primary);
-            font-weight: bold;
-            background: rgba(255,99,71,0.1);
-            padding: 8px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 10px;
-            animation: pulse 2s infinite;
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-        }
-
-        .service-info i {
-            margin-right: 0.5rem;
-        }
-
-        /* Upload section */
-        .upload-section {
-            margin-top: 1.5rem;
-            padding: clamp(1rem, 4vw, 1.5rem);
-            background-color: rgba(31, 31, 31, 0.5);
-            border-radius: var(--border-radius-sm);
-            border: 1px dashed rgba(255,255,255,0.1);
-            transition: var(--transition);
-        }
-
-        .upload-section:hover {
-            border-color: var(--primary);
-            background-color: rgba(31, 31, 31, 0.7);
-            transform: translateY(-3px);
-        }
-
-        .upload-section h3 {
-            margin-top: 0;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            font-size: clamp(1rem, 3vw, 1.1rem);
-        }
-
-        .upload-section h3 i {
-            margin-right: 0.5rem;
-        }
-
-        .upload-section p {
-             font-size: clamp(0.8rem, 2.5vw, 0.9rem);
-        }
-
-        .file-input-label {
-            display: block;
-            margin-bottom: 1rem;
-            padding: clamp(0.8rem, 2.5vw, 1rem);
-            background: rgba(31, 31, 31, 0.5);
-            border-radius: var(--border-radius-sm);
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1px dashed rgba(255,255,255,0.1);
-            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
-        }
-
-        .file-input-label:hover {
-            background: rgba(31, 31, 31, 0.7);
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .file-input-label input[type="file"] {
-            display: none;
-        }
-
-        /* Total amount */
-        .total-amount {
-            background: linear-gradient(135deg, rgba(255,99,71,0.2), rgba(255,99,71,0.1));
-            padding: clamp(1rem, 4vw, 1.5rem);
-            margin: 2rem 0;
-            border-radius: var(--border-radius-sm);
-            font-weight: bold;
-            font-size: clamp(1.1rem, 4vw, 1.3rem);
-            color: white;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(255,99,71,0.2);
-            animation: glow 2s infinite alternate;
-        }
-
-        @keyframes glow {
-            from {box-shadow: 0 0 5px rgba(255,99,71,0.3);}
-            to {box-shadow: 0 0 15px rgba(255,99,71,0.5);}
-        }
-
-        /* Company address */
-        .company-address {
-            background-color: rgba(31, 31, 31, 0.7);
-            padding: clamp(1rem, 4vw, 1.5rem);
-            border-radius: var(--border-radius-sm);
-            margin: 1.5rem 0;
-            text-align: left;
-            border-left: 4px solid var(--primary);
-            transition: var(--transition);
-        }
-
-        .company-address:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .company-address h3 {
-            margin-top: 0;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
-            font-size: clamp(1rem, 3vw, 1.1rem);
-        }
-
-        .company-address h3 i {
-            margin-right: 0.5rem;
-        }
-
-        .company-address p {
-            margin: 0.5rem 0;
-            display: flex;
-            align-items: center;
-            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
-            word-break: break-word;
-        }
-
-        .company-address p i {
-            margin-right: 0.5rem;
-            width: 20px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        /* Google login container */
-        #google-login-container {
-            display: flex;
-            justify-content: center;
-            margin: 1rem 0;
-            animation: fadeIn 1s ease;
-        }
-
-        #google-login-container > div {
-            width: auto !important;
-            max-width: 100%;
-        }
-
-        /* User info */
-        .user-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin: 1rem 0;
-            padding: clamp(0.8rem, 2.5vw, 1rem);
-            background: rgba(31, 31, 31, 0.7);
-            border-radius: var(--border-radius-sm);
-            animation: fadeIn 1s ease;
-            flex-wrap: wrap;
-        }
-
-        .user-info img {
-            width: clamp(30px, 8vw, 40px);
-            height: clamp(30px, 8vw, 40px);
-            border-radius: 50%;
-            margin-right: 1rem;
-        }
-
-        .user-info span {
-            font-weight: 500;
-            flex-grow: 1;
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-            margin-right: 1rem;
-            word-break: break-all;
-        }
-
-        .user-info button {
-            margin-left: auto;
-            background: rgba(255, 107, 107, 0.2);
-            color: var(--primary);
-            border: none;
-            padding: clamp(0.4rem, 1.5vw, 0.5rem) clamp(0.8rem, 2.5vw, 1rem);
-            border-radius: var(--border-radius-sm);
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
-            flex-shrink: 0;
-        }
-
-        .user-info button:hover {
-            background: rgba(255, 107, 107, 0.3);
-        }
-
-        /* Order count warning */
-        .order-count-warning {
-            color: var(--warning);
-            background: rgba(255, 193, 7, 0.1);
-            padding: clamp(0.6rem, 2vw, 0.8rem);
-            border-radius: var(--border-radius-sm);
-            border-left: 4px solid var(--warning);
-            margin: 1rem 0;
-            display: flex;
-            align-items: center;
-            animation: fadeIn 1s ease;
-            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
-        }
-
-        .order-count-warning i {
-            margin-right: 0.5rem;
-        }
-
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: clamp(150px, 40vw, 200px);
-            background-color: var(--darker);
-            color: #fff;
-            text-align: center;
-            border-radius: var(--border-radius-sm);
-            padding: 10px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
-            font-weight: normal;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Responsive styles */
         @media (max-width: 768px) {
-            .floating-contact, .floating-chatbot {
-                bottom: 20px;
+            header { height: auto; padding: 1rem 0; }
+            .header-content { gap: 0.8rem; }
+            nav ul { gap: 1rem; flex-wrap: wrap; }
+            .header-utils { position: relative; right: 0; top: 0; margin-top: 0.5rem; }
+            .main-content { padding-top: 220px; }
+            .order-form { padding: 1.5rem; }
+            .service-options { grid-template-columns: 1fr; }
+            .chatbot-container { width: calc(100% - 40px); left: 20px; }
+            .fixed-utils { left: 20px; }
+            .quick-contact-menu { left: 20px; }
+        }
+  </style> 
+ </head> 
+ <body> 
+  <header id="mainHeader"> 
+   <div class="header-content"> 
+    <div class="logo" onclick="window.location.href='index.html'"> 
+     <h1>TIME LINE</h1> 
+     <p>Delivering Emotions On Time</p> 
+    </div> 
+    <nav> 
+     <ul> 
+      <li><a href="index.html">HOME</a></li> 
+      <li><a href="gallery.html">GALLERY</a></li> 
+      <li><a href="order.html" class="order-now-nav-btn">ORDER NOW</a></li> 
+      <li><a href="policy.html">POLICY</a></li> 
+      <li><a href="#contact">CONTACT</a></li> 
+     </ul> 
+    </nav> 
+   </div> 
+   <div class="header-utils"> <button class="header-util-btn" id="themeToggleHeader" aria-label="Toggle Theme"> <i class="fas fa-moon"></i> </button> 
+   </div> 
+  </header> 
+  <div class="main-content"> 
+   <div class="order-container"> 
+    <h2 class="order-title" data-aos="fade-up">Place Your Order</h2> 
+    <form id="orderForm" class="order-form" data-aos="fade-up" data-aos-delay="100"> 
+     <!-- Service Selection -->
+     <div class="service-selection">
+      <h3>What Service Do You Want?</h3>
+      <div class="service-options">
+       <div class="service-option">
+        <label>
+         <input type="radio" name="serviceType" value="surprise" required>
+         <i class="fas fa-gift"></i> Surprise/Gift/Etc
+        </label>
+       </div>
+       <div class="service-option">
+        <label>
+         <input type="radio" name="serviceType" value="shradh" required>
+         <i class="fas fa-om"></i> Shradh
+        </label>
+       </div>
+      </div>
+     </div>
+
+     <!-- Surprise/Gift Section -->
+     <div id="surpriseSection" class="hidden-section">
+      <!-- Customer Details -->
+      <div class="form-group"> <label for="customerName" class="form-label">Your Name: <span style="color: var(--primary);">*</span></label> 
+       <input type="text" id="customerName" name="customerName" class="form-control" placeholder="Enter your full name"> 
+      </div> 
+      <div class="form-group"> <label for="phoneNumber" class="form-label">Your Phone Number: <span style="color: var(--primary);">*</span></label> 
+       <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="Enter your phone number"> 
+      </div> 
+
+      <!-- Recipient Details -->
+      <div class="form-group"> <label for="recipientName" class="form-label">Recipient's Name: <span style="color: var(--primary);">*</span></label> 
+       <input type="text" id="recipientName" name="recipientName" class="form-control" placeholder="Enter recipient's name"> 
+      </div> 
+      <div class="form-group"> <label for="recipientPhoneNumber" class="form-label">Recipient's Phone Number: <span style="color: var(--primary);">*</span></label> 
+       <input type="tel" id="recipientPhoneNumber" name="recipientPhoneNumber" class="form-control" placeholder="Enter recipient's phone number"> 
+      </div> 
+      <div class="form-group"> <label for="address" class="form-label">Delivery Address: <span style="color: var(--primary);">*</span></label> <textarea id="address" name="address" class="form-control" rows="3" placeholder="Enter full delivery address"></textarea> 
+      </div> 
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"> 
+       <div class="form-group"> <label for="district" class="form-label">District: <span style="color: var(--primary);">*</span></label> 
+        <select id="district" name="district" class="form-control">
+         <option value="">Select District</option>
+         <option value="varanasi">Varanasi</option>
+         <option value="chandauli">Chandauli</option>
+         <option value="other">Other Districts</option>
+        </select>
+       </div> 
+       <div class="form-group"> <label for="state" class="form-label">State: <span style="color: var(--primary);">*</span></label> 
+        <select id="state" name="state" class="form-control">
+         <option value="uttar-pradesh">Uttar Pradesh</option>
+         <option value="other" style="opacity: 0.4;">Other States (Coming Soon)</option>
+        </select>
+       </div> 
+      </div> 
+      <div id="districtNotification"></div>
+      <div id="stateNotification"></div>
+      <div class="form-group"> <label for="pincode" class="form-label">Pincode: <span style="color: var(--primary);">*</span></label> 
+       <input type="text" id="pincode" name="pincode" class="form-control" placeholder="6-digit pincode"> 
+      </div> 
+
+      <!-- Order Details -->
+      <div class="form-group"> <label for="itemType" class="form-label">What do you want to deliver? <span style="color: var(--primary);">*</span></label> <select id="itemType" name="itemType" class="form-control"> <option value="">Select an option</option> <option value="message">Only Message Reading (₹249)</option> <option value="writtenByTimeline">Letter Written by Time Line (₹249)</option> <option value="itemsSendByCustomer">Items Sent by You (₹299)</option> <option value="itemsBuyByTimeline">Items Bought by Time Line (₹299 + Item Cost)</option> </select> 
+      </div> 
+      <div id="additionalSections"></div> 
+      <div id="totalAmount" class="total-amount">Total Amount: ₹0</div> 
+
+      <!-- Delivery Details -->
+      <div class="form-group"> <label for="deliveryDate" class="form-label">Delivery Date: <span style="color: var(--primary);">*</span></label> 
+       <input type="date" id="deliveryDate" name="deliveryDate" class="form-control"> 
+      </div> 
+      <div class="form-group"> <label for="deliveryTime" class="form-label">Delivery Time: <span style="color: var(--primary);">*</span></label> 
+       <input type="time" id="deliveryTime" name="deliveryTime" class="form-control"> 
+      </div> 
+
+      <!-- Live Delivery Option -->
+      <div class="checkbox-group"> 
+       <input type="checkbox" id="liveDelivery" name="liveDelivery"> <label for="liveDelivery">Check to see live/recorded delivery</label> 
+      </div> 
+      <div id="liveDeliveryOptions"></div>
+
+      <!-- Company Address for Items Send By Customer -->
+      <div id="itemsInstructions" class="hidden-section"></div>
+     </div>
+
+     <!-- Shradh Section -->
+     <div id="shradhSection" class="hidden-section">
+      <!-- Recipient Details (Only name and phone) -->
+      <div class="form-group"> <label for="deceasedName" class="form-label">Deceased Person's Name: <span style="color: var(--primary);">*</span></label> 
+       <input type="text" id="deceasedName" name="deceasedName" class="form-control" placeholder="Enter the name of the deceased"> 
+      </div> 
+      <div class="form-group"> <label for="deceasedPhoneNumber" class="form-label">Your Phone Number: <span style="color: var(--primary);">*</span></label> 
+       <input type="tel" id="deceasedPhoneNumber" name="deceasedPhoneNumber" class="form-control" placeholder="Enter your phone number"> 
+      </div>
+
+      <!-- State and District Selection -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"> 
+       <div class="form-group"> <label for="shradhDistrict" class="form-label">District: <span style="color: var(--primary);">*</span></label> 
+        <select id="shradhDistrict" name="shradhDistrict" class="form-control">
+         <option value="">Select District</option>
+         <option value="varanasi">Varanasi</option>
+         <option value="chandauli" style="opacity: 0.4;">Chandauli (Coming Soon)</option>
+        </select>
+       </div> 
+       <div class="form-group"> <label for="shradhState" class="form-label">State: <span style="color: var(--primary);">*</span></label> 
+        <select id="shradhState" name="shradhState" class="form-control">
+         <option value="uttar-pradesh">Uttar Pradesh</option>
+         <option value="other" style="opacity: 0.4;">Other States (Coming Soon)</option>
+        </select>
+       </div> 
+      </div>
+      <div id="shradhDistrictNotification"></div>
+      <div id="shradhStateNotification"></div>
+
+      <!-- Item Type (Pre-selected) -->
+      <div class="form-group"> <label for="shradhItemType" class="form-label">Service Type: <span style="color: var(--primary);">*</span></label> 
+       <input type="text" id="shradhItemType" name="shradhItemType" class="form-control" value="Items Sent by Customer (Ashes/Belongings)" readonly> 
+      </div>
+
+      <!-- Instructions -->
+      <div class="instruction-box">
+       <h4><i class="fas fa-info-circle"></i> How to Send Items</h4>
+       <ul>
+        <li>Prepare the ashes or belongings of your loved one</li>
+        <li><strong>Write your name and phone number clearly on the package</strong></li>
+        <li>Send the items to our office address below</li>
+        <li>We will perform the Shradh ceremony with utmost respect</li>
+        <li>You can watch the ceremony live or recorded</li>
+       </ul>
+      </div>
+
+      <!-- Office Address -->
+      <div class="company-address"> 
+       <h3><i class="fas fa-map-marker-alt"></i> Our Office Address (For Item Delivery):</h3> 
+       <p><i class="fas fa-building"></i> Time Line Office, Parle-G factory, Patanava</p> 
+       <p><i class="fas fa-industry"></i> Ramnagar industrial area, Ramnagar</p> 
+       <p><i class="fas fa-city"></i> Varanasi, Uttar Pradesh - 221008</p> 
+       <p><i class="fas fa-phone"></i> Contact: 7007677139 (Call/WhatsApp)</p> 
+       <p><i class="fas fa-envelope"></i> Email: timelinedeliveryofficial@gmail.com</p> 
+      </div>
+
+      <!-- Price -->
+      <div id="shradhTotalAmount" class="total-amount">Total Amount: ₹5,449</div>
+      <div class="price-note">
+       <strong>Note:</strong> ₹5,449 is the base price (excluding Pandit fee and other items required for Shradh). We will try our best to keep the extra charges low as much as possible. We do not show any over budget and provide bills and proofs of every item we bought or any fee we paid.
+      </div>
+
+      <!-- Shradh Date and Time -->
+      <div class="form-group"> <label for="shradhDate" class="form-label">Shradh Date: <span style="color: var(--primary);">*</span></label> 
+       <input type="date" id="shradhDate" name="shradhDate" class="form-control"> 
+      </div> 
+      <div class="form-group"> <label for="shradhTime" class="form-label">Shradh Time: <span style="color: var(--primary);">*</span></label> 
+       <input type="time" id="shradhTime" name="shradhTime" class="form-control"> 
+      </div>
+
+      <!-- Watch Live/Recorded Shradh -->
+      <div class="checkbox-group"> 
+       <input type="checkbox" id="liveShradh" name="liveShradh"> <label for="liveShradh">Check to watch live/recorded Shradh</label> 
+      </div> 
+      <div id="liveShradhOptions"></div>
+     </div>
+
+     <!-- Place Order Button -->
+     <button type="submit" id="submit-button" class="btn btn-primary hidden-section" style="display: none;"> Place Order <i class="fas fa-shopping-cart"></i> </button> 
+    </form> 
+   </div> 
+  </div> 
+
+  <!-- Fixed Utility Buttons -->
+  <div class="fixed-utils"> <button class="util-button chatbot-toggle" id="chatbotToggle" aria-label="Toggle Chatbot"> <i class="fas fa-robot"></i> </button> <button class="util-button quick-contact-toggle" id="quickContactToggle" aria-label="Toggle Quick Contacts"> <i class="fas fa-comment-dots"></i> </button> 
+  </div> 
+  <div class="quick-contact-menu" id="quickContactMenu"> <a href="https://wa.me/917007677139" target="_blank" class="quick-contact-item whatsapp" aria-label="Contact on WhatsApp"><i class="fab fa-whatsapp"></i></a> <a href="https://www.instagram.com/time_line.official?igsh=bmg5b2tienFnZ2hm" target="_blank" class="quick-contact-item instagram" aria-label="Contact on Instagram"><i class="fab fa-instagram"></i></a> <a href="mailto:timelinedeliveryofficial@gmail.com" class="quick-contact-item email" aria-label="Contact via Email"><i class="fas fa-envelope"></i></a> 
+  </div> 
+  <div class="chatbot-container" id="chatbotContainer"> 
+   <div class="chatbot-header"> 
+    <h3>TIME LINE Assistant</h3> <button class="chatbot-close" id="chatbotClose" aria-label="Close Chatbot"><i class="fas fa-times"></i></button> 
+   </div> 
+   <div class="chatbot-messages" id="chatbotMessages"> 
+    <div class="chatbot-message bot">
+     <div class="chatbot-bubble">
+      Hello! How can I help you with your order?
+     </div>
+    </div> 
+   </div> 
+   <div class="chatbot-input"> 
+    <input type="text" id="chatbotInput" placeholder="Type your message..."> <button class="chatbot-send" id="chatbotSend" aria-label="Send Message"><i class="fas fa-paper-plane"></i></button> 
+   </div> 
+  </div> 
+
+  <!-- JavaScript Libraries --> 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
+  <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out-quad',
+            once: true,
+            offset: 80
+        });
+
+        // Header scroll behavior
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 50) {
+                header.style.boxShadow = '0 5px 20px rgba(0,0,0,0.25)';
+            } else {
+                header.style.boxShadow = '0 5px 15px rgba(0,0,0,0.15)';
             }
+        });
 
-            .floating-contact {
-                left: 20px;
-            }
+        // Theme toggle
+        const themeToggleHeader = document.getElementById('themeToggleHeader');
+        const themeIconHeader = themeToggleHeader.querySelector('i');
+        const savedTheme = localStorage.getItem('theme');
 
-            .floating-chatbot {
-                right: 20px;
-            }
-
-            .contact-toggle, .chatbot-toggle {
-                width: 60px;
-                height: 60px;
-            }
-
-            .contact-toggle i, .chatbot-toggle i {
-                font-size: 1.5rem;
-            }
-
-            .chatbot-container {
-                width: calc(100vw - 40px);
-                right: 20px;
-                bottom: 90px;
-            }
-
-            .nav-links {
-                gap: 1rem;
-            }
-
-            .nav-links li a {
-                font-size: 0.9rem;
-                padding: 0.6rem 1rem;
-            }
-
-            .order-now-btn {
-                padding: 0.8rem 1.5rem !important;
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-theme');
+                themeIconHeader.classList.remove('fa-moon');
+                themeIconHeader.classList.add('fa-sun');
+            } else {
+                document.body.classList.remove('light-theme');
+                themeIconHeader.classList.remove('fa-sun');
+                themeIconHeader.classList.add('fa-moon');
             }
         }
+        applyTheme(savedTheme);
 
-        @media (max-width: 576px) {
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 0.5rem;
-            }
+        themeToggleHeader.addEventListener('click', () => {
+            const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
 
-            .nav-links li a {
-                font-size: 0.8rem;
-                padding: 0.5rem 0.8rem;
-            }
+        // Service Type Selection
+        const serviceRadios = document.querySelectorAll('input[name="serviceType"]');
+        const surpriseSection = document.getElementById('surpriseSection');
+        const shradhSection = document.getElementById('shradhSection');
+        const submitButton = document.getElementById('submit-button');
 
-            #themeToggle {
-                width: 50px;
-                height: 50px;
-                top: 15px;
-                right: 15px;
-            }
-
-            .user-info {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .user-info img {
-                margin-bottom: 0.5rem;
-                margin-right: 0;
-            }
-
-            .user-info button {
-                margin-top: 0.5rem;
-                width: 100%;
-            }
-        }
-
-        /* Dark/Light mode */
-        body.light-mode {
-            background-color: #f5f5f5;
-            color: #333;
-            background-image: radial-gradient(circle at 10% 20%, rgba(240,240,240,0.8) 0%, rgba(255,255,255,1) 90%);
-        }
-
-        body.light-mode .section:nth-child(even) {
-            background-color: rgba(240, 240, 240, 0.5);
-        }
-
-        body.light-mode header,
-        body.light-mode nav {
-            background-color: rgba(255, 255, 255, 0.95);
-            color: #333;
-        }
-
-        body.light-mode .nav-links li a {
-            color: #333;
-        }
-
-        body.light-mode form,
-        body.light-mode .company-address,
-        body.light-mode .chatbot-container {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #333;
-            border-color: rgba(0,0,0,0.1);
-        }
-
-        body.light-mode form input,
-        body.light-mode form textarea,
-        body.light-mode form select {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #333;
-            border-color: rgba(0,0,0,0.1);
-        }
-
-        body.light-mode .section h2,
-        body.light-mode .company-address h3 {
-            color: var(--primary-dark);
-        }
-
-        body.light-mode .token {
-            color: #b38f00;
-            background: rgba(255, 204, 0, 0.2);
-        }
-
-        body.light-mode .tooltip .tooltiptext {
-            background-color: #f0f0f0;
-            color: #333;
-            border-color: rgba(0,0,0,0.1);
-        }
-
-        body.light-mode .chatbot-messages {
-            background: rgba(240, 240, 240, 0.8);
-        }
-
-        body.light-mode .chatbot-message.bot .chatbot-bubble {
-            background-color: rgba(78, 205, 196, 0.2);
-            color: #333;
-        }
-
-        body.light-mode .chatbot-message.user .chatbot-bubble {
-            background-color: rgba(255, 107, 107, 0.2);
-            color: #333;
-        }
-
-        body.light-mode .chatbot-input {
-            background: rgba(255, 255, 255, 0.9);
-            border-top: 1px solid rgba(0,0,0,0.1);
-        }
-
-        body.light-mode .chatbot-input input {
-            background-color: rgba(240, 240, 240, 0.7);
-            border: 1px solid rgba(0,0,0,0.1);
-            color: #333;
-        }
-
-        /* Ensure checkbox label is clickable */
-        form label input[type="checkbox"] {
-            margin-right: 0.5rem;
-            width: auto;
-        }
-
-        /* Instruction text styling */
-        .instruction {
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
-            color: var(--gray);
-            margin-top: 0.5rem;
-            text-align: left;
-        }
-
-        body.light-mode .instruction {
-            color: #555;
-        }
-    </style>
-</head>
-<body>
-    <button id="themeToggle" title="Toggle Dark/Light Mode">
-        <i class="fas fa-moon"></i>
-    </button>
-    
-    <header class="animate__animated animate__fadeIn">
-        <div class="logo">
-            <h1>TIME LINE</h1>
-            <p>Delivering Emotions On Time</p>
-        </div>
-    </header>
-    
-    <nav id="mainNav" class="animate__animated animate__fadeIn animate__delay-1s">
-        <div class="nav-container">
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="order.html" class="order-now-btn">Order Now</a></li>
-                <li><a href="testimonials.html">Testimonials</a></li>
-                <li><a href="policy.html">Policy</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <section id="order" class="section">
-        <h2 class="animate__animated animate__fadeInUp">Place Your Order</h2>
-        
-        <!-- Google Login Container -->
-        <div id="google-login-container"></div>
-        
-        <!-- User Info Display -->
-        <div id="user-info" class="user-info" style="display: none;">
-            <img id="user-pic" src="" alt="User picture">
-            <span id="user-name"></span>
-            <button id="sign-out-button">Sign Out</button>
-        </div>
-        
-        <!-- Order Limit Warning -->
-        <div id="order-limit-warning" class="order-count-warning" style="display: none;">
-            <i class="fas fa-exclamation-circle"></i> You've reached your limit of 2 orders in 24 hours. Please try again later.
-        </div>
-        
-        <form id="orderForm" class="animate__animated animate__fadeInUp animate__delay-1s">
-            <label for="customerName">Your Name (Optional):</label>
-            <input type="text" id="customerName" name="customerName" placeholder="Leave blank for a random token">
-            <p id="tokenDisplay" class="token"></p>
-            
-            <label for="phoneNumber">Your Phone Number:</label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your 10-digit phone number" pattern="^[0-9]{10}$" required>
-            
-            <label for="photoUpload" class="file-input-label">
-                <i class="fas fa-camera"></i> Upload Photo <span class="info tooltip">?<span class="tooltiptext">This helps us better identify the recipient during delivery</span></span>
-                <input type="file" id="photoUpload" name="photoUpload" accept="image/*">
-            </label>
-            
-            <label for="recipientName">Recipient's Name:</label>
-            <input type="text" id="recipientName" name="recipientName" required>
-            
-            <label for="recipientPhoneNumber">Recipient's Phone Number (Optional):</label>
-            <input type="tel" id="recipientPhoneNumber" name="recipientPhoneNumber" placeholder="Enter recipient's 10-digit phone number" pattern="^[0-9]{10}$">
-            
-            <label for="address">Recipient's Address:</label>
-            <textarea id="address" name="address" rows="3" required></textarea>
-            
-            <label for="district">District:</label>
-            <select id="district" name="district" required>
-                <option value="Varanasi">Varanasi</option>
-                <option value="Chandauli">Chandauli</option>
-            </select>
-            
-            <label for="state">State:</label>
-            <select id="state" name="state" required>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
-            </select>
-            
-            <label for="pincode">Pin Code:</label>
-            <input type="text" id="pincode" name="pincode" pattern="^[0-9]{6}$" required>
-            
-            <label for="itemType">Item Type:</label>
-            <select id="itemType" name="itemType" required>
-                <option value="">-- Select Item Type --</option>
-                <option value="message">Message (Speak in front of Recipient)</option>
-                <option value="writtenByTimeline">Letter written by Time Line (In Your Words)</option>
-                <option value="itemsSendByCustomer">Items (Send by Customer)</option>
-                <option value="itemsBuyByTimeline">Items (Buy by Time Line)</option>
-            </select>
-            
-            <!-- Dynamic sections will appear here -->
-            <div id="additionalSections"></div> 
-            
-            <div id="totalAmount" class="total-amount">Total Amount: ₹0</div>
-            
-            <label for="deliveryDate">Delivery Date:</label>
-            <input type="date" id="deliveryDate" name="deliveryDate" required>
-            
-            <label for="deliveryTime">Delivery Time:</label>
-            <input type="time" id="deliveryTime" name="deliveryTime" required>
-            
-            <label>
-                <input type="checkbox" id="liveDelivery" name="liveDelivery"> Check to see live/recorded delivery
-            </label>
-            <!-- Dynamic live delivery options will appear here -->
-            <div id="liveDeliveryOptions"></div> 
-            
-            <div class="company-address">
-                <h3><i class="fas fa-map-marker-alt"></i> Our Office Address (For Item Drop-off):</h3>
-                <p><i class="fas fa-building"></i> Time Line Office, Parle-G factory, Patanava</p>
-                <p><i class="fas fa-industry"></i> Ramnagar industrial area, Ramnagar</p>
-                <p><i class="fas fa-city"></i> Varanasi, Uttar Pradesh - 221008</p>
-                <p><i class="fas fa-phone"></i> Contact: 7007677139 (Call/WhatsApp)</p>
-                <p><i class="fas fa-envelope"></i> Email: timelinedeliveryofficial@gmail.com</p>
-            </div>
-            
-            <button type="submit" id="submit-button">Proceed to Payment <i class="fas fa-arrow-right"></i></button>
-        </form>
-    </section>
-    
-    <!-- Floating Contact Button -->
-    <div class="floating-contact">
-        <div class="contact-toggle" id="contactToggle">
-            <i class="fas fa-comment-dots"></i>
-        </div>
-        <div class="contact-menu" id="contactMenu">
-            <a href="https://wa.me/917007677139" target="_blank" class="contact-item whatsapp">
-                <i class="fab fa-whatsapp"></i>
-            </a>
-            <a href="https://www.instagram.com/time_line.official?igsh=MTZoaDYwb25wOWdkbw==" target="_blank" class="contact-item instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="mailto:timelinedeliveryofficial@gmail.com" class="contact-item email">
-                <i class="fas fa-envelope"></i>
-            </a>
-        </div>
-    </div>
-
-    <!-- Floating Chatbot Button -->
-    <div class="floating-chatbot">
-        <div class="chatbot-toggle" id="chatbotToggle">
-            <i class="fas fa-robot"></i>
-        </div>
-    </div>
-
-    <!-- Chatbot Container -->
-    <div class="chatbot-container" id="chatbotContainer">
-        <div class="chatbot-header">
-            <h3>TIME LINE Assistant</h3>
-            <button class="chatbot-close" id="chatbotClose"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="chatbot-messages" id="chatbotMessages">
-            <div class="chatbot-message bot"><div class="chatbot-bubble">Hello! How can I help you with your order?</div></div>
-        </div>
-        <div class="chatbot-input">
-            <input type="text" id="chatbotInput" placeholder="Type your message...">
-            <button class="chatbot-send" id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-
-    <script>
-        // Supabase initialization
-        const supabaseUrl = 'https://hseqvitreugkqgumgffa.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhzZXF2aXRyZXVna3FndW1nZmZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ1MzY5MzUsImV4cCI6MjA2MDExMjkzNX0.p3qK1ojwxbfQBWVD_KIFVNuPveY6-rFs2gkKAJQshPo';
-        
-        // Google Apps Script URL from v37
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5wtRs_ShNdA4vx8QjGXVdT_rBFcdWlvQVIGy_ypHiZtwUUWFQ71eodoJfVOP3mtav/exec';
-        
-        // Initialize Supabase client
-        let supabase = null;
-        try {
-             supabase = supabase.createClient(supabaseUrl, supabaseKey);
-        } catch (error) {
-            console.error("Supabase initialization failed:", error);
-        }
-       
-        // Global variables
-        let currentUser = null;
-        let userOrders = [];
-        let formProgress = 0;
-        
-        // Generate Random Alphanumeric Token
-        function generateToken() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let token = '';
-            for (let i = 0; i < 8; i++) {
-                token += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return token;
-        }
-        
-        // Convert file to Base64
-        async function toBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve({
-                    filename: file.name,
-                    mimeType: file.type,
-                    content: reader.result.split(',')[1]
-                });
-                reader.onerror = error => reject(error);
+        serviceRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'surprise') {
+                    surpriseSection.classList.remove('hidden-section');
+                    shradhSection.classList.add('hidden-section');
+                    submitButton.style.display = 'flex';
+                } else if (this.value === 'shradh') {
+                    surpriseSection.classList.add('hidden-section');
+                    shradhSection.classList.remove('hidden-section');
+                    submitButton.style.display = 'flex';
+                }
             });
-        }
-        
-        // Initialize Google Sign-In
-        function initializeGoogleSignIn() {
-            if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
-                console.error('Google Sign-In library not loaded.');
-                return;
+        });
+
+        // State/District Notifications for Surprise
+        document.getElementById('state').addEventListener('change', function() {
+            const notification = document.getElementById('stateNotification');
+            if (this.value !== 'uttar-pradesh') {
+                notification.innerHTML = '<div class="notification"><i class="fas fa-info-circle"></i> Service Available in This State Soon</div>';
+            } else {
+                notification.innerHTML = '';
             }
-            try {
-                google.accounts.id.initialize({
-                    client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com', // Replace with your actual Client ID
-                    callback: handleCredentialResponse,
-                    auto_select: false,
-                    cancel_on_tap_outside: true
-                });
-                
-                google.accounts.id.renderButton(
-                    document.getElementById('google-login-container'),
-                    { 
-                        theme: 'filled_blue', 
-                        size: 'large',
-                        width: '300',
-                        text: 'continue_with',
-                        shape: 'pill'
-                    }
-                );
-            } catch (error) {
-                 console.error("Google Sign-In initialization failed:", error);
+        });
+
+        document.getElementById('district').addEventListener('change', function() {
+            const notification = document.getElementById('districtNotification');
+            if (this.value === 'other') {
+                notification.innerHTML = '<div class="notification"><i class="fas fa-info-circle"></i> Service Available in This District Soon</div>';
+            } else {
+                notification.innerHTML = '';
             }
-        }
-        
-        // Handle Google Sign-In Response
-        async function handleCredentialResponse(response) {
-            try {
-                const userInfo = await verifyGoogleToken(response.credential);
-                currentUser = {
-                    id: userInfo.sub,
-                    name: userInfo.name,
-                    email: userInfo.email,
-                    picture: userInfo.picture
-                };
-                
-                displayUserInfo();
-                checkOrderLimit();
-                
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            } catch (error) {
-                alert('Error signing in with Google. Please try again.');
-                console.error('Google Sign-In Error:', error);
+        });
+
+        // State/District Notifications for Shradh
+        document.getElementById('shradhState').addEventListener('change', function() {
+            const notification = document.getElementById('shradhStateNotification');
+            if (this.value !== 'uttar-pradesh') {
+                notification.innerHTML = '<div class="notification"><i class="fas fa-info-circle"></i> Service Available in This State Soon</div>';
+            } else {
+                notification.innerHTML = '';
             }
-        }
-        
-        // Verify Google Token (mock function - replace with backend verification if needed)
-        async function verifyGoogleToken(token) {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        }
-        
-        // Display User Info
-        function displayUserInfo() {
-            const userInfoDiv = document.getElementById('user-info');
-            const userPic = document.getElementById('user-pic');
-            const userName = document.getElementById('user-name');
+        });
+
+        document.getElementById('shradhDistrict').addEventListener('change', function() {
+            const notification = document.getElementById('shradhDistrictNotification');
+            if (this.value === 'chandauli') {
+                notification.innerHTML = '<div class="notification"><i class="fas fa-info-circle"></i> Service Available in This District Soon</div>';
+            } else {
+                notification.innerHTML = '';
+            }
+        });
+
+        // Item Type Change Handler
+        document.getElementById('itemType').addEventListener('change', function() {
+            const additionalSections = document.getElementById('additionalSections');
+            const itemsInstructions = document.getElementById('itemsInstructions');
+            const value = this.value;
+            additionalSections.innerHTML = '';
+            itemsInstructions.innerHTML = '';
             
-            if (currentUser && userInfoDiv && userPic && userName) {
-                userInfoDiv.style.display = 'flex';
-                userPic.src = currentUser.picture;
-                userName.textContent = currentUser.name;
-            } else if (userInfoDiv) {
-                userInfoDiv.style.display = 'none';
-            }
-        }
-        
-        // Sign Out
-        function signOut() {
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            displayUserInfo();
-            alert('You have been signed out.');
-            // Optionally, re-render the Google Sign-In button if needed
-            const googleContainer = document.getElementById('google-login-container');
-            if (googleContainer) {
-                googleContainer.innerHTML = ''; // Clear previous button
-                initializeGoogleSignIn(); // Re-render
-            }
-        }
-        
-        // Check Order Limit
-        async function checkOrderLimit() {
-            if (!currentUser || !supabase) return;
-            
-            try {
-                const { data, error } = await supabase
-                    .from('orders')
-                    .select('*', { count: 'exact' })
-                    .eq('user_id', currentUser.id)
-                    .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
-                
-                if (error) throw error;
-                
-                userOrders = data || [];
-                
-                const orderLimitWarning = document.getElementById('order-limit-warning');
-                const submitButton = document.getElementById('submit-button');
-                
-                if (userOrders.length >= 2) {
-                    if (orderLimitWarning) orderLimitWarning.style.display = 'flex';
-                    if (submitButton) {
-                        submitButton.disabled = true;
-                        submitButton.style.opacity = '0.5';
-                        submitButton.style.cursor = 'not-allowed';
-                    }
-                } else {
-                    if (orderLimitWarning) orderLimitWarning.style.display = 'none';
-                    if (submitButton) {
-                        submitButton.disabled = false;
-                        submitButton.style.opacity = '1';
-                        submitButton.style.cursor = 'pointer';
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking order limit:', error);
-            }
-        }
-        
-        // Store Order in Supabase
-        async function storeOrderSupabase(orderData) {
-             if (!currentUser || !supabase) return false;
-            
-            try {
-                const { data, error } = await supabase
-                    .from('orders')
-                    .insert([
-                        {
-                            user_id: currentUser.id,
-                            user_email: currentUser.email,
-                            customer_name: orderData.customerName || document.getElementById('tokenDisplay')?.textContent.replace('Your Token: ', ''),
-                            phone_number: orderData.phoneNumber,
-                            recipient_name: orderData.recipientName,
-                            recipient_phone: orderData.recipientPhoneNumber,
-                            address: orderData.address,
-                            district: orderData.district,
-                            state: orderData.state,
-                            pincode: orderData.pincode,
-                            item_type: orderData.itemType,
-                            delivery_date: orderData.deliveryDate,
-                            delivery_time: orderData.deliveryTime,
-                            live_delivery: orderData.liveDelivery || false,
-                            total_amount: orderData.totalAmount,
-                            status: 'pending'
-                        }
-                    ])
-                    .select();
-                
-                if (error) throw error;
-                
-                const photoFile = document.getElementById('photoUpload')?.files[0];
-                if (photoFile && data && data[0]) {
-                    const fileExt = photoFile.name.split('.').pop();
-                    const fileName = `${currentUser.id}_${Date.now()}.${fileExt}`;
-                    const { error: uploadError } = await supabase
-                        .storage
-                        .from('customer-photos') // Ensure this bucket exists and has correct policies
-                        .upload(`orders/${fileName}`, photoFile);
-                    
-                    if (uploadError) {
-                        console.warn('Photo upload to Supabase failed:', uploadError);
-                    } else {
-                        const { data: publicUrlData, error: urlError } = supabase
-                            .storage
-                            .from('customer-photos')
-                            .getPublicUrl(`orders/${fileName}`);
-                        
-                        if (urlError) {
-                            console.warn('Failed to get public URL for photo:', urlError);
-                        } else {
-                             await supabase
-                                .from('orders')
-                                .update({ recipient_photo: publicUrlData.publicUrl })
-                                .eq('id', data[0].id);
-                        }
-                    }
-                }
-                
-                return true;
-            } catch (error) {
-                console.error('Error storing order in Supabase:', error);
-                return false;
-            }
-        }
-        
-        // Submit form data to Google Sheets
-        async function submitFormDataGoogle(formData) {
-            const tokenNumber = document.getElementById("tokenDisplay")?.textContent.replace("Your Token: ", "") || generateToken();
-            const submission = {
-                tokenNumber: tokenNumber,
-                customerName: formData.customerName,
-                phoneNumber: formData.phoneNumber,
-                recipientName: formData.recipientName,
-                recipientPhoneNumber: formData.recipientPhoneNumber,
-                address: formData.address,
-                district: formData.district,
-                state: formData.state,
-                pincode: formData.pincode,
-                itemType: formData.itemType,
-                deliveryDate: formData.deliveryDate,
-                deliveryTime: formData.deliveryTime,
-                liveDelivery: document.getElementById("liveDelivery")?.checked || false,
-                totalAmount: calculateTotalAmount()
-            };
-
-            const messageText = document.querySelector('textarea[name="message"]')?.value;
-            if (messageText) submission.messageText = messageText;
-            
-            const productDescription = document.querySelector('textarea[name="productDescription"]')?.value;
-            if (productDescription) submission.productDescription = productDescription;
-            
-            const productPrice = document.getElementById("productPrice")?.value;
-            if (productPrice) submission.productPrice = productPrice;
-            
-            const productLink = document.querySelector('input[name="productLink"]')?.value;
-            if (productLink) submission.productLink = productLink;
-            
-            const instructions = document.querySelector('textarea[name="instructions"]')?.value;
-            if (instructions) submission.instructions = instructions;
-            
-            if (document.getElementById("claimWarranty")?.checked) submission.claimWarranty = true;
-            
-            if (document.getElementById("liveDelivery")?.checked) {
-                submission.deliveryMethod = document.getElementById("deliveryMethod")?.value;
-                submission.platform = document.getElementById("platform")?.value;
-                const platformDetailsInput = document.getElementById(
-                    submission.platform === 'whatsapp' ? 'whatsappNumber' :
-                    submission.platform === 'googleMeet' ? 'email' : 'instagramId'
-                );
-                if (platformDetailsInput) submission.platformDetails = platformDetailsInput.value;
-            }
-
-            const filesToUpload = [
-                { inputId: 'photoUpload', field: 'photo' },
-                { inputId: 'messageAudio', field: 'messageAudio' },
-                { inputId: 'messageVideo', field: 'messageVideo' },
-                { inputId: 'instructionAudio', field: 'instructionAudio' }
-            ];
-
-            for (const fileInfo of filesToUpload) {
-                const fileInput = document.querySelector(`input[name="${fileInfo.inputId}"]`);
-                if (fileInput?.files[0]) {
-                    try {
-                        submission[fileInfo.field] = await toBase64(fileInput.files[0]);
-                    } catch (error) {
-                        console.error(`Error processing ${fileInfo.inputId}:`, error);
-                    }
-                }
-            }
-
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(submission),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                
-                localStorage.setItem(`order_${tokenNumber}`, 'submitted_via_google_script');
-                return true;
-
-            } catch (err) {
-                console.error('Submission error to Google Apps Script:', err);
-                alert('Error submitting form via Google Script: ' + err.message);
-                return false;
-            }
-        }
-        
-        // Calculate total amount based on selections
-        function calculateTotalAmount() {
-            const itemTypeSelect = document.getElementById("itemType");
-            const totalAmountDiv = document.getElementById("totalAmount");
-            if (!itemTypeSelect || !totalAmountDiv) return 0;
-
-            const itemType = itemTypeSelect.value;
-            let amount = 0;
-            
-            if (itemType === "message" || itemType === "writtenByTimeline") {
-                amount = 249;
-            } else if (itemType === "itemsSendByCustomer") {
-                amount = 299;
-            } else if (itemType === "itemsBuyByTimeline") {
-                const productPriceInput = document.getElementById("productPrice");
-                const productPrice = parseFloat(productPriceInput?.value) || 0;
-                amount = 299 + productPrice;
-            }
-            
-            totalAmountDiv.textContent = `Total Amount: ₹${amount}`;
-            return amount;
-        }
-        
-        // Set minimum delivery date and time
-        function setMinDeliveryTime() {
-            const dateInput = document.getElementById('deliveryDate');
-            if (!dateInput) return;
-
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            
-            const minDate = tomorrow.toISOString().split('T')[0];
-            dateInput.min = minDate;
-            if (!dateInput.value || dateInput.value < minDate) {
-                 dateInput.value = minDate;
-            }
-        }
-        
-        // Copy address to clipboard
-        function copyAddress() {
-            const address = "Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008";
-            navigator.clipboard.writeText(address).then(() => {
-                alert('Address copied to clipboard!');
-            }).catch(err => {
-                console.error('Could not copy text: ', err);
-                alert('Failed to copy address.');
-            });
-        }
-
-        // Function to handle platform selection change
-        function handlePlatformChange() {
-            const platformSelect = document.getElementById("platform");
-            const platformDetails = document.getElementById("platformDetails");
-            if (!platformSelect || !platformDetails) return;
-
-            const platform = platformSelect.value;
-            console.log("Platform changed to:", platform);
-
-            switch (platform) {
-                case 'whatsapp':
-                    platformDetails.innerHTML = `
-                        <label for="whatsappNumber">Fill Your WhatsApp Number:</label>
-                        <input type="tel" id="whatsappNumber" name="whatsappNumber" placeholder="Enter your 10-digit WhatsApp number" pattern="^[0-9]{10}$" required>
-                    `;
-                    break;
-                case 'googleMeet':
-                    platformDetails.innerHTML = `
-                        <label for="email">Enter your Email:</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                    `;
-                    break;
-                case 'instagram':
-                    platformDetails.innerHTML = `
-                        <label for="instagramId">Enter your Instagram ID:</label>
-                        <input type="text" id="instagramId" name="instagramId" placeholder="Enter your Instagram ID" required>
-                    `;
-                    break;
-                default:
-                    platformDetails.innerHTML = '';
-                    break;
-            }
-        }
-
-        // Function to handle item type change
-        function handleItemTypeChange() {
-            const itemTypeSelect = document.getElementById("itemType");
-            const additionalSections = document.getElementById("additionalSections");
-            if (!itemTypeSelect || !additionalSections) return;
-
-            const selectedItemType = itemTypeSelect.value;
-            console.log("Item type changed to:", selectedItemType);
-
-            // Clear previous dynamic content and listeners
-            additionalSections.innerHTML = ''; 
-
-            switch (selectedItemType) {
-                case 'message':
-                case 'writtenByTimeline':
-                    additionalSections.innerHTML = `
-                        <h3>Write Your Message</h3>
-                        <textarea name="message" rows="4" placeholder="Write your message here..." required></textarea>
-                        <div class="upload-section">
-                            <h3><i class="fas fa-envelope"></i> Your Message (Optional) <span class="info tooltip">?<span class="tooltiptext">This will be played during delivery</span></span></h3>
-                            <p>Upload an audio or video message to be played during delivery</p>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-audio"></i> Upload Audio (max 50MB)
-                                <input type="file" name="messageAudio" accept="audio/*">
-                            </label>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-video"></i> Upload Video (max 200MB, MP4/MKV)
-                                <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
-                            </label>
+            if (value === 'message') {
+                additionalSections.innerHTML = `
+                    <div class="dynamic-section">
+                        <div class="form-group">
+                            <label for="messageContent" class="form-label">Your Message: <span style="color: var(--primary);">*</span></label>
+                            <textarea id="messageContent" name="messageContent" class="form-control" rows="4" placeholder="Enter the message you want us to read"></textarea>
                         </div>
-                        <div class="upload-section">
-                            <h3><i class="fas fa-clipboard-list"></i> Delivery Instructions <span class="info tooltip">?<span class="tooltiptext">Instructions for our delivery person</span></span></h3>
-                            <p>Write or record instructions for the delivery person (at least one required)</p>
-                            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
-                            <label class="file-input-label">
-                                <i class="fas fa-microphone"></i> Or Upload Audio Instructions (max 10MB)
-                                <input type="file" name="instructionAudio" accept="audio/*">
-                            </label>
+                    </div>
+                `;
+                updateTotalAmount(249);
+            } else if (value === 'writtenByTimeline') {
+                additionalSections.innerHTML = `
+                    <div class="dynamic-section">
+                        <div class="form-group">
+                            <label for="letterContent" class="form-label">Letter Content/Theme: <span style="color: var(--primary);">*</span></label>
+                            <textarea id="letterContent" name="letterContent" class="form-control" rows="4" placeholder="Tell us what to write in the letter"></textarea>
                         </div>
-                    `;
-                    break;
-                case 'itemsSendByCustomer':
-                    additionalSections.innerHTML = `
-                        <h3>Send Item At</h3>
-                        <textarea rows="3" readonly>Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008</textarea>
-                        <button type="button" onclick="copyAddress()" class="animate__animated animate__pulse">Copy Address <i class="fas fa-copy"></i></button>
-                        <p class="instruction">Please write your token number on the delivery package for better identification.</p>
-                        <div class="upload-section">
-                            <h3><i class="fas fa-envelope"></i> Your Message (Optional) <span class="info tooltip">?<span class="tooltiptext">This will be played during delivery</span></span></h3>
-                            <p>Upload an audio or video message to be played during delivery</p>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-audio"></i> Upload Audio (max 50MB)
-                                <input type="file" name="messageAudio" accept="audio/*">
-                            </label>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-video"></i> Upload Video (max 200MB, MP4/MKV)
-                                <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
-                            </label>
+                    </div>
+                `;
+                updateTotalAmount(249);
+            } else if (value === 'itemsSendByCustomer') {
+                additionalSections.innerHTML = `
+                    <div class="dynamic-section">
+                        <div class="form-group">
+                            <label for="itemDescription" class="form-label">Item Description: <span style="color: var(--primary);">*</span></label>
+                            <textarea id="itemDescription" name="itemDescription" class="form-control" rows="3" placeholder="Describe the items you will send to our office"></textarea>
                         </div>
-                        <div class="upload-section">
-                            <h3><i class="fas fa-clipboard-list"></i> Delivery Instructions <span class="info tooltip">?<span class="tooltiptext">Instructions for our delivery person</span></span></h3>
-                            <p>Write or record instructions for the delivery person (at least one required)</p>
-                            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
-                            <label class="file-input-label">
-                                <i class="fas fa-microphone"></i> Or Upload Audio Instructions (max 10MB)
-                                <input type="file" name="instructionAudio" accept="audio/*">
-                            </label>
+                    </div>
+                `;
+                itemsInstructions.innerHTML = `
+                    <div class="instruction-box">
+                        <h4><i class="fas fa-box"></i> How to Send Your Items</h4>
+                        <ul>
+                            <li>Prepare the items you want to deliver</li>
+                            <li><strong>Write the recipient's name and phone number clearly on the box/package</strong></li>
+                            <li>Send the items to our office address below</li>
+                            <li>Include a note with the delivery date and time</li>
+                            <li>We will ensure safe delivery at the specified time</li>
+                        </ul>
+                    </div>
+                    <div class="company-address"> 
+                        <h3><i class="fas fa-map-marker-alt"></i> Our Office Address (For Item Drop-off):</h3> 
+                        <p><i class="fas fa-building"></i> Time Line Office, Parle-G factory, Patanava</p> 
+                        <p><i class="fas fa-industry"></i> Ramnagar industrial area, Ramnagar</p> 
+                        <p><i class="fas fa-city"></i> Varanasi, Uttar Pradesh - 221008</p> 
+                        <p><i class="fas fa-phone"></i> Contact: 7007677139 (Call/WhatsApp)</p> 
+                        <p><i class="fas fa-envelope"></i> Email: timelinedeliveryofficial@gmail.com</p> 
+                    </div>
+                `;
+                itemsInstructions.classList.remove('hidden-section');
+                updateTotalAmount(299);
+            } else if (value === 'itemsBuyByTimeline') {
+                additionalSections.innerHTML = `
+                    <div class="dynamic-section">
+                        <div class="form-group">
+                            <label for="itemsToBuy" class="form-label">Items to Buy: <span style="color: var(--primary);">*</span></label>
+                            <textarea id="itemsToBuy" name="itemsToBuy" class="form-control" rows="3" placeholder="List the items you want us to buy"></textarea>
                         </div>
-                        <label><input type="checkbox" id="claimWarranty" name="claimWarranty"> Claim Warranty <span class="info tooltip">?<span class="tooltiptext">We'll record opening the package for warranty claims</span></span></label>
-                    `;
-                    break;
-                case 'itemsBuyByTimeline':
-                    additionalSections.innerHTML = `
-                        <h3>Describe Your Product</h3>
-                        <textarea name="productDescription" rows="4" placeholder="Describe your product..." required></textarea>
-                        <h3>Product Price</h3>
-                        <input type="number" id="productPrice" name="productPrice" placeholder="Enter estimated product price" required>
-                        <p class="instruction">Please enter slightly higher amount than actual price as product may be available at higher rate in our area. If we get it cheaper, we'll refund the difference within 24 hours.</p>
-                        <h3>Optional: Product Link</h3>
-                        <input type="url" name="productLink" placeholder="Paste the product link here">
-                        <div class="upload-section">
-                            <h3><i class="fas fa-envelope"></i> Your Message (Optional) <span class="info tooltip">?<span class="tooltiptext">This will be played during delivery</span></span></h3>
-                            <p>Upload an audio or video message to be played during delivery</p>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-audio"></i> Upload Audio (max 50MB)
-                                <input type="file" name="messageAudio" accept="audio/*">
-                            </label>
-                            <label class="file-input-label">
-                                <i class="fas fa-file-video"></i> Upload Video (max 200MB, MP4/MKV)
-                                <input type="file" name="messageVideo" accept="video/mp4,video/x-matroska">
-                            </label>
+                        <div class="form-group">
+                            <label for="itemLinks" class="form-label">Item Links (Optional):</label>
+                            <textarea id="itemLinks" name="itemLinks" class="form-control" rows="3" placeholder="Paste links to the items you want us to order"></textarea>
                         </div>
-                        <div class="upload-section">
-                            <h3><i class="fas fa-clipboard-list"></i> Delivery Instructions <span class="info tooltip">?<span class="tooltiptext">Instructions for our delivery person</span></span></h3>
-                            <p>Write or record instructions for the delivery person (at least one required)</p>
-                            <textarea name="instructions" rows="3" placeholder="Write your delivery instructions here..."></textarea>
-                            <label class="file-input-label">
-                                <i class="fas fa-microphone"></i> Or Upload Audio Instructions (max 10MB)
-                                <input type="file" name="instructionAudio" accept="audio/*">
-                            </label>
+                        <div class="form-group">
+                            <label for="budget" class="form-label">Estimated Budget for Items (₹): <span style="color: var(--primary);">*</span></label>
+                            <input type="number" id="budget" name="budget" class="form-control" placeholder="Enter your budget for items">
                         </div>
-                    `;
-                    // Add event listener for product price *after* the element is added to the DOM
-                    const productPriceInput = document.getElementById("productPrice");
-                    if (productPriceInput) {
-                        productPriceInput.addEventListener("input", calculateTotalAmount);
-                    }
-                    break;
-                default:
-                    // Already cleared above
-                    break;
+                    </div>
+                `;
+                updateTotalAmount(299);
+            } else {
+                updateTotalAmount(0);
             }
-            // Recalculate amount after changing sections
-            calculateTotalAmount(); 
-        }
+        });
 
-        // Function to handle live delivery checkbox change
-        function handleLiveDeliveryChange() {
-            const liveDeliveryCheckbox = document.getElementById("liveDelivery");
-            const liveDeliveryOptions = document.getElementById("liveDeliveryOptions");
-            if (!liveDeliveryCheckbox || !liveDeliveryOptions) return;
-
-            console.log("Live delivery checkbox changed:", liveDeliveryCheckbox.checked);
-
-            if (liveDeliveryCheckbox.checked) {
+        // Live Delivery Change Handler
+        document.getElementById('liveDelivery').addEventListener('change', function() {
+            const liveDeliveryOptions = document.getElementById('liveDeliveryOptions');
+            
+            if (this.checked) {
                 liveDeliveryOptions.innerHTML = `
-                    <label for="deliveryMethod">Delivery Method:</label>
-                    <select id="deliveryMethod" name="deliveryMethod" class="animate__animated animate__fadeIn">
-                        <option value="videoCall">Live delivery on video call</option>
-                        <option value="recorded">Recorded video of delivery</option>
-                    </select>
-                    <label for="platform">Choose Platform:</label>
-                    <select id="platform" name="platform" class="animate__animated animate__fadeIn">
-                        <option value="">-- Select Platform --</option>
-                        <option value="whatsapp">WhatsApp</option>
-                        <option value="googleMeet">Google Meet</option>
-                        <option value="instagram">Instagram</option>
-                    </select>
-                    <div id="platformDetails" class="animate__animated animate__fadeIn"></div>
+                    <div class="dynamic-section">
+                        <h4><i class="fas fa-video"></i> Watch Live/Recorded Delivery</h4>
+                        <div class="form-group">
+                            <label class="form-label">Choose Delivery Type:</label>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="radio" name="deliveryType" value="live" style="margin-right: 0.5rem;">
+                                    Live Delivery
+                                </label>
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="radio" name="deliveryType" value="recorded" style="margin-right: 0.5rem;">
+                                    Recorded Delivery
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="platformType" class="form-label">Platform Type: <span style="color: var(--primary);">*</span></label>
+                            <select id="platformType" name="platformType" class="form-control">
+                                <option value="">Select Platform</option>
+                                <option value="whatsapp">WhatsApp</option>
+                                <option value="instagram">Instagram</option>
+                            </select>
+                        </div>
+                        <div id="platformDetails"></div>
+                    </div>
                 `;
                 
-                // Add event listener for platform selection *after* the element is added to the DOM
-                const platformSelect = document.getElementById("platform");
-                if (platformSelect) {
-                    platformSelect.addEventListener("change", handlePlatformChange);
-                }
+                document.getElementById('platformType').addEventListener('change', function() {
+                    const platformDetails = document.getElementById('platformDetails');
+                    if (this.value === 'whatsapp') {
+                        platformDetails.innerHTML = `
+                            <div class="form-group">
+                                <label for="whatsappNumber" class="form-label">Your WhatsApp Number: <span style="color: var(--primary);">*</span></label>
+                                <input type="tel" id="whatsappNumber" name="whatsappNumber" class="form-control" placeholder="Enter your WhatsApp number">
+                            </div>
+                        `;
+                    } else if (this.value === 'instagram') {
+                        platformDetails.innerHTML = `
+                            <div class="form-group">
+                                <label for="instagramId" class="form-label">Your Instagram ID: <span style="color: var(--primary);">*</span></label>
+                                <input type="text" id="instagramId" name="instagramId" class="form-control" placeholder="Enter your Instagram username">
+                            </div>
+                        `;
+                    } else {
+                        platformDetails.innerHTML = '';
+                    }
+                });
             } else {
                 liveDeliveryOptions.innerHTML = '';
             }
-        }
-        
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle?.querySelector('i');
-        if (themeToggle && themeIcon) {
-            themeToggle.addEventListener('click', function() {
-                const body = document.body;
-                body.classList.add('theme-transition');
-                if (body.classList.contains('light-mode')) {
-                    body.classList.remove('light-mode');
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    body.classList.add('light-mode');
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                    localStorage.setItem('theme', 'light');
-                }
-                // Remove transition class after animation completes
-                setTimeout(() => { body.classList.remove('theme-transition'); }, 500);
-            });
-            
-            // Apply saved theme on load
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            }
-        }
-
-        // Contact Toggle
-        const contactToggle = document.getElementById('contactToggle');
-        const contactMenu = document.getElementById('contactMenu');
-        
-        contactToggle.addEventListener('click', () => {
-            contactMenu.classList.toggle('active');
         });
 
-        // Chatbot Toggle
+        // Live Shradh Change Handler
+        document.getElementById('liveShradh').addEventListener('change', function() {
+            const liveShradhOptions = document.getElementById('liveShradhOptions');
+            
+            if (this.checked) {
+                liveShradhOptions.innerHTML = `
+                    <div class="dynamic-section">
+                        <h4><i class="fas fa-video"></i> Watch Live/Recorded Shradh</h4>
+                        <div class="form-group">
+                            <label class="form-label">Choose Shradh Type:</label>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="radio" name="shradhType" value="live" style="margin-right: 0.5rem;">
+                                    Live Shradh
+                                </label>
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="radio" name="shradhType" value="recorded" style="margin-right: 0.5rem;">
+                                    Recorded Shradh
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="shradhPlatformType" class="form-label">Platform Type: <span style="color: var(--primary);">*</span></label>
+                            <select id="shradhPlatformType" name="shradhPlatformType" class="form-control">
+                                <option value="">Select Platform</option>
+                                <option value="whatsapp">WhatsApp</option>
+                                <option value="instagram">Instagram</option>
+                            </select>
+                        </div>
+                        <div id="shradhPlatformDetails"></div>
+                    </div>
+                `;
+                
+                document.getElementById('shradhPlatformType').addEventListener('change', function() {
+                    const platformDetails = document.getElementById('shradhPlatformDetails');
+                    if (this.value === 'whatsapp') {
+                        platformDetails.innerHTML = `
+                            <div class="form-group">
+                                <label for="shradhWhatsappNumber" class="form-label">Your WhatsApp Number: <span style="color: var(--primary);">*</span></label>
+                                <input type="tel" id="shradhWhatsappNumber" name="shradhWhatsappNumber" class="form-control" placeholder="Enter your WhatsApp number">
+                            </div>
+                        `;
+                    } else if (this.value === 'instagram') {
+                        platformDetails.innerHTML = `
+                            <div class="form-group">
+                                <label for="shradhInstagramId" class="form-label">Your Instagram ID: <span style="color: var(--primary);">*</span></label>
+                                <input type="text" id="shradhInstagramId" name="shradhInstagramId" class="form-control" placeholder="Enter your Instagram username">
+                            </div>
+                        `;
+                    } else {
+                        platformDetails.innerHTML = '';
+                    }
+                });
+            } else {
+                liveShradhOptions.innerHTML = '';
+            }
+        });
+
+        // Update Total Amount
+        function updateTotalAmount(amount) {
+            document.getElementById('totalAmount').textContent = `Total Amount: ₹${amount}`;
+        }
+
+        // Chatbot functionality
+        const quickContactToggle = document.getElementById('quickContactToggle');
+        const quickContactMenu = document.getElementById('quickContactMenu');
+        quickContactToggle.addEventListener('click', (e) => { e.stopPropagation(); quickContactMenu.classList.toggle('active'); });
+
         const chatbotToggle = document.getElementById('chatbotToggle');
         const chatbotContainer = document.getElementById('chatbotContainer');
         const chatbotClose = document.getElementById('chatbotClose');
-        
-        chatbotToggle.addEventListener('click', () => {
+        chatbotToggle.addEventListener('click', (e) => { 
+            e.stopPropagation(); 
             chatbotContainer.classList.toggle('active');
+            if (chatbotContainer.classList.contains('active')) quickContactMenu.classList.remove('active');
         });
-        
-        chatbotClose.addEventListener('click', () => {
-            chatbotContainer.classList.remove('active');
+        chatbotClose.addEventListener('click', () => chatbotContainer.classList.remove('active'));
+
+        document.addEventListener('click', (e) => {
+            if (quickContactMenu && !quickContactToggle.contains(e.target) && !quickContactMenu.contains(e.target)) quickContactMenu.classList.remove('active');
+            if (chatbotContainer && !chatbotToggle.contains(e.target) && !chatbotContainer.contains(e.target)) chatbotContainer.classList.remove('active');
         });
 
-        // Chatbot functionality
         const chatbotMessages = document.getElementById('chatbotMessages');
         const chatbotInput = document.getElementById('chatbotInput');
         const chatbotSend = document.getElementById('chatbotSend');
-
+        
         const botResponses = {
-            'hello': 'Hi there! How can I help you with your order today?',
-            'hi': 'Hello! I\'m here to assist you with any questions about our delivery service.',
-            'order': 'You can place an order by filling out the form on this page. Select your item type and follow the instructions.',
-            'payment': 'After completing your order, you\'ll be redirected to our payment page where you can pay via UPI.',
-            'price': 'Our prices are ₹249 for messages/letters and ₹299 for item deliveries.',
-            'delivery': 'We deliver in Varanasi and Chandauli. You can choose specific date and time for delivery.',
-            'live': 'Yes! You can opt for live delivery viewing via video call on WhatsApp, Google Meet, or Instagram.',
-            'help': 'I can help you with information about our services, pricing, delivery areas, and how to place an order.',
-            'contact': 'You can contact us at 7007677139 (WhatsApp/Call) or email timelinedeliveryofficial@gmail.com',
-            'address': 'Our office is at Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, UP 221008',
-            'default': 'I\'m here to help! You can ask me about our services, pricing, delivery options, or how to place an order.'
+            'hello': 'Hi there! How can I help you today?',
+            'order': 'You can place an order by filling out the form on this page. Choose between Surprise/Gift delivery or Shradh services.',
+            'surprise': 'Our Surprise/Gift delivery service allows you to send gifts, messages, or items to your loved ones at a specific time.',
+            'shradh': 'Our Shradh service helps you perform the sacred Shradh ceremony for your loved ones. Base price is ₹5,449 (excluding Pandit fee and items).',
+            'price': 'Surprise delivery: ₹249 (message) or ₹299 (items). Shradh: ₹5,449 (base price). Items bought by us: ₹299 + item cost.',
+            'address': 'Our office address is: Time Line Office, Parle-G factory, Patanava, Ramnagar industrial area, Ramnagar, Varanasi, Uttar Pradesh, 221008.',
+            'contact': 'You can contact us at: Phone: 7007677139 (Call/WhatsApp), Email: timelinedeliveryofficial@gmail.com',
+            'live': 'Yes! You can watch your delivery or Shradh live via WhatsApp or Instagram, or view a recorded version later.',
+            'default': 'I am here to assist you with any questions about our services. Please ask away! If I cannot help, please contact our team at timelinedeliveryofficial@gmail.com'
         };
 
-        function addMessageToChat(message, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chatbot-message ${sender}`;
-            messageDiv.innerHTML = `<div class="chatbot-bubble">${message}</div>`;
-            chatbotMessages.appendChild(messageDiv);
+        const addMessageToChat = (message, sender) => {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `chatbot-message ${sender}`;
+            msgDiv.innerHTML = `<div class="chatbot-bubble">${message}</div>`;
+            chatbotMessages.appendChild(msgDiv);
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-        }
+        };
 
-        function handleChatbotInput() {
-            const userMessage = chatbotInput.value.trim();
-            if (userMessage === '') return;
-
-            addMessageToChat(userMessage, 'user');
+        const handleChatbotInput = () => {
+            const userMsg = chatbotInput.value.trim();
+            if (userMsg === '') return;
+            addMessageToChat(userMsg, 'user');
             chatbotInput.value = '';
-
-            // Simple keyword matching for bot response
             setTimeout(() => {
-                let botResponse = botResponses.default;
-                const lowerMessage = userMessage.toLowerCase();
-                
-                for (const keyword in botResponses) {
-                    if (lowerMessage.includes(keyword)) {
-                        botResponse = botResponses[keyword];
+                let botReply = botResponses.default;
+                const lowerUserMsg = userMsg.toLowerCase();
+                for (const kw in botResponses) {
+                    if (lowerUserMsg.includes(kw)) {
+                        botReply = botResponses[kw];
                         break;
                     }
                 }
-                
-                addMessageToChat(botResponse, 'bot');
-            }, 500);
-        }
+                addMessageToChat(botReply, 'bot');
+            }, 600);
+        };
 
         chatbotSend.addEventListener('click', handleChatbotInput);
-        chatbotInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleChatbotInput();
+        chatbotInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleChatbotInput(); });
+
+        // Form Submission
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const serviceType = document.querySelector('input[name="serviceType"]:checked').value;
+            let requiredFields = [];
+            let isValid = true;
+            
+            if (serviceType === 'surprise') {
+                requiredFields = ['customerName', 'phoneNumber', 'recipientName', 'recipientPhoneNumber', 'address', 'district', 'state', 'pincode', 'itemType', 'deliveryDate', 'deliveryTime'];
+            } else if (serviceType === 'shradh') {
+                requiredFields = ['deceasedName', 'deceasedPhoneNumber', 'shradhDistrict', 'shradhState', 'shradhDate', 'shradhTime'];
             }
-        });
-        
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM fully loaded - Order Page");
             
-            // Initialize Google Sign-In
-            initializeGoogleSignIn();
-            
-            // Check for saved user
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                try {
-                    currentUser = JSON.parse(savedUser);
-                    displayUserInfo();
-                    checkOrderLimit();
-                } catch (e) {
-                    console.error("Error parsing saved user data:", e);
-                    localStorage.removeItem('currentUser');
+            for (const field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    element.style.borderColor = 'var(--primary)';
+                    isValid = false;
+                } else {
+                    element.style.borderColor = '';
                 }
             }
             
-            // Token generation
-            const customerNameInput = document.getElementById('customerName');
-            const tokenDisplay = document.getElementById('tokenDisplay');
-            if (customerNameInput && tokenDisplay) {
-                customerNameInput.addEventListener('blur', function() {
-                    if (this.value === "") {
-                        tokenDisplay.textContent = "Your Token: " + generateToken();
-                    } else {
-                        tokenDisplay.textContent = "";
-                    }
-                });
-                // Initial token generation if name is empty
-                if (customerNameInput.value === "") {
-                    tokenDisplay.textContent = "Your Token: " + generateToken();
+            if (!isValid) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Gather form data
+            let data = {
+                serviceType: serviceType,
+                timestamp: new Date().toISOString()
+            };
+
+            if (serviceType === 'surprise') {
+                data = {
+                    ...data,
+                    customerName: document.getElementById('customerName').value,
+                    phoneNumber: document.getElementById('phoneNumber').value,
+                    recipientName: document.getElementById('recipientName').value,
+                    recipientPhoneNumber: document.getElementById('recipientPhoneNumber').value,
+                    address: document.getElementById('address').value,
+                    district: document.getElementById('district').value,
+                    state: document.getElementById('state').value,
+                    pincode: document.getElementById('pincode').value,
+                    itemType: document.getElementById('itemType').value,
+                    deliveryDate: document.getElementById('deliveryDate').value,
+                    deliveryTime: document.getElementById('deliveryTime').value,
+                    liveDelivery: document.getElementById('liveDelivery').checked ? 'Yes' : 'No',
+                    totalAmount: document.getElementById('totalAmount').textContent.replace('Total Amount: ', '')
+                };
+
+                if (data.itemType === 'message') data.details = document.getElementById('messageContent')?.value;
+                else if (data.itemType === 'writtenByTimeline') data.details = document.getElementById('letterContent')?.value;
+                else if (data.itemType === 'itemsSendByCustomer') data.details = document.getElementById('itemDescription')?.value;
+                else if (data.itemType === 'itemsBuyByTimeline') {
+                    data.details = `Items: ${document.getElementById('itemsToBuy')?.value}`;
+                    data.itemLinks = document.getElementById('itemLinks')?.value;
+                    data.budget = `₹${document.getElementById('budget')?.value}`;
+                }
+
+                if (document.getElementById('liveDelivery').checked) {
+                    const type = document.querySelector('input[name="deliveryType"]:checked')?.value;
+                    const platform = document.getElementById('platformType')?.value;
+                    let platformInfo = '';
+                    if (platform === 'whatsapp') platformInfo = `WhatsApp: ${document.getElementById('whatsappNumber')?.value}`;
+                    else if (platform === 'instagram') platformInfo = `Instagram: ${document.getElementById('instagramId')?.value}`;
+                    data.liveDetails = `Type: ${type || 'N/A'}, Platform: ${platformInfo}`;
+                }
+            } else if (serviceType === 'shradh') {
+                data = {
+                    ...data,
+                    deceasedName: document.getElementById('deceasedName').value,
+                    phoneNumber: document.getElementById('deceasedPhoneNumber').value,
+                    district: document.getElementById('shradhDistrict').value,
+                    state: document.getElementById('shradhState').value,
+                    shradhDate: document.getElementById('shradhDate').value,
+                    shradhTime: document.getElementById('shradhTime').value,
+                    liveShradh: document.getElementById('liveShradh').checked ? 'Yes' : 'No',
+                    totalAmount: '₹5,449 + Additional Charges'
+                };
+
+                if (document.getElementById('liveShradh').checked) {
+                    const type = document.querySelector('input[name="shradhType"]:checked')?.value;
+                    const platform = document.getElementById('shradhPlatformType')?.value;
+                    let platformInfo = '';
+                    if (platform === 'whatsapp') platformInfo = `WhatsApp: ${document.getElementById('shradhWhatsappNumber')?.value}`;
+                    else if (platform === 'instagram') platformInfo = `Instagram: ${document.getElementById('shradhInstagramId')?.value}`;
+                    data.liveDetails = `Type: ${type || 'N/A'}, Platform: ${platformInfo}`;
                 }
             }
-            
-            // Set minimum delivery date and time
-            setMinDeliveryTime();
 
-            // Sign out button event
-            const signOutButton = document.getElementById('sign-out-button');
-            if (signOutButton) signOutButton.addEventListener('click', signOut);
+            // Format message for Instagram
+            let message = `📦 *NEW ORDER FROM TIME LINE*\n\n`;
+            message += `🔹 *Service:* ${serviceType === 'surprise' ? 'Surprise/Gift Delivery' : 'Shradh Service'}\n\n`;
             
-            // --- Attach Core Dynamic Event Listeners --- 
-            const itemTypeSelect = document.getElementById("itemType");
-            if (itemTypeSelect) {
-                itemTypeSelect.addEventListener("change", handleItemTypeChange);
-                console.log("Attached listener to itemType select");
+            if (serviceType === 'surprise') {
+                message += `👤 *Customer:* ${data.customerName}\n`;
+                message += `📞 *Phone:* ${data.phoneNumber}\n\n`;
+                message += `🎁 *Recipient:* ${data.recipientName}\n`;
+                message += `📱 *Recipient Phone:* ${data.recipientPhoneNumber}\n`;
+                message += `📍 *Address:* ${data.address}, ${data.district}, ${data.state} - ${data.pincode}\n\n`;
+                message += `🚚 *Delivery:* ${data.deliveryDate} at ${data.deliveryTime}\n`;
+                message += `📦 *Item Type:* ${data.itemType}\n`;
+                if (data.details) message += `📝 *Details:* ${data.details}\n`;
+                if (data.itemLinks) message += `🔗 *Item Links:* ${data.itemLinks}\n`;
+                if (data.budget) message += `💰 *Budget:* ${data.budget}\n`;
+                message += `🎥 *Live Delivery:* ${data.liveDelivery}\n`;
+                if (data.liveDetails) message += `📱 *Live Details:* ${data.liveDetails}\n`;
+            } else if (serviceType === 'shradh') {
+                message += `🙏 *Deceased:* ${data.deceasedName}\n`;
+                message += `📞 *Contact Phone:* ${data.phoneNumber}\n\n`;
+                message += `📍 *Location:* ${data.district}, ${data.state}\n`;
+                message += `📅 *Shradh Date:* ${data.shradhDate}\n`;
+                message += `⏰ *Shradh Time:* ${data.shradhTime}\n`;
+                message += `🎥 *Watch Live/Recorded:* ${data.liveShradh}\n`;
+                if (data.liveDetails) message += `📱 *Live Details:* ${data.liveDetails}\n`;
             }
             
-            const liveDeliveryCheckbox = document.getElementById("liveDelivery");
-            if (liveDeliveryCheckbox) {
-                liveDeliveryCheckbox.addEventListener("change", handleLiveDeliveryChange);
-                 console.log("Attached listener to liveDelivery checkbox");
-            }
-            
-            // Form submission
-            const orderForm = document.getElementById('orderForm');
-            if (orderForm) {
-                orderForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    if (!this.checkValidity()) {
-                        alert('Please fill all required fields correctly.');
-                        this.reportValidity(); 
-                        return;
-                    }
-                    
-                    const formData = new FormData(this);
-                    const orderData = {};
-                    for (const [key, value] of formData.entries()) {
-                        if (key === 'liveDelivery') {
-                            orderData[key] = document.getElementById('liveDelivery')?.checked || false;
-                        } else if (key === 'claimWarranty') {
-                             orderData[key] = document.getElementById('claimWarranty')?.checked || false;
-                        } else {
-                            orderData[key] = value;
-                        }
-                    }
-                    orderData.totalAmount = calculateTotalAmount();
-                    
-                    const submitButton = document.getElementById('submit-button');
-                    const originalText = submitButton?.innerHTML || 'Proceed to Payment <i class="fas fa-arrow-right"></i>';
-                    if (submitButton) {
-                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                        submitButton.disabled = true;
-                    }
-                    
-                    try {
-                        let success = false;
-                        // Try Supabase first if user is logged in
-                        if (currentUser && supabase) {
-                            console.log("Attempting Supabase submission...");
-                            success = await storeOrderSupabase(orderData);
-                            console.log("Supabase submission result:", success);
-                        }
-                        // Fallback to Google Apps Script if Supabase fails or user not logged in
-                        if (!success) {
-                            console.log("Attempting Google Apps Script submission...");
-                            success = await submitFormDataGoogle(orderData);
-                             console.log("Google Apps Script submission result:", success);
-                        }
-                        
-                        if (success) {
-                            alert('Your order has been submitted successfully! Redirecting to payment page...');
-                            // Store order data for payment page
-                            localStorage.setItem('orderData', JSON.stringify(orderData));
-                            // Redirect to payment page
-                            window.location.href = 'payment.html';
-                        } else {
-                            alert('There was an error submitting your order. Please try again or contact support.');
-                        }
-                    } catch (error) {
-                        console.error('Order submission error:', error);
-                        alert('There was an error submitting your order. Please try again.');
-                    } finally {
-                        if (submitButton) {
-                            submitButton.innerHTML = originalText;
-                            checkOrderLimit(); 
-                        }
-                    }
-                });
-            }
-            
-            console.log("All initializations and event listeners attached - Order Page");
+            message += `\n💰 *Total Amount:* ${data.totalAmount}\n`;
+            message += `--------------------------`;
+
+            // Copy to clipboard and redirect
+            navigator.clipboard.writeText(message).then(() => {
+                alert('Order details copied to clipboard! Please paste them in the Instagram DM to place your order.');
+                window.location.href = 'https://www.instagram.com/time_line.official?igsh=bmg5b2tienFnZ2hm';
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+                window.location.href = 'https://www.instagram.com/time_line.official?igsh=bmg5b2tienFnZ2hm';
+            });
         });
-    </script>
 
+        // Set minimum date to today
+        document.getElementById('deliveryDate').min = new Date().toISOString().split('T')[0];
+        document.getElementById('shradhDate').min = new Date().toISOString().split('T')[0];
+    </script> 
+ 
 </body></html>
-
