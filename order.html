@@ -28,6 +28,9 @@
             --border-radius-sm: 10px;
             --perspective: 1500px;
             --header-height: 140px;
+            --text-color: #f8f9fa;
+            --input-text-color: #f8f9fa;
+            --input-bg-color: rgba(255, 255, 255, 0.05);
         }
 
         .light-theme {
@@ -38,6 +41,9 @@
             --light-gray: #555555;
             --shadow: 0 15px 30px rgba(0,0,0,0.1);
             --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
+            --text-color: #1a1a1a;
+            --input-text-color: #1a1a1a;
+            --input-bg-color: rgba(0, 0, 0, 0.02);
         }
 
         * {
@@ -153,6 +159,7 @@
             padding: 0;
             margin: 0;
             gap: 2rem;
+            flex-wrap: wrap;
         }
 
         nav ul li {
@@ -237,12 +244,16 @@
 
         .main-content {
              padding-top: calc(var(--header-height) + 2rem);
+             padding-bottom: 2rem;
+             width: 100%;
+             overflow-x: hidden;
         }
 
         .order-container {
             max-width: 900px;
             margin: 0 auto;
             padding: 3rem 2rem;
+            width: 100%;
         }
 
         .order-title {
@@ -261,6 +272,8 @@
             padding: 3rem;
             box-shadow: var(--shadow);
             border: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+            overflow-x: hidden;
         }
 
         .light-theme .order-form {
@@ -270,6 +283,7 @@
 
         .form-group {
             margin-bottom: 1.5rem;
+            width: 100%;
         }
 
         .form-label {
@@ -279,31 +293,78 @@
             color: var(--light);
         }
 
-        .form-control, select {
+        .form-control, select, textarea {
             width: 100%;
             padding: 0.8rem 1rem;
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: var(--input-bg-color);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--border-radius-sm);
-            color: var(--light);
+            color: var(--input-text-color);
             font-family: 'Poppins', sans-serif;
             transition: var(--transition);
+            font-size: 1rem;
         }
 
-        .light-theme .form-control, .light-theme select {
+        .light-theme .form-control, 
+        .light-theme select, 
+        .light-theme textarea {
             background-color: rgba(0, 0, 0, 0.02);
             border: 1px solid rgba(0, 0, 0, 0.1);
-            color: var(--dark);
+            color: var(--input-text-color);
         }
 
-        .form-control:focus, select:focus {
+        .form-control::placeholder, 
+        textarea::placeholder {
+            color: var(--input-text-color);
+            opacity: 0.7;
+        }
+
+        .light-theme .form-control::placeholder,
+        .light-theme textarea::placeholder {
+            color: var(--input-text-color);
+            opacity: 0.7;
+        }
+
+        .form-control:focus, 
+        select:focus, 
+        textarea:focus {
             outline: none;
             border-color: var(--primary);
             background-color: rgba(255, 255, 255, 0.1);
+            color: var(--input-text-color);
         }
 
-        .light-theme .form-control:focus, .light-theme select:focus {
+        .light-theme .form-control:focus, 
+        .light-theme select:focus, 
+        .light-theme textarea:focus {
             background-color: rgba(0, 0, 0, 0.05);
+            color: var(--input-text-color);
+        }
+
+        /* Dropdown styling for both themes */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f8f9fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.8rem center;
+            background-size: 1.2em;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+
+        .light-theme select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        }
+
+        select option {
+            background-color: #1a1a1a;
+            color: #f8f9fa;
+            padding: 0.5rem;
+        }
+
+        .light-theme select option {
+            background-color: #f5f5f5;
+            color: #1a1a1a;
         }
 
         /* Service Selection Box */
@@ -314,6 +375,8 @@
             padding: 2rem;
             margin-bottom: 2rem;
             text-align: center;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         .service-selection h3 {
@@ -329,6 +392,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
+            width: 100%;
         }
 
         .service-option {
@@ -338,6 +402,8 @@
             cursor: pointer;
             transition: var(--transition);
             background: rgba(255, 255, 255, 0.02);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .service-option:hover {
@@ -360,6 +426,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .hidden-section {
@@ -376,6 +443,9 @@
             color: var(--primary);
             font-weight: 600;
             animation: slideIn 0.5s ease;
+            width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         @keyframes slideIn {
@@ -389,6 +459,8 @@
             border-radius: var(--border-radius-sm);
             padding: 1.5rem;
             margin: 1.5rem 0;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         .instruction-box h4 {
@@ -400,6 +472,7 @@
         .instruction-box ul {
             list-style: none;
             padding-left: 0;
+            width: 100%;
         }
 
         .instruction-box li {
@@ -407,6 +480,8 @@
             padding-left: 1.5rem;
             position: relative;
             color: var(--light);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .instruction-box li:before {
@@ -425,6 +500,9 @@
             font-size: 0.9rem;
             color: var(--light);
             border-radius: 4px;
+            width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .total-amount {
@@ -437,6 +515,7 @@
             font-weight: 600;
             margin: 1.5rem 0;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            width: 100%;
         }
 
         .company-address {
@@ -445,6 +524,10 @@
             border-radius: var(--border-radius-sm);
             padding: 1.5rem;
             margin: 2rem 0;
+            width: 100%;
+            overflow-x: hidden;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .company-address h3 {
@@ -457,6 +540,8 @@
             color: var(--light);
             line-height: 1.6;
             margin-bottom: 0.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .btn {
@@ -495,6 +580,7 @@
             display: flex;
             align-items: center;
             margin: 1rem 0;
+            flex-wrap: wrap;
         }
 
         .checkbox-group input[type="checkbox"] {
@@ -509,15 +595,22 @@
             cursor: pointer;
         }
 
-        /* Fixed utility buttons */
+        /* Fixed utility buttons - Left and Right corners */
         .fixed-utils {
             position: fixed;
             bottom: 30px;
-            left: 30px;
             display: flex;
             flex-direction: column;
             gap: 15px;
             z-index: 2000;
+        }
+
+        .fixed-utils.left {
+            left: 30px;
+        }
+
+        .fixed-utils.right {
+            right: 30px;
         }
 
         .util-button {
@@ -551,7 +644,7 @@
         .quick-contact-menu {
             position: fixed;
             bottom: 100px;
-            left: 30px;
+            right: 30px;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -659,6 +752,8 @@
             max-width: 85%;
             font-size: 0.9rem;
             line-height: 1.4;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .chatbot-message.bot .chatbot-bubble {
@@ -688,8 +783,12 @@
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 25px;
             padding: 0.6rem 1.2rem;
-            color: var(--light);
+            color: var(--input-text-color);
             outline: none;
+        }
+
+        .light-theme .chatbot-input input {
+            color: var(--input-text-color);
         }
 
         .chatbot-send {
@@ -712,6 +811,8 @@
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             animation: fadeIn 0.5s ease;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         @keyframes fadeIn {
@@ -729,17 +830,37 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             header { height: auto; padding: 1rem 0; }
             .header-content { gap: 0.8rem; }
             nav ul { gap: 1rem; flex-wrap: wrap; }
             .header-utils { position: relative; right: 0; top: 0; margin-top: 0.5rem; }
             .main-content { padding-top: 220px; }
+            .order-container { padding: 1.5rem 1rem; }
             .order-form { padding: 1.5rem; }
             .service-options { grid-template-columns: 1fr; }
-            .chatbot-container { width: calc(100% - 40px); left: 20px; }
-            .fixed-utils { left: 20px; }
-            .quick-contact-menu { left: 20px; }
+            .chatbot-container { width: calc(100% - 80px); left: 20px; }
+            .fixed-utils { bottom: 20px; }
+            .fixed-utils.left { left: 20px; }
+            .fixed-utils.right { right: 20px; }
+            .quick-contact-menu { right: 20px; bottom: 90px; }
+            .service-option { padding: 1rem; }
+            .service-option label { font-size: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .order-container { padding: 1rem; }
+            .order-form { padding: 1rem; }
+            .service-selection { padding: 1rem; }
+            .chatbot-container { width: calc(100vw - 60px); left: 10px; }
+            .fixed-utils.left { left: 10px; }
+            .fixed-utils.right { right: 10px; }
+            .quick-contact-menu { right: 10px; }
+            .instruction-box { padding: 1rem; }
+            .company-address { padding: 1rem; }
+            nav ul { gap: 0.5rem; }
+            nav ul li a { font-size: 0.8rem; }
         }
   </style> 
  </head> 
@@ -805,7 +926,7 @@
       </div> 
       <div class="form-group"> <label for="address" class="form-label">Delivery Address: <span style="color: var(--primary);">*</span></label> <textarea id="address" name="address" class="form-control" rows="3" placeholder="Enter full delivery address"></textarea> 
       </div> 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"> 
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%;"> 
        <div class="form-group"> <label for="district" class="form-label">District: <span style="color: var(--primary);">*</span></label> 
         <select id="district" name="district" class="form-control">
          <option value="">Select District</option>
@@ -817,7 +938,7 @@
        <div class="form-group"> <label for="state" class="form-label">State: <span style="color: var(--primary);">*</span></label> 
         <select id="state" name="state" class="form-control">
          <option value="uttar-pradesh">Uttar Pradesh</option>
-         <option value="other" style="opacity: 0.4;">Other States (Coming Soon)</option>
+         <option value="other">Other States (Coming Soon)</option>
         </select>
        </div> 
       </div> 
@@ -862,18 +983,18 @@
       </div>
 
       <!-- State and District Selection -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"> 
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%;"> 
        <div class="form-group"> <label for="shradhDistrict" class="form-label">District: <span style="color: var(--primary);">*</span></label> 
         <select id="shradhDistrict" name="shradhDistrict" class="form-control">
          <option value="">Select District</option>
          <option value="varanasi">Varanasi</option>
-         <option value="chandauli" style="opacity: 0.4;">Chandauli (Coming Soon)</option>
+         <option value="chandauli">Chandauli (Coming Soon)</option>
         </select>
        </div> 
        <div class="form-group"> <label for="shradhState" class="form-label">State: <span style="color: var(--primary);">*</span></label> 
         <select id="shradhState" name="shradhState" class="form-control">
          <option value="uttar-pradesh">Uttar Pradesh</option>
-         <option value="other" style="opacity: 0.4;">Other States (Coming Soon)</option>
+         <option value="other">Other States (Coming Soon)</option>
         </select>
        </div> 
       </div>
@@ -934,8 +1055,10 @@
    </div> 
   </div> 
 
-  <!-- Fixed Utility Buttons -->
-  <div class="fixed-utils"> <button class="util-button chatbot-toggle" id="chatbotToggle" aria-label="Toggle Chatbot"> <i class="fas fa-robot"></i> </button> <button class="util-button quick-contact-toggle" id="quickContactToggle" aria-label="Toggle Quick Contacts"> <i class="fas fa-comment-dots"></i> </button> 
+  <!-- Fixed Utility Buttons - Chatbot on Left, Message on Right -->
+  <div class="fixed-utils left"> <button class="util-button chatbot-toggle" id="chatbotToggle" aria-label="Toggle Chatbot"> <i class="fas fa-robot"></i> </button> 
+  </div> 
+  <div class="fixed-utils right"> <button class="util-button quick-contact-toggle" id="quickContactToggle" aria-label="Toggle Quick Contacts"> <i class="fas fa-comment-dots"></i> </button> 
   </div> 
   <div class="quick-contact-menu" id="quickContactMenu"> <a href="https://wa.me/917007677139" target="_blank" class="quick-contact-item whatsapp" aria-label="Contact on WhatsApp"><i class="fab fa-whatsapp"></i></a> <a href="https://www.instagram.com/time_line.official?igsh=bmg5b2tienFnZ2hm" target="_blank" class="quick-contact-item instagram" aria-label="Contact on Instagram"><i class="fab fa-instagram"></i></a> <a href="mailto:timelinedeliveryofficial@gmail.com" class="quick-contact-item email" aria-label="Contact via Email"><i class="fas fa-envelope"></i></a> 
   </div> 
